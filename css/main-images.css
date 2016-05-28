@@ -1,0 +1,19 @@
+.main-images .swiper-pagination-bullet {
+    display: inline-block;
+    width: 1rem;
+    height: .125rem;
+    background-color: #fff;
+    border-radius: 0;
+    opacity: 1
+}
+.main-images .swiper-pagination-bullet-active {
+    background-color: #F15353
+}
+.main-images .swiper-pagination{bottom: 0;}
+.main-images ul li img {
+    display: block;
+    width: 100%;
+    border: 0;
+    margin: 0;
+    padding: 0
+}
