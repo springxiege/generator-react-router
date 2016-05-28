@@ -1,0 +1,60 @@
+@designWidth: 640;
+.function{
+    .px2rem( @px ){
+        return : unit(@px*320/@designWidth/20 , rem);
+    }
+}
+.ftpx2rem(@px){
+    font-size : @px*320/@designWidth/20rem;
+};
+.wpx2rem(@px){
+    width:@px*320/@designWidth/20rem;
+};
+.hpx2rem(@px){
+    height:@px*320/@designWidth/20rem;
+}
+.lhpx2rem(@px){
+    line-height:@px*320/@designWidth/20rem;
+}
+.pdtpx2rem(@px){
+    padding-top: @px*320/@designWidth/20rem;
+}
+.pdbpx2rem(@px){
+    padding-bottom: @px*320/@designWidth/20rem;
+}
+.pdlpx2rem(@px){
+    padding-left: @px*320/@designWidth/20rem;
+}
+.pdrpx2rem(@px){
+    padding-right: @px*320/@designWidth/20rem;
+}
+.pdpx2rem(@px1,@px2,@px3,@px4){
+    padding-top: @px1*320/@designWidth/20rem;
+    padding-bottom: @px3*320/@designWidth/20rem;
+    padding-left: @px4*320/@designWidth/20rem;
+    padding-right: @px2*320/@designWidth/20rem;
+}
+.bdrapx2rem(@px){
+    border-radius: @px*320/@designWidth/20rem;
+}
+.mgpx2rem(@px1,@px2,@px3,@px4){
+    margin-top: @px1*320/@designWidth/20rem;
+    margin-bottom: @px3*320/@designWidth/20rem;
+    margin-left: @px4*320/@designWidth/20rem;
+    margin-right: @px2*320/@designWidth/20rem;
+}
+.mgtpx2rem(@px){
+    margin-top: @px*320/@designWidth/20rem;
+}
+.mgbpx2rem(@px){
+    margin-bottom: @px*320/@designWidth/20rem;
+}
+.mglpx2rem(@px){
+    margin-left: @px*320/@designWidth/20rem;
+}
+.mgrpx2rem(@px){
+    margin-right: @px*320/@designWidth/20rem;
+}
+.bgppx2rem(@px1,@px2){
+    background-position: @px1*320/@designWidth/20rem @px2*320/@designWidth/20rem;
+}

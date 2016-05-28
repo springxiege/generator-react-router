@@ -1,0 +1,27 @@
+@charset "utf-8";
+/* CSS Document */
+body, div, dl, dt, dd, ul, ol, li,h 1, h 2, h 3, h 4, h 5, h 6, pre, code,form, fieldset, legend, input, button,textarea, p, blockquote, th, td {margin: 0;padding: 0;font-size:12px;}
+img {border: 0;}
+cite,em,strong,th{font-style: inherit;font-weight:inherit; *font-style:normal;}
+h 1, h 2, h 3, h 4, h 5, h 6 {font-size:100%;font-weight:normal;}
+input,button,textarea,select{font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit;}
+input,button,textarea,select{*font-size:100%;}
+body {background-color:#F2F3F5;line-height:1.5; 
+    font-family: '微软雅黑',tahoma,verdana,arial,helvetica,sans-serif,"宋体";color:#333;}
+ol,ul {list-style:none;}
+th{text-align:left;}
+strong {font-weight:bold;}
+blockquote{quotes:none;}
+blockquote:before,blockquote:after{content:'';content:none;}
+td,th,div{word-break:break-all;word-wrap:break-word}
+form{display:inline;}
+*{outline:none;padding:0px;margin:0px;}
+.clearfix:after{content:".";display:block;height: 0;clear:both;visibility:hidden;}
+.clearfix{zoom: 1;}
+a{text-decoration:none;}
+a:link{color:#333;}
+a:visited{color:#333;}
+a:hover{color:#333;text-decoration:underline;}
+/*---------------------全局css定义结束-------------------*/
+.fl{float: left;}
+.fr{float: right;}
