@@ -1,6 +1,6 @@
 'use strict';
 // 商品标题
-import React form 'react';
+import React from 'react';
 export class ProductTitle extends React.Component {
     render(){
         return (

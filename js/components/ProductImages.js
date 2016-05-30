@@ -2,7 +2,7 @@
 /**
  * 图片轮播
  */
-import React form 'react';
+import React from 'react';
 export class ProductImages extends React.Component {
     render() {
         var items = this.props.images;

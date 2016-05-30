@@ -1,14 +1,15 @@
 'use strict';
 // 详情页  page  
 import React from 'react';
-import ProductImages from '../ProductImages.js';
-import ProductTitle from '../ProductTitle.js';
-import ProductDescription from '../ProductDescription.js';
-import ProductPriceAndFuncs from '../ProductPriceAndFuncs.js';
-import ProductOriginalPriceAndFee from '../ProductOriginalPriceAndFee.js';
-import ProductTabs from '../ProductTabs.js';
-import Recommend from '../Recommend.js';
-import ProductDetailFooter from '../ProductDetailFooter.js';
+import ProductImages from '../components/ProductImages.js';
+import ProductTitle from '../components/ProductTitle.js';
+import ProductDescription from '../components/ProductDescription.js';
+import ProductPriceAndFuncs from '../components/ProductPriceAndFuncs.js';
+import ProductOriginalPriceAndFee from '../components/ProductOriginalPriceAndFee.js';
+import ProductTabs from '../components/ProductTabs.js';
+import Recommend from '../components/Recommend.js';
+import ProductDetailFooter from '../components/ProductDetailFooter.js';
+import ProductDate from '../common/ProductDate.js';
 export class ProductDetails extends React.Component {
     render() {
         var _Children = React.Children.map(this.props.children, function(data) {

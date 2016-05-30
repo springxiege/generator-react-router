@@ -2,10 +2,10 @@
 // 总路由配置
 import React from "react";
 import ReactDOM from 'react-dom';
-import ProductDetails from '../ProductDetails.js';
-import UserCenter from '../UserCenter.js';
-import AllGoods from '../AllGoods.js';
-import ShoppingCart from '../ShoppingCart.js';
+import ProductDetails from '../app/ProductDetails.js';
+import UserCenter from '../app/UserCenter.js';
+import AllGoods from '../app/AllGoods.js';
+import ShoppingCart from '../app/ShoppingCart.js';
 import {
     Router,
     Route,

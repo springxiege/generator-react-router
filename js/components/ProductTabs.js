@@ -1,19 +1,13 @@
 'use strict';
 // 商品详情tab
 import React from 'react';
-import ProductDetailsChild from '../ProductDetailsChild.js';
-import ProductForSale from '../ProductForSale.js';
-import ProductComment from '../ProductComment.js';
+import ProductDetailsChild from './ProductDetailsChild.js';
+import ProductForSale from './ProductForSale.js';
+import ProductComment from './ProductComment.js';
+import ProductDate from '../common/ProductDate.js';
 export class ProductTabs extends React.Component {
     render() {
-        var {...props
-        } = {
-            snum: ProductDate.snum,
-            madeby: ProductDate.madeby,
-            expire: ProductDate.expire,
-            maintain: ProductDate.maintain,
-            deliver_address: ProductDate.deliver_address
-        };
+      
         return (
             <div className="main-module">
                 <div className="main-detailtab">
@@ -27,7 +21,7 @@ export class ProductTabs extends React.Component {
                     <div className="main-product-content swiper-container" ref="productTabs">
                         <div className="main-product-wrapper swiper-wrapper">
                             <ProductDetailsChild content={ProductDate.content} />
-                            <ProductForSale {...props} />
+                            <ProductForSale snum={ProductDate.snum} madeby={ProductDate.madeby} expire={ProductDate.expire} maintain={ProductDate.maintain} deliver_address={ProductDate.deliver_address} />
                             <ProductComment />
                         </div>
                     </div>
