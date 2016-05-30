@@ -1,7 +1,8 @@
 'use strict';
 // 商品标题
+import '../../css/main-title.css';
 import React from 'react';
-export class ProductTitle extends React.Component {
+export default class ProductTitle extends React.Component {
     render(){
         return (
             <div className="main-title">

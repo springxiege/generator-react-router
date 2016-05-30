@@ -5,7 +5,10 @@ import ProductDetailsChild from './ProductDetailsChild.js';
 import ProductForSale from './ProductForSale.js';
 import ProductComment from './ProductComment.js';
 import ProductDate from '../common/ProductDate.js';
-export class ProductTabs extends React.Component {
+import Swiper from 'swiper';
+import '../../css/main-detailtab.css';
+import '../plugins/swiper/swiper.min.css';
+export default class ProductTabs extends React.Component {
     render() {
       
         return (
@@ -30,13 +33,13 @@ export class ProductTabs extends React.Component {
         )
     }
     componentDidMount() {
-        var productTabs = new Swiper(this.refs.productTabs.getDOMNode(), {
+        var productTabs = new Swiper('.main-product-content', {
             autoHeight: true,
-            pagination: $(this.refs.productTabs.getDOMNode()).siblings('.main-tab').find('.main-tab-page'),
+            pagination: '.main-tab-page',
             paginationClickable: true,
             bulletClass: "tab",
             bulletActiveClass: "cur",
-            paginationBulletRender: function(index, className) {
+            paginationBulletRender: function(index, clsName) {
                 var _name, _comment_count = 1990;
                 switch (index) {
                     case 0:
@@ -51,7 +54,7 @@ export class ProductTabs extends React.Component {
                     default:
                         break;
                 }
-                return '<li class="' + className + '">' + _name + '</li>';
+                return '<li class="' + clsName + '">' + _name + '</li>';
             }
         })
     }

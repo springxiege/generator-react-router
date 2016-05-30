@@ -2,7 +2,14 @@
  * 全部宝贝
  */
 import React from 'react';
-export class AllGoods extends React.Component {
+import {
+    Router,
+    Route,
+    Link,
+    hashHistory,
+    IndexRoute
+} from 'react-router';
+export default class AllGoods extends React.Component {
     render(){
         return (
             <div>

@@ -1,7 +1,7 @@
 'use strict';
 // 详情页评论
 import React from 'react';
-export class ProductComment extends React.Component {
+export default class ProductComment extends React.Component {
     render() {
         return (
             <div className="main-product-comment swiper-slide">

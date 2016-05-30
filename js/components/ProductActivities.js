@@ -16,7 +16,7 @@ var Activities = [{
 //
 // });
 // module.exports = ProductActivities;
-export class ProductActivities extends React.Component {
+export default class ProductActivities extends React.Component {
     render() {
         var activites = this.props.activites.map(function(item, index) {
             return (

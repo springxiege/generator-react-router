@@ -3,10 +3,15 @@
  * 图片轮播
  */
 import React from 'react';
-export class ProductImages extends React.Component {
+import ReactDOM from 'react-dom';
+import Swiper from 'swiper';
+import '../../css/main-images.css';
+import '../plugins/swiper/swiper.min.css';
+
+export default class ProductImages extends React.Component {
     render() {
         var items = this.props.images;
-        var html = items.map(function(item, index) {
+        var html = React.Children.map(items,function(item, index){
             return (<li className="swiper-slide"><img src={item} width="100%" alt={index} /></li>);
         });
         return (
@@ -19,8 +24,8 @@ export class ProductImages extends React.Component {
         )
     }
     componentDidMount() {
-        var mainImages = new Swiper(this.refs.mainImages.getDOMNode(), {
-            pagination: $(this.refs.mainImages.getDOMNode()).find('.swiper-pagination')
+        var mainImages = new Swiper('.main-images', {
+            pagination: '.swiper-pagination'
         })
     }
 };

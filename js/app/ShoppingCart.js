@@ -1,9 +1,17 @@
 /**
  * 购物车
  */
+
 'use strict';
 import React from 'react';
-export class ShoppingCart extends React.Component {
+import {
+    Router,
+    Route,
+    Link,
+    hashHistory,
+    IndexRoute
+} from 'react-router';
+export default class ShoppingCart extends React.Component {
     render(){
         return (
             <div>

@@ -1,5 +1,8 @@
 'use strict';
 // 总路由配置
+import '../../css/reset.css';
+import '../../css/layout.css';
+import '../plugins/hotcss/hotcss.js';
 import React from "react";
 import ReactDOM from 'react-dom';
 import ProductDetails from '../app/ProductDetails.js';
@@ -13,6 +16,13 @@ import {
     hashHistory,
     IndexRoute
 } from 'react-router';
+
+console.log(ProductDetails);
+// ReactDOM.render(
+//     <div>艹，为什么？</div>,
+//     document.getElementById('app')
+// )
+
 ReactDOM.render(
     <Router history={hashHistory}>
         <Route path="/" component={ProductDetails} />

@@ -2,7 +2,7 @@
 // 产品售后
 
 import React from 'react';
-export class ProductForSale extends React.Component {
+export default class ProductForSale extends React.Component {
     render() {
         return (
             <div className="main-product-sale swiper-slide">

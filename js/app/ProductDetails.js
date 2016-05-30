@@ -10,14 +10,16 @@ import ProductTabs from '../components/ProductTabs.js';
 import Recommend from '../components/Recommend.js';
 import ProductDetailFooter from '../components/ProductDetailFooter.js';
 import ProductDate from '../common/ProductDate.js';
-export class ProductDetails extends React.Component {
+export default class ProductDetails extends React.Component {
     render() {
         var _Children = React.Children.map(this.props.children, function(data) {
             console.log(data);
             console.log(React.cloneElement(data, {
                 doSomething: '1111'
             }))
-        })
+        });
+        var price=123;
+        var originalprice=333;
         return (
             <div>
                 <div className="main">

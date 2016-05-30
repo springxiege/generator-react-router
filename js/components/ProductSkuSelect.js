@@ -1,7 +1,7 @@
 'use strict';
 // SKU 属性选择
 import React from 'react';
-export class ProductSkuSelect extends React.Component {
+export default class ProductSkuSelect extends React.Component {
     getInitialState() {
             return {
                 index: 0,

@@ -1,7 +1,7 @@
 'use strict';
 // 详情页原价与运费
 import React from 'react';
-export class ProductOriginalPriceAndFee extends React.Component {
+export default class ProductOriginalPriceAndFee extends React.Component {
     render() {
         return (
             <div className="main-oringinal-price clearfix">

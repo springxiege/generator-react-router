@@ -1,9 +1,11 @@
 var webpack = require('webpack');
+var path = require('path');
 module.exports = {
-  entry: './js/common/Router.js',
+  // entry: './test',
+  entry:'./js/common/Router',
   output: {
-    path: './dist/app',
-    filename: 'app.min.js'
+    path: './dist/js/app/',
+    filename: 'bundle.js'
   },
   resolve:{
     extensions:["",".js",".jsx"]
@@ -12,9 +14,22 @@ module.exports = {
     loaders:[
       {
         test: /\.js$/,
+        loader: 'babel-loader',
         exclude: /node_modules/,
-        loader: 'babel-loader!babel?presets[]=es2015&presets[]=react',
-
+        query: {
+          presets: ['es2015', 'react']
+        }
+      },
+      {
+        test:/\.css$/,
+        loader:'style-loader!css-loader',
+        exclude: /node_modules/
+      },
+      {
+        test: /\.(png|jpg|gif)$/,
+        loader: "url-loader",
+        query: { mimetype: "image/png" },
+        exclude: /node_modules/
       }
     ]
   },

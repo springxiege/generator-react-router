@@ -1,7 +1,8 @@
 'use strict';
+import '../../css/main-price.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
-export class ProductPriceAndFuncs extends React.Component {
+export default class ProductPriceAndFuncs extends React.Component {
     doCollect(e) {
         var $this = $(e.target);
         if (!$this.hasClass('collected')) {

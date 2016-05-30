@@ -1,7 +1,14 @@
 'use strict';
 // 详情页底部
 import React from 'react';
-export class ProductDetailFooter extends React.Component {
+import {
+    Router,
+    Route,
+    Link,
+    hashHistory,
+    IndexRoute
+} from 'react-router';
+export default class ProductDetailFooter extends React.Component {
     render() {
         return (
             <footer>

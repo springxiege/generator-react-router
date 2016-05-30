@@ -1,6 +1,13 @@
 'use strict';
 import React from 'react';
-export class UserCenter extends React.Component {
+import {
+    Router,
+    Route,
+    Link,
+    hashHistory,
+    IndexRoute
+} from 'react-router';
+export default class UserCenter extends React.Component {
     render(){
         return (
             <div>

@@ -9,9 +9,9 @@ var ProductDate = {
     Description: "Cube 最吸引人的地方在于没有任何按钮，采用了更自然的体感交互方式，具体来说就是轻拍一下切换播放/暂停，轻拍两下分享，左右倾斜切换上下曲。",
     // 轮播图片数据
     goods_images: [
-        '/js/components/ProductImages/1.jpg',
-        '/js/components/ProductImages/1.jpg',
-        '/js/components/ProductImages/1.jpg'
+        '/images/1.jpg',
+        '/images/1.jpg',
+        '/images/1.jpg'
     ],
     // 商品详情
     content: "<p><img src=\"/images/2.jpg\"><p>",
