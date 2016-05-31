@@ -3,7 +3,7 @@
  * 图片轮播
  */
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM,{findDOMNode} from 'react-dom';
 import Swiper from 'swiper';
 import '../../css/main-images.css';
 import '../plugins/swiper/swiper.min.css';
@@ -19,13 +19,13 @@ export default class ProductImages extends React.Component {
                 <ul className="swiper-wrapper">
                     {html}
                 </ul>
-                <span className="swiper-pagination"></span>
+                <span className="swiper-pagination" ref="mainImagesPage"></span>
             </div>
         )
     }
     componentDidMount() {
-        var mainImages = new Swiper('.main-images', {
-            pagination: '.swiper-pagination'
+        var mainImages = new Swiper(findDOMNode(this.refs.mainImages), {
+            pagination: findDOMNode(this.refs.mainImagesPage)
         })
     }
 };

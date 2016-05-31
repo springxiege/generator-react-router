@@ -1,6 +1,7 @@
 'use strict';
 // 商品详情tab
 import React from 'react';
+import {findDOMNode} from 'react-dom'
 import ProductDetailsChild from './ProductDetailsChild.js';
 import ProductForSale from './ProductForSale.js';
 import ProductComment from './ProductComment.js';
@@ -10,12 +11,12 @@ import '../../css/main-detailtab.css';
 import '../plugins/swiper/swiper.min.css';
 export default class ProductTabs extends React.Component {
     render() {
-      
+
         return (
             <div className="main-module">
                 <div className="main-detailtab">
                     <div className="main-tab">
-                        <ul className="main-tab-page clearfix">
+                        <ul className="main-tab-page clearfix" ref="productTabsPage">
                             <li className="cur">商品详情</li>
                             <li>产品售后</li>
                             <li>评价<span>(1900)</span></li>
@@ -33,9 +34,9 @@ export default class ProductTabs extends React.Component {
         )
     }
     componentDidMount() {
-        var productTabs = new Swiper('.main-product-content', {
+        var productTabs = new Swiper(findDOMNode(this.refs.productTabs), {
             autoHeight: true,
-            pagination: '.main-tab-page',
+            pagination: findDOMNode(this.refs.productTabsPage),
             paginationClickable: true,
             bulletClass: "tab",
             bulletActiveClass: "cur",

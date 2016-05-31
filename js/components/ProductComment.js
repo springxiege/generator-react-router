@@ -1,5 +1,6 @@
 'use strict';
 // 详情页评论
+import '../../css/main-comment.css'
 import React from 'react';
 export default class ProductComment extends React.Component {
     render() {
