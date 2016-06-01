@@ -3,32 +3,34 @@
 import '../../css/reset.css';
 import '../../css/layout.css';
 import '../plugins/hotcss/hotcss.js';
+import routes from './routers.config'
 import React from "react";
 import ReactDOM from 'react-dom';
+import {Router,Route,Link,hashHistory,IndexRoute} from 'react-router';
+import {createStore, combineReducers, applyMiddleware, compose } from 'redux'
+import { Provider, connect } from 'react-redux'
+import { createHistory } from 'history';
+import { reduxReactRouter, routerStateReducer, ReduxRouter,pushState } from 'redux-react-router';
+import trade from '../reducers/index'
 import ProductDetails from '../app/ProductDetails.js';
 import UserCenter from '../app/UserCenter.js';
 import AllGoods from '../app/AllGoods.js';
 import ShoppingCart from '../app/ShoppingCart.js';
-import {
-    Router,
-    Route,
-    Link,
-    hashHistory,
-    IndexRoute
-} from 'react-router';
 
-console.log(ProductDetails);
+
 // ReactDOM.render(
 //     <div>艹，为什么？</div>,
 //     document.getElementById('app')
 // )
+console.log(trade)
+let store = createStore(trade);
+
+
 
 ReactDOM.render(
-    <Router history={hashHistory}>
-        <Route path="/" component={ProductDetails} />
-        <Route path="/ProductDetails" component={ProductDetails} />
-        <Route path="/UserCenter" component={UserCenter} />
-        <Route path="/allgoods" component={AllGoods} />
-        <Route path="/ShoppingCart" component={ShoppingCart} />
-    </Router>,
+    <div>
+        <Provider store={store}>
+            <Router history={hashHistory} routes={routes} />
+        </Provider>
+    </div>,
     document.getElementById('app'));

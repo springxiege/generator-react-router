@@ -1,6 +1,7 @@
 'use strict';
-// 详情页  page  
+// 详情页  page
 import React from 'react';
+import { Provider, connect } from 'react-redux'
 import ProductImages from '../components/ProductImages.js';
 import ProductTitle from '../components/ProductTitle.js';
 import ProductDescription from '../components/ProductDescription.js';
@@ -10,7 +11,12 @@ import ProductTabs from '../components/ProductTabs.js';
 import Recommend from '../components/Recommend.js';
 import ProductDetailFooter from '../components/ProductDetailFooter.js';
 import ProductDate from '../common/ProductDate.js';
-export default class ProductDetails extends React.Component {
+
+class ProductDetails extends React.Component {
+    componentWillMount(){
+        console.log('update...');
+        console.log('sdfsdfsdfsdf')
+    }
     render() {
         var _Children = React.Children.map(this.props.children, function(data) {
             console.log(data);
@@ -18,7 +24,7 @@ export default class ProductDetails extends React.Component {
                 doSomething: '1111'
             }))
         });
-        var price=123;
+        var price=66666888;
         var originalprice=333;
         return (
             <div>
@@ -38,3 +44,7 @@ export default class ProductDetails extends React.Component {
         )
     }
 };
+function select(state){
+    return {};
+}
+export default connect(select)(ProductDetails);

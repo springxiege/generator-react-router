@@ -1,5 +1,6 @@
 'use strict';
 // 我要联赢推荐
+import '../../css/main-recommend.css'
 import React from 'react';
 export default class Recommend extends React.Component {
     freshList() {
