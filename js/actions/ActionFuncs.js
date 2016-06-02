@@ -1,35 +1,57 @@
 import * as types from '../actions/ActionTypes'
-
-export function doTrade() {
-    return {type:types.TRADE}
+/**
+ * 商品sku
+ */
+export function GoodsSelectSku(index){
+    return {type:types.GOODS_SELECT_SKU,index}
 }
-
-export function doGoodsDetail (){
-    return {type:types.GOODS_DETAIL}
+/**
+ * 商品二级sku
+ */
+export function GoodsSelectSkuSub(index){
+    return {type:types.GOODS_SELECT_SKU_SUB,index}
 }
-// 商品规格
-export function doGoodsSelectSku(data) {
-    return {type:types.GOODS_SELECT_SKU,data}
-}
-// 推荐
-export function doRecommend(data){
-    return {type:types.RECOMMEND,data}
+/**
+ * 刷新更换其他推荐商品
+ */
+export function RefreshRecommend(){
+    return {type:types.REFRESHRECOMMEND};
 }
 /**
  * 商品收藏
- * data 即为传入的状态
- * data=>0 如果为0，则表示初始未收藏状态
- * data=>1 如果为1，则表示收藏状态
- * data=>2 如果为2，则表示收藏后取消收藏状态
+ * id 即为收藏商品的id
  */
-export function doCollect(data){
-    return {type:types.COLLECT,showstate:data}
+export function AddCollect(id){
+    return {type:types.ADD_COLLECT,id}
 }
-
-export function doIncrementCounter(state){
-   return {tupe:types.INCREMENT,state}
+/**
+ * 取消商品收藏
+ * id 即为收藏商品的id
+ */
+export function CancelCollect(id){
+    return {type:types.CANCEL_COLLECT,id}
 }
-
-export function doDecrementCounter(state){
-  return {tupe:types.DECREMENT,state}
+/**
+ * 数量增加
+ */
+export function Increment(){
+    return {type:types.INCREMENT}
+}
+/**
+ * 数量减少
+ */
+export function Decrement(){
+    return {type:types.DECREMENT}
+}
+/**
+ * 获取好评
+ */
+export function GetGoodComment(){
+    return {type:types.GET_GOOD_COMMENT}
+}
+/**
+ * 获取差评
+ */
+export function GetBadComment(){
+    return {type:types.GET_BAD_COMMENT}
 }

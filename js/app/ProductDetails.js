@@ -9,13 +9,14 @@ import ProductPriceAndFuncs from '../components/ProductPriceAndFuncs.js';
 import ProductOriginalPriceAndFee from '../components/ProductOriginalPriceAndFee.js';
 import ProductTabs from '../components/ProductTabs.js';
 import Recommend from '../components/Recommend.js';
+import ProductSkuSelect from '../components/ProductSkuSelect'
 import ProductDetailFooter from '../components/ProductDetailFooter.js';
 import ProductDate from '../common/ProductDate.js';
 
 class ProductDetails extends React.Component {
     componentWillMount(){
         console.log('update...');
-        console.log('sdfsdfsdfsdf')
+
     }
     render() {
         var _Children = React.Children.map(this.props.children, function(data) {
@@ -40,6 +41,7 @@ class ProductDetails extends React.Component {
                     <Recommend />
                 </div>
                 <ProductDetailFooter />
+                <ProductSkuSelect />
             </div>
         )
     }

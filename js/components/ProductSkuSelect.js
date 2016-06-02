@@ -1,73 +1,52 @@
 'use strict';
 // SKU 属性选择
+import '../../css/main-sku.css'
 import React from 'react';
-export default class ProductSkuSelect extends React.Component {
-    getInitialState() {
-            return {
-                index: 0,
-                subindex: 0,
-                count: 1,
-                stock: this.props.sku[0].stock,
-                hasSubStock: this.props.sku[0].addon.length
-            }
-        }
-        // 规格一选择
-    handleClick() {
-            var _index = $(e.target).index(),
-                _stock = $(e.target).data('stock');
-            console.log(this.state.stock)
-            this.setState({
-                index: _index,
-                subindex: 0,
-                count: 1,
-                stock: _stock,
-                hasSubStock: this.props.sku[_index].addon.length
-            });
-        }
-        // 规格二选择
-    subhandleClick() {
-            var _index = $(e.target).index(),
-                _stock = $(e.target).data('stock');
-            console.log(this.state.stock)
-            this.setState({
-                subindex: _index,
-                count: 1,
-                stock: _stock
-            });
-        }
-        // 添加数量
-    addCount() {
-            var _count = this.state.count;
-            _count = _count + 1;
-            this.setState({
-                count: _count
-            });
-        }
-        // 减数量
-    downCount() {
-        var _count = this.state.count;
-        _count = _count + 1;
-        this.setState({
-            count: _count
-        });
+import {connect} from 'react-redux'
+import { GoodsSelectSku , GoodsSelectSkuSub , Increment , Decrement } from '../actions/ActionFuncs'
+class ProductSkuSelect extends React.Component {
+
+    // 规格一选择
+    _handleClick(e){
+        let index = e.target.getAttribute('data-index')
+        let clsName = e.target.className
+        if(clsName=='cur'){return false;}
+        this.props.dispatch(GoodsSelectSku(index))
+
+    }
+    _subhandleClick(e){
+        let index = e.target.getAttribute('data-index')
+        let clsName = e.target.className
+        if(clsName=='cur'){return false;}
+        this.props.dispatch(GoodsSelectSkuSub(index))
+    }
+    _Increment(e){
+        this.props.dispatch(Increment())
+    }
+    _Decrement(e){
+        this.props.dispatch(Decrement())
     }
     render() {
-        var _this = this;
-        var data = _this.props.sku;
-        console.log(data);
-        var sku = data.map(function(item, index) {
-            var clsName = (_this.state.index == index ? "cur" : "");
+        let _this = this;
+        let _count = _this.props.state.GoodsSelectSku.count
+        let data = _this.props.state.GoodsSelectSku.goods_addon
+        let _selected = _this.props.state.GoodsSelectSku.selected
+        let sku = data.map(function(item, index) {
+            let clsName = (_selected == index ? "cur" : "");
             return (
-                <li className={clsName} onClick={_this.handleClick} data-stock={item.stock} >{item.feature_main}</li>
+                <li className={clsName} onClick={e=>_this._handleClick(e)} data-stock={item.stock} data-index={index} key={index}>{item.feature_main}</li>
             )
         });
-        var subsku = data[_this.state.index].addon.length && data[_this.state.index].addon.map(function(item, index) {
-            var clsName = (_this.state.subindex == index ? "cur" : "");
+        let subdata = _this.props.state.GoodsSelectSku.addon
+        let _subselected = _this.props.state.GoodsSelectSku.subselected
+        let subsku = subdata[_selected].length && subdata[_selected].map(function(item, index) {
+            let clsName = (_subselected == index ? "cur" : "");
             return (
-                <li className={clsName} onClick={_this.subhandleClick} data-stock={item.stock} >{item.feature_main}</li>
+                <li className={clsName} onClick={e=>_this._subhandleClick(e)} data-stock={item.stock} data-index={index} key={index}>{item.feature_sub}</li>
             )
         });
-        var subskuwrap = this.state.hasSubStock > 0 ? (
+
+        let subskuwrap = subdata[_selected].length > 0 ? (
             <div className="sku-info clearfix">
                 <span className="sku-prop-name fl">规格二</span>
                 <div className="sku-prop-item">
@@ -97,9 +76,9 @@ export default class ProductSkuSelect extends React.Component {
                                     <span className="sku-prop-name fl">数&emsp;量</span>
                                     <div className="sku-prop-item">
                                         <div className="sku-number clearfix">
-                                            <span className="number-down fl" onClick={_this.downCount}>-</span>
-                                            <input type="number" value={_this.state.count} min="1" max="10" className="number-input fl" />
-                                            <span className="number-up fl"  onClick={_this.addCount}>+</span>
+                                            <span className="number-down fl" onClick={e=>_this._Increment(e)}>-</span>
+                                            <input type="number" value={_count} min="1" max="10" ref="input" className="number-input fl" />
+                                            <span className="number-up fl" onClick={e=>_this._Decrement(e)} >+</span>
                                         </div>
                                     </div>
                                 </div>
@@ -124,3 +103,9 @@ export default class ProductSkuSelect extends React.Component {
         )
     }
 };
+function select (state) { // 手动注入state，dispatch分发器被connect自动注入
+    return { // 注入的内容自行选择
+      state: state
+    }
+}
+export default connect(select)(ProductSkuSelect);

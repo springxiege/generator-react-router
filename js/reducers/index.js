@@ -1,10 +1,12 @@
 'use strict';
 import {combineReducers} from 'redux'
 
-import todoCollect from './todoCollect'
-console.log(todoCollect)
-console.log(222333)
+import Collect from './Collect'
+import CommentList from './CommentList'
+import GoodsSelectSku from './GoodsSelectSku'
 const trade = combineReducers({
-    todoCollect
+    Collect:Collect,
+    CommentList:CommentList,
+    GoodsSelectSku:GoodsSelectSku
 })
 export default trade
