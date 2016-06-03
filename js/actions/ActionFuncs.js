@@ -12,6 +12,18 @@ export function GoodsSelectSkuSub(index){
     return {type:types.GOODS_SELECT_SKU_SUB,index}
 }
 /**
+ * 已选商品SKU
+ */
+export function GoodsSelectedSku(data){
+    return {type:types.GOODS_SELECTED_SKU,data}
+}
+/**
+ * 商品sku选择器显隐
+ */
+export function ShowAndHideSelectSku(){
+    return {type:types.SHOW_HIDE_SELECT_SKU}
+}
+/**
  * 刷新更换其他推荐商品
  */
 export function RefreshRecommend(){

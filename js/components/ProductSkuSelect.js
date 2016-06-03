@@ -3,9 +3,11 @@
 import '../../css/main-sku.css'
 import React from 'react';
 import {connect} from 'react-redux'
-import { GoodsSelectSku , GoodsSelectSkuSub , Increment , Decrement } from '../actions/ActionFuncs'
+import { GoodsSelectSku , GoodsSelectSkuSub ,GoodsSelectedSku,ShowAndHideSelectSku, Increment , Decrement } from '../actions/ActionFuncs'
 class ProductSkuSelect extends React.Component {
-
+    _closeSKU(){
+        this.props.dispatch(ShowAndHideSelectSku())
+    }
     // 规格一选择
     _handleClick(e){
         let index = e.target.getAttribute('data-index')
@@ -13,12 +15,19 @@ class ProductSkuSelect extends React.Component {
         if(clsName=='cur'){return false;}
         this.props.dispatch(GoodsSelectSku(index))
 
+        setTimeout(()=>{
+            this.props.dispatch(GoodsSelectedSku(this.props.state.GoodsSelectSku))
+        })
+
     }
     _subhandleClick(e){
         let index = e.target.getAttribute('data-index')
         let clsName = e.target.className
         if(clsName=='cur'){return false;}
         this.props.dispatch(GoodsSelectSkuSub(index))
+        setTimeout(()=>{
+            this.props.dispatch(GoodsSelectedSku(this.props.state.GoodsSelectSku))
+        })
     }
     _Increment(e){
         this.props.dispatch(Increment())
@@ -56,12 +65,13 @@ class ProductSkuSelect extends React.Component {
                 </div>
             </div>
         ) : '';
+        let _clsName = !_this.props.state.GoodsSelectSku.isvisible?"sku-pop":"sku-pop selecting"
         return (
-            <section className="sku-pop">
+            <section className={_clsName} ref="skupop">
                 <section className="sku-content">
                     <div className="sku-module">
                         <div className="sku-main">
-                            <span className="sku-close" onClick={this.closeSKU}><a href="javascript:;">&times;</a></span>
+                            <span className="sku-close" onClick={e=>_this._closeSKU(e)}><a href="javascript:;">&times;</a></span>
                             <div className="sku-item">
                                 <div className="sku-info clearfix">
                                     <span className="sku-prop-name fl">规格一</span>
@@ -72,29 +82,23 @@ class ProductSkuSelect extends React.Component {
                                     </div>
                                 </div>
                                 {subskuwrap}
-                                <div className="sku-info clearfix">
+                                <div className="sku-info-num clearfix">
                                     <span className="sku-prop-name fl">数&emsp;量</span>
                                     <div className="sku-prop-item">
                                         <div className="sku-number clearfix">
                                             <span className="number-down fl" onClick={e=>_this._Increment(e)}>-</span>
-                                            <input type="number" value={_count} min="1" max="10" ref="input" className="number-input fl" />
+                                            <input type="number" value={_count} min="1" max="10" ref="input" readOnly className="number-input fl" />
                                             <span className="number-up fl" onClick={e=>_this._Decrement(e)} >+</span>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="main-price clearfix">
-                                    <div className="main-price-module fl"><span className="yen">&yen;</span>6299.00-8399.00</div>
-                                </div>
-                                <div className="main-oringinal-price clearfix">
-                                    <div className="main-oringinal-module fl">原价:<span>699.00</span></div>
-                                    <div className="main-fee fr">快递:<span>20.00元</span></div>
+                                    <div className="main-price-module fl">合计：<span className="main-money">{_this.props.state.GoodsSelectSku.price}元</span><span>(含快递费20.00元)</span></div>
                                 </div>
                             </div>
                             <div className="sku-count clearfix">
-                                <div className="sku-count-fee fl">
-                                    <span>合计：</span>198654.00元
-                                </div>
-                                <span className="add-to-cart fr">加入购物车</span>
+                                <div className="add-to-cart fl">加入购物车</div>
+                                <span className="buy-right-now fr">立即购买</span>
                             </div>
                         </div>
                     </div>

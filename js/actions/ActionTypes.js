@@ -9,6 +9,10 @@ export const GOODS_DETAIL = 'GOODS_DETAIL'
 export const GOODS_SELECT_SKU = 'GOODS_SELECT_SKU'
 // 商品二级规格
 export const GOODS_SELECT_SKU_SUB = 'GOODS_SELECT_SKU_SUB'
+// 商品已选规格
+export const GOODS_SELECTED_SKU = 'GOODS_SELECTED_SKU'
+// 显示隐藏商品规格
+export const SHOW_HIDE_SELECT_SKU = 'SHOW_HIDE_SELECT_SKU'
 // 添加收藏
 export const ADD_COLLECT = 'ADD_COLLECT'
 // 取消收藏

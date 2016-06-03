@@ -16,17 +16,11 @@ import ProductDetails from '../app/ProductDetails.js';
 import UserCenter from '../app/UserCenter.js';
 import AllGoods from '../app/AllGoods.js';
 import ShoppingCart from '../app/ShoppingCart.js';
-
-
 // ReactDOM.render(
 //     <div>艹，为什么？</div>,
 //     document.getElementById('app')
 // )
-console.log(trade)
 let store = createStore(trade);
-
-
-
 ReactDOM.render(
     <div>
         <Provider store={store}>

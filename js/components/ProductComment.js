@@ -6,7 +6,7 @@ import {connect} from 'react-redux'
 import {GetGoodComment,GetBadComment} from '../actions/ActionFuncs'
 class ProductComment extends React.Component {
     componentWillMount(){
-        console.log(this)
+        // console.log(this)
     }
     _Get_Good_Comment(e){
         if(e.target.className == 'cur'){return false;}
@@ -17,7 +17,7 @@ class ProductComment extends React.Component {
         this.props.dispatch(GetBadComment())
     }
     render() {
-        console.log(this.props.state)
+        // console.log(this.props.state)
         // console.log(this.props.getState());
         let _status = this.props.state.CommentList.status
         let _li = this.props.state.CommentList.data[_status].map(function(item,index){

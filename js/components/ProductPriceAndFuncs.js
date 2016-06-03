@@ -3,8 +3,6 @@ import '../../css/main-price.css';
 import React,{PropTypes} from 'react';
 import ReactDOM from 'react-dom';
 import {connect} from 'react-redux'
-import ProductSkuSelect from './ProductSkuSelect'
-import ProductDate from '../common/ProductDate'
 import {AddCollect,CancelCollect} from '../actions/ActionFuncs'
 class ProductPriceAndFuncs extends React.Component {
     _doCollect(e) {
@@ -24,7 +22,7 @@ class ProductPriceAndFuncs extends React.Component {
     }
 
     addToShoppingCart(e) {
-        ReactDOM.render(<ProductSkuSelect sku={ProductDate.goods_addon} />, document.getElementById('sku'));
+
     }
     render() {
         console.log(this.props.state)

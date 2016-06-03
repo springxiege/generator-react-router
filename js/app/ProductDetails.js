@@ -7,6 +7,7 @@ import ProductTitle from '../components/ProductTitle.js';
 import ProductDescription from '../components/ProductDescription.js';
 import ProductPriceAndFuncs from '../components/ProductPriceAndFuncs.js';
 import ProductOriginalPriceAndFee from '../components/ProductOriginalPriceAndFee.js';
+import ProductSku from '../components/ProductSku.js';
 import ProductTabs from '../components/ProductTabs.js';
 import Recommend from '../components/Recommend.js';
 import ProductSkuSelect from '../components/ProductSkuSelect'
@@ -37,6 +38,7 @@ class ProductDetails extends React.Component {
                         <ProductPriceAndFuncs price={price} />
                         <ProductOriginalPriceAndFee originalprice={originalprice} fare={ProductDate.fare} />
                     </div>
+                    <ProductSku />
                     <ProductTabs  />
                     <Recommend />
                 </div>
