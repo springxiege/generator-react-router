@@ -4,13 +4,15 @@
  */
 import React from 'react';
 import ReactDOM,{findDOMNode} from 'react-dom';
+import { Provider, connect } from 'react-redux'
 import Swiper from 'swiper';
 import '../../css/main-images.css';
 import '../plugins/swiper/swiper.min.css';
 
-export default class ProductImages extends React.Component {
+class ProductImages extends React.Component {
+
     render() {
-        var items = this.props.images;
+        var items = this.props.state;
         var html = React.Children.map(items,function(item, index){
             return (<li className="swiper-slide"><img src={item} width="100%" alt={index} /></li>);
         });
@@ -29,3 +31,7 @@ export default class ProductImages extends React.Component {
         })
     }
 };
+function select(state){
+    return {state: state.GoodsDetail.goods_images};
+}
+export default connect(select)(ProductImages);

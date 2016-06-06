@@ -18,14 +18,13 @@ class ProductPriceAndFuncs extends React.Component {
             this.props.dispatch(AddCollect(1));
             break;
         }
-        console.log(this.props.state)
+        // console.log(this.props.state)
     }
 
     addToShoppingCart(e) {
 
     }
     render() {
-        console.log(this.props.state)
         let _status = this.props.state.Collect.status;
         let _cls = this.props.state.Collect.clsName;
         return (

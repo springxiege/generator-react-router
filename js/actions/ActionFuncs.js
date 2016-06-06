@@ -1,5 +1,11 @@
 import * as types from '../actions/ActionTypes'
 /**
+ * 商品详情
+ */
+export function GoodsDetail(){
+    return {type: types.GOODS_DETAIL}
+}
+/**
  * 商品sku
  */
 export function GoodsSelectSku(index){

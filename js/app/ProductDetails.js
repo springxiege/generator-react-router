@@ -1,5 +1,6 @@
 'use strict';
 // 详情页  page
+import $ from 'jquery'
 import React from 'react';
 import { Provider, connect } from 'react-redux'
 import ProductImages from '../components/ProductImages.js';
@@ -13,19 +14,16 @@ import Recommend from '../components/Recommend.js';
 import ProductSkuSelect from '../components/ProductSkuSelect'
 import ProductDetailFooter from '../components/ProductDetailFooter.js';
 import ProductDate from '../common/ProductDate.js';
-
+import { GoodsDetail,AddCollect,CancelCollect } from '../actions/ActionFuncs'
 class ProductDetails extends React.Component {
+    componentDidMount(){
+
+    }
     componentWillMount(){
-        console.log('update...');
 
     }
     render() {
-        var _Children = React.Children.map(this.props.children, function(data) {
-            console.log(data);
-            console.log(React.cloneElement(data, {
-                doSomething: '1111'
-            }))
-        });
+        // var _Children = React.Children.map(this.props.children, function(data) {});
         var price=66666888;
         var originalprice=333;
         return (
@@ -49,6 +47,7 @@ class ProductDetails extends React.Component {
     }
 };
 function select(state){
-    return {};
+    console.log(state)
+    return {state:state};
 }
 export default connect(select)(ProductDetails);
