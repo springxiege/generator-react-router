@@ -16,8 +16,6 @@ class ProductSkuSelect extends React.Component {
         this.props.dispatch(GoodsSelectSku(index))
 
         setTimeout(()=>{
-            console.log(1)
-            console.log(this.props.state)
             this.props.dispatch(GoodsSelectedSku(this.props.state))
         })
 
@@ -28,8 +26,6 @@ class ProductSkuSelect extends React.Component {
         if(clsName=='cur'){return false;}
         this.props.dispatch(GoodsSelectSkuSub(index))
         setTimeout(()=>{
-            console.log(2)
-            console.log(this.props.state)
             this.props.dispatch(GoodsSelectedSku(this.props.state))
         })
     }
