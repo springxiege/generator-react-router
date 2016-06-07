@@ -2,7 +2,8 @@
 // 产品售后
 
 import React from 'react';
-export default class ProductForSale extends React.Component {
+import {connect} from 'react-redux'
+class ProductForSale extends React.Component {
     render() {
         return (
             <div className="main-product-sale swiper-slide">
@@ -35,3 +36,9 @@ export default class ProductForSale extends React.Component {
         )
     }
 };
+function select (state) { // 手动注入state，dispatch分发器被connect自动注入
+    return { // 注入的内容自行选择
+      state: state.GoodsDetail
+    }
+}
+export default connect(select)(ProductForSale);

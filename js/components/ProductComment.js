@@ -19,6 +19,7 @@ class ProductComment extends React.Component {
     render() {
         // console.log(this.props.state)
         // console.log(this.props.getState());
+        console.log(this.props.state)
         let _status = this.props.state.status
         let _li = this.props.state.data[_status].map(function(item,index){
             let _clsName = 'coment-stars stars'+item.comment_start
@@ -55,9 +56,9 @@ class ProductComment extends React.Component {
         )
     }
 };
-function select (state={CommentList}) { // 手动注入state，dispatch分发器被connect自动注入
+function select (state) { // 手动注入state，dispatch分发器被connect自动注入
     return { // 注入的内容自行选择
-      state: state.CommentList
+      state: state.GoodsDetail.CommentList
     }
 }
 export default connect(select)(ProductComment);

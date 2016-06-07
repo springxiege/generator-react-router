@@ -9,7 +9,8 @@ import {GoodsSelectedSku,ShowAndHideSelectSku} from '../actions/ActionFuncs'
 class SKU extends Component{
     selectsku(){
         this.props.dispatch(ShowAndHideSelectSku())
-        this.props.dispatch(GoodsSelectedSku(this.props.state.GoodsSelectSku))
+        let _data = this.props.state.GoodsSelectSku
+        this.props.dispatch(GoodsSelectedSku(_data))
     }
     render(){
 
@@ -25,7 +26,7 @@ class SKU extends Component{
 }
 function select (state) { // 手动注入state，dispatch分发器被connect自动注入
     return { // 注入的内容自行选择
-      state: state
+      state: state.GoodsDetail
     }
 }
 export default connect(select)(SKU);

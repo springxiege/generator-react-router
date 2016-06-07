@@ -25,8 +25,8 @@ class ProductPriceAndFuncs extends React.Component {
 
     }
     render() {
-        let _status = this.props.state.Collect.status;
-        let _cls = this.props.state.Collect.clsName;
+        let _status = this.props.state.status;
+        let _cls = this.props.state.clsName;
         return (
             <div className="main-price clearfix">
                 <div className="main-price-module fl"><span className="yen">&yen;</span>{this.props.price}</div>
@@ -38,7 +38,7 @@ class ProductPriceAndFuncs extends React.Component {
 };
 function select (state) { // 手动注入state，dispatch分发器被connect自动注入
     return { // 注入的内容自行选择
-      state: state
+      state: state.GoodsDetail.Collect
     }
 }
 export default connect(select)(ProductPriceAndFuncs);

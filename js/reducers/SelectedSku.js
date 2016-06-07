@@ -5,7 +5,6 @@ const initialState = {
 export default function SelectedSku(state = initialState,action){
     switch (action.type) {
         case GOODS_SELECTED_SKU:
-            console.log(action.data)
             let _data = action.data;
             let _sku = _data.goods_addon[_data.selected]['feature_main']
             let _sku_sub = _data.addon[_data.selected][_data.subselected]['feature_sub']

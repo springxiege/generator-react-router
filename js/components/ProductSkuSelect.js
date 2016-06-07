@@ -16,7 +16,9 @@ class ProductSkuSelect extends React.Component {
         this.props.dispatch(GoodsSelectSku(index))
 
         setTimeout(()=>{
-            this.props.dispatch(GoodsSelectedSku(this.props.state.GoodsSelectSku))
+            console.log(1)
+            console.log(this.props.state)
+            this.props.dispatch(GoodsSelectedSku(this.props.state))
         })
 
     }
@@ -26,7 +28,9 @@ class ProductSkuSelect extends React.Component {
         if(clsName=='cur'){return false;}
         this.props.dispatch(GoodsSelectSkuSub(index))
         setTimeout(()=>{
-            this.props.dispatch(GoodsSelectedSku(this.props.state.GoodsSelectSku))
+            console.log(2)
+            console.log(this.props.state)
+            this.props.dispatch(GoodsSelectedSku(this.props.state))
         })
     }
     _Increment(e){
@@ -37,17 +41,17 @@ class ProductSkuSelect extends React.Component {
     }
     render() {
         let _this = this;
-        let _count = _this.props.state.GoodsSelectSku.count
-        let data = _this.props.state.GoodsSelectSku.goods_addon
-        let _selected = _this.props.state.GoodsSelectSku.selected
+        let _count = _this.props.state.count
+        let data = _this.props.state.goods_addon
+        let _selected = _this.props.state.selected
         let sku = data.map(function(item, index) {
             let clsName = (_selected == index ? "cur" : "");
             return (
                 <li className={clsName} onClick={e=>_this._handleClick(e)} data-stock={item.stock} data-index={index} key={index}>{item.feature_main}</li>
             )
         });
-        let subdata = _this.props.state.GoodsSelectSku.addon
-        let _subselected = _this.props.state.GoodsSelectSku.subselected
+        let subdata = _this.props.state.addon
+        let _subselected = _this.props.state.subselected
         let subsku = subdata[_selected].length && subdata[_selected].map(function(item, index) {
             let clsName = (_subselected == index ? "cur" : "");
             return (
@@ -65,7 +69,7 @@ class ProductSkuSelect extends React.Component {
                 </div>
             </div>
         ) : '';
-        let _clsName = !_this.props.state.GoodsSelectSku.isvisible?"sku-pop":"sku-pop selecting"
+        let _clsName = !_this.props.state.isvisible?"sku-pop":"sku-pop selecting"
         return (
             <section className={_clsName} ref="skupop">
                 <section className="sku-content">
@@ -86,14 +90,14 @@ class ProductSkuSelect extends React.Component {
                                     <span className="sku-prop-name fl">数&emsp;量</span>
                                     <div className="sku-prop-item">
                                         <div className="sku-number clearfix">
-                                            <span className="number-down fl" onClick={e=>_this._Increment(e)}>-</span>
+                                            <span className="number-down fl" onClick={e=>_this._Decrement(e)}>-</span>
                                             <input type="number" value={_count} min="1" max="10" ref="input" readOnly className="number-input fl" />
-                                            <span className="number-up fl" onClick={e=>_this._Decrement(e)} >+</span>
+                                            <span className="number-up fl" onClick={e=>_this._Increment(e)} >+</span>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="main-price clearfix">
-                                    <div className="main-price-module fl">合计：<span className="main-money">{_this.props.state.GoodsSelectSku.price}元</span><span>(含快递费20.00元)</span></div>
+                                    <div className="main-price-module fl">合计：<span className="main-money">{_this.props.state.price}元</span><span>(含快递费{_this.props.state.fare}元)</span></div>
                                 </div>
                             </div>
                             <div className="sku-count clearfix">
@@ -109,7 +113,7 @@ class ProductSkuSelect extends React.Component {
 };
 function select (state) { // 手动注入state，dispatch分发器被connect自动注入
     return { // 注入的内容自行选择
-      state: state
+      state: state.GoodsDetail.GoodsSelectSku
     }
 }
 export default connect(select)(ProductSkuSelect);

@@ -113,9 +113,7 @@ const initialState = {
     isvisible:0
 }
 export default function GoodsSelectSku(state = initialState,action){
-    let _count = 0
-    let _price = 0
-    let _originalprice = 0
+    let _count = 0,_price = 0,_originalprice = 0;
     switch (action.type) {
         case SHOW_HIDE_SELECT_SKU:
             return Object.assign({},state,{

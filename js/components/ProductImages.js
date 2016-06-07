@@ -32,6 +32,6 @@ class ProductImages extends React.Component {
     }
 };
 function select(state){
-    return {state: state.GoodsDetail.goods_images};
+    return {state: state.GoodsDetail.Images};
 }
 export default connect(select)(ProductImages);
