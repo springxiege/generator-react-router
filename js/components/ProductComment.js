@@ -17,9 +17,6 @@ class ProductComment extends React.Component {
         this.props.dispatch(GetBadComment())
     }
     render() {
-        // console.log(this.props.state)
-        // console.log(this.props.getState());
-        console.log(this.props.state)
         let _status = this.props.state.status
         let _li = this.props.state.data[_status].map(function(item,index){
             let _clsName = 'coment-stars stars'+item.comment_start

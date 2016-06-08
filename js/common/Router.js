@@ -12,14 +12,6 @@ import { Provider, connect } from 'react-redux'
 import { createHistory } from 'history';
 import { reduxReactRouter, routerStateReducer, ReduxRouter,pushState } from 'redux-react-router';
 import trade from '../reducers/index'
-import ProductDetails from '../app/ProductDetails.js';
-import UserCenter from '../app/UserCenter.js';
-import AllGoods from '../app/AllGoods.js';
-import ShoppingCart from '../app/ShoppingCart.js';
-// ReactDOM.render(
-//     <div>艹，为什么？</div>,
-//     document.getElementById('app')
-// )
 let store = createStore(trade);
 ReactDOM.render(
     <div>

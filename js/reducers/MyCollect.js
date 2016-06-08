@@ -2,10 +2,9 @@
  * 商品收藏
  */
 import { ADD_COLLECT,CANCEL_COLLECT } from '../actions/ActionTypes'
-const initialState = {
-    status:0,
-    clsName:'main-collect-icon fr'
-}
+import CollectDate from '../common/CollectDate'
+
+const initialState = CollectDate
 export default function Collect(state = initialState,action){
     switch (action.type) {
         case ADD_COLLECT:

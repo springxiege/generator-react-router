@@ -1,3 +1,4 @@
+import React from 'react';
 var Activities = [{
     pricetop: 1000,
     pricedown: 200,

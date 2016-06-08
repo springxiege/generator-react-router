@@ -3,7 +3,7 @@
 body, div, dl, dt, dd, ul, ol, li,h 1, h 2, h 3, h 4, h 5, h 6, pre, code,form, fieldset, legend, input, button,textarea, p, blockquote, th, td {margin: 0;padding: 0;font-size:12px;}
 img {border: 0;}
 cite,em,strong,th{font-style: inherit;font-weight:inherit; *font-style:normal;}
-h 1, h 2, h 3, h 4, h 5, h 6 {font-size:100%;font-weight:normal;}
+h1, h2, h3, h4, h5, h6 {font-size:100%;font-weight:normal;}
 input,button,textarea,select{font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit;}
 input,button,textarea,select{*font-size:100%;}
 body {background-color:#F2F3F5;line-height:1.5; 
