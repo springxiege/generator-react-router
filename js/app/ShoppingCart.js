@@ -11,14 +11,11 @@ import {
     hashHistory,
     IndexRoute
 } from 'react-router';
+import ShopCartList from '../components/ShopCartList'
 export default class ShoppingCart extends React.Component {
     render(){
         return (
-            <div>
-                <h2>ShoppingCart Page ....</h2>
-                <p><Link to="/ProductDetails">商品详情页</Link></p>
-                <p><Link to="/allgoods">全部宝贝</Link></p>
-            </div>
+            <ShopCartList />
         )
     }
 };

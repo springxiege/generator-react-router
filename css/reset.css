@@ -25,3 +25,8 @@ a:hover{color:#333;text-decoration:underline;}
 /*---------------------全局css定义结束-------------------*/
 .fl{float: left;}
 .fr{float: right;}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
+}
