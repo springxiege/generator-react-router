@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-class default CopyRight extends Component{
+export default class CopyRight extends Component{
     render(){
         return (
             <div className="copyright">
