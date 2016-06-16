@@ -3,14 +3,12 @@ import {combineReducers} from 'redux'
 
 import GoodsDetail from './GoodsDetail'
 import MyCollect from './MyCollect'
-// import CommentList from './CommentList'
-// import GoodsSelectSku from './GoodsSelectSku'
-// import SelectedSku from './SelectedSku'
+import ShopCart from './ShopCart'
+
 const trade = combineReducers({
     GoodsDetail:GoodsDetail,
-    MyCollect:MyCollect
-    // CommentList:CommentList,
-    // GoodsSelectSku:GoodsSelectSku,
-    // SelectedSku:SelectedSku
+    MyCollect:MyCollect,
+    ShopCart:ShopCart
 })
+
 export default trade

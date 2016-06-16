@@ -10,7 +10,7 @@ export default {
         component: ProductDetails,
     },
     {
-        path: "/ProductDetails",
+        path: "/ProductDetails/:DetailId",
         component: ProductDetails
     },
     {

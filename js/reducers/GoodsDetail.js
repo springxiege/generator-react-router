@@ -26,173 +26,134 @@ const Images = ProductDate.goods_images
 // 评论
 const CommentList = {
     status:0,
+    id:ProductDate.id,
     data:[commentDate,commentDate]
 }
-let _addon = []
-for (let i = 0; i < ProductDate.goods_addon.length; i++) {
-    let item = ProductDate.goods_addon[i].addon
-    _addon[i] = item
-}
-let _originalprice = ProductDate.goods_addon[0].addon.length ? ProductDate.goods_addon[0].addon[0].goods_price :ProductDate.goods_addon[0].goods_price
 const GoodsSelectSku = {
     count:1,
-    isvisible:0,
-    selected:0,
-    subselected:0,
-    price:_originalprice,
-    originalprice:_originalprice,
-    goods_addon:ProductDate.goods_addon,
-    addon:_addon,
-    fare:ProductDate.fare
+    isvisible:false,
+    selected:null,
+    subselected:null,
+    price:0,
+    originalprice:0
 }
 const SelectedSku = {
     sku:"选择：规格分类"
 }
-const ForSale = {
-    snum:ProductDate.snum,
-    madeby:ProductDate.madeby,
-    expire:ProductDate.expire,
-    maintain:ProductDate.maintain,
-    deliver_address:ProductDate.deliver_address
-}
+
 const initialState = {
     Collect:Collect,
     CommentList:CommentList,
     GoodsSelectSku:GoodsSelectSku,
     SelectedSku:SelectedSku,
-    Images:Images,
-    ForSale:ForSale,
-    Description:ProductDate.Description,
-    title:ProductDate.title,
-    id:ProductDate.id,
-    content:ProductDate.content,
-    discount:ProductDate.discount,
-    fare:ProductDate.fare,
-    brokerage:ProductDate.brokerage,
-    is_activity:ProductDate.is_activity,
     activity_ids:[],
-    is_legal:ProductDate.is_legal
+    data: {
+        "title": "1",
+        "snum": "1",
+        "id": 1,
+        "description": "1",
+        "goods_images": [
+          "/images/1.jpg",
+          "/images/1.jpg",
+          "/images/1.jpg"
+        ],
+        "content": "<p><img src=\"/images/2.jpg\"><p>",
+        "made_by": "1",
+        "deliver_address": "1",
+        "discount": "11.00",
+        "fare": "1.00",
+        "brokerage": 1,
+        "expire": 11,
+        "maintain": 0,
+        "stock": 0,
+        "created_at": null,
+        "goodsLink": "/uyotXT.html",
+        "goods_addon": [
+          {
+            "id": 0,
+            "goods_id": 0,
+            "parent_id": 0,
+            "feature_main": "38",
+            "feature_sub": "",
+            "goods_price": "0.00",
+            "market_price": "0.00",
+            "stock": 1,
+            "created_at": null,
+            "updated_at": null,
+            "deleted_at": null,
+            "addon": []
+          }
+        ]
+      }
 }
+
 export default function GoodsDetail(state=initialState,action){
-    let _originalprice = 0,
-        _skudata = [],
-        _sku = '',
-        _sku_sub = '',
-        _sku_all = '',
-        _usku = {},
-        _count = 1,
-        _price = 0;
+    let _originalprice = 0
+    let _count         = 1
+    let _price         = 0
+    let _skuObj        = {}
+    let _sku           = ''
     switch (action.type) {
         case GOODS_DETAIL:
-            alert(1)
+            return Object.assign({},state,action.data)
             break;
         case GOODS_SELECT_SKU: //选择规格一
-            _skudata = state.GoodsSelectSku.goods_addon
-            _originalprice = (_skudata[parseInt(action.index)]['addon'].length ? _skudata[parseInt(action.index)]['addon'][0]['goods_price'] : _skudata[parseInt(action.index)]['goods_price'])
-            _usku = Object.assign({},state.GoodsSelectSku,{
-                selected:parseInt(action.index),
-                subselected:0,
-                count:1,
-                price:_originalprice,
-                originalprice:_originalprice
-            })
-            return Object.assign({},state,{
-                GoodsSelectSku:_usku
-            })
+            state.GoodsSelectSku.selected = action.index
+            return Object.assign({},state)
             break;
         case GOODS_SELECT_SKU_SUB: // 选择规格二
-            _skudata = state.GoodsSelectSku.goods_addon[state.GoodsSelectSku.selected]
-            _originalprice = _skudata['addon'][parseInt(action.index)]['goods_price']
-            _usku = Object.assign({},state.GoodsSelectSku,{
-                subselected:parseInt(action.index),
-                count:1,
-                price:_originalprice,
-                originalprice:_originalprice
-            })
-            return Object.assign({},state,{
-                GoodsSelectSku:_usku
-            })
+            state.GoodsSelectSku.subselected = action.index
+            return Object.assign({},state)
             break;
         case GOODS_SELECTED_SKU: // 显示已选择规格
-            _skudata = action.data
-            _sku = _skudata.goods_addon[_skudata.selected]['feature_main'] || ''
-            _sku_sub = _skudata.addon[_skudata.selected].length ? _skudata.addon[_skudata.selected][_skudata.subselected]['feature_sub'] : ''
-            _sku_all = _sku + ' ' + _sku_sub
-            _usku = Object.assign({},SelectedSku,{
-                sku:_sku_all
-            })
-            return Object.assign({},state,{
-                SelectedSku:_usku
-            })
+            _skuObj = state.data.goods_addon[(GoodsSelectSku.selected||0)]
+            _sku = _skuObj.feature_main + " " + (_skuObj['addon']&&_skuObj['addon'].length&&_skuObj['addon'][(GoodsSelectSku.subselected||0)].feature_sub||'')
+            state.SelectedSku.sku = _sku
+            return Object.assign({},state)
             break;
         case SHOW_HIDE_SELECT_SKU: // 选择属性规格层的显示与隐藏
-            let _GoodsSelectSku = Object.assign({},state.GoodsSelectSku,{
-                isvisible:!state.GoodsSelectSku.isvisible
-            })
-            return Object.assign({},state,{
-                GoodsSelectSku:_GoodsSelectSku
-            })
+            state.GoodsSelectSku.isvisible = !state.GoodsSelectSku.isvisible
+            return Object.assign({},state)
             break;
         case ADD_COLLECT: // 添加收藏
-            let _is_collect = Object.assign({},state.Collect,{
-                status:1,
-                clsName:'main-collect-icon collected fr'
-            })
+            
             return Object.assign({},state,{
-                Collect:_is_collect
+                
             })
             break;
         case CANCEL_COLLECT: // 取消收藏
-            let _un_collect = Object.assign({},state.Collect,{
-                status:0,
-                clsName:'main-collect-icon fr'
-            })
+            
             return Object.assign({},state,{
-                Collect:_un_collect
+                
             })
             break;
         case REFRESHRECOMMEND: // 刷新51推荐列表
-            alert(8)
+            return Object.assign({},state,{
+                
+            })
             break;
         case INCREMENT: // 添加商品数量
-            _count = state.GoodsSelectSku.count+1
-            _price = _count*state.GoodsSelectSku.originalprice
-            let _in_GoodsSelectSku = Object.assign({},state.GoodsSelectSku,{
-                count:_count,
-                price:_price
-            })
+            
             return Object.assign({},state,{
-                GoodsSelectSku: _in_GoodsSelectSku
+                
             })
             break;
         case DECREMENT: // 减少商品数量
-            _count = state.GoodsSelectSku.count-1
-            _price = _count*state.GoodsSelectSku.originalprice
-            let _de_GoodsSelectSku = Object.assign({},state.GoodsSelectSku,{
-                count:_count,
-                price:_price
-            })
+            
             return Object.assign({},state,{
-                GoodsSelectSku: _de_GoodsSelectSku
+                
             })
             break;
         case GET_GOOD_COMMENT: // 获取好评列表
-            console.log(state)
-            let _good_comment = Object.assign({},state.CommentList,{
-                status:0,
-                data:[state.CommentList.data[0],state.CommentList.data[1]]
-            })
+            
             return Object.assign({},state,{
-                CommentList:_good_comment
+                
             })
             break;
         case GET_BAD_COMMENT: // 获取差评列表
-            let _bad_comment = Object.assign({},state.CommentList,{
-                status:1,
-                data:[state.CommentList.data[0],state.CommentList.data[1]]
-            })
+            
             return Object.assign({},state,{
-                CommentList:_bad_comment
+                
             })
             break;
         default:

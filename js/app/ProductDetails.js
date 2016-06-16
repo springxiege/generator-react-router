@@ -2,6 +2,7 @@
 // 详情页  page
 import $ from 'jquery'
 import React from 'react';
+import ReactDOM from 'react-dom'
 import { Provider, connect } from 'react-redux'
 import ProductImages from '../components/ProductImages.js';
 import ProductTitle from '../components/ProductTitle.js';
@@ -17,10 +18,26 @@ import ProductDate from '../common/ProductDate.js';
 import { GoodsDetail,AddCollect,CancelCollect } from '../actions/ActionFuncs'
 class ProductDetails extends React.Component {
     componentDidMount(){
-
+        document.title = '商品详情';
+        let _id = this.props.params.DetailId||'1';
+        this.serverRequest = $.ajax({
+            url: 'http://xds.51lianying.local/goods/detail/'+_id,
+            type: 'GET',
+            dataType: 'json',
+            data: {},
+            error:(error)=>{
+                alert('网络错误，页面将刷新重试！');
+                window.location.reload();
+            },
+            success: (data)=>{
+                console.log(data);
+                this.props.dispatch(GoodsDetail(data));
+            }
+        })
+        
     }
-    componentWillMount(){
-
+    componentWillUnmount() {
+        this.serverRequest.abort()
     }
     render() {
         // var _Children = React.Children.map(this.props.children, function(data) {});
@@ -30,14 +47,14 @@ class ProductDetails extends React.Component {
             <div>
                 <div className="main">
                     <div className="main-module">
-                        <ProductImages images={ProductDate.goods_images} />
-                        <ProductTitle title={ProductDate.title} />
-                        <ProductDescription description={ProductDate.Description} />
+                        <ProductImages />
+                        <ProductTitle title={this.props.state.data.title} />
+                        <ProductDescription description={this.props.state.data.description} />
                         <ProductPriceAndFuncs price={price} />
-                        <ProductOriginalPriceAndFee originalprice={originalprice} fare={ProductDate.fare} />
+                        <ProductOriginalPriceAndFee originalprice={originalprice} fare={this.props.state.data.fare} />
                     </div>
                     <ProductSku />
-                    <ProductTabs  />
+                    <ProductTabs data={this.props.state.data} />
                     <Recommend />
                 </div>
                 <ProductDetailFooter />
@@ -47,7 +64,6 @@ class ProductDetails extends React.Component {
     }
 };
 function select(state){
-    console.log(state)
-    return {state:state};
+    return {state:state.GoodsDetail};
 }
 export default connect(select)(ProductDetails);

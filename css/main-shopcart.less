@@ -5,6 +5,7 @@
     .lhpx2rem(83);
     .ftpx2rem(24);
     position: fixed;
+    z-index: 2;
     left: 50%;
     top:0;
     .mglpx2rem(-320);
@@ -36,12 +37,23 @@
         overflow: hidden;
         label{
             display: inline-block;
-            .wpx2rem(30);
-            .hpx2rem(30);
+            .wpx2rem(32);
+            .hpx2rem(32);
             border:1px solid #b3b3b3;
             border-radius: 100%;
+            box-sizing: border-box;
+            overflow: hidden;
             .mgrpx2rem(36);
             input{display: none;}
+            &.checked{
+                border:0;
+                position: relative;
+                z-index: 1;
+                background-image: url(../images/icon_ok_cancle.png);
+                background-repeat: no-repeat;
+                background-size: 100% auto;
+                .bgppx2rem(0,0);
+            }
         }
         img{
             display: block;
@@ -128,7 +140,7 @@
             border:2px solid #848689;
             background-image: url(../images/icon_sp.png);
             background-repeat: no-repeat;
-            background-size: 240% auto;
+            background-size: 2.875rem auto;
         }
         span:first-of-type{
             border-top-left-radius: .15rem;
@@ -211,12 +223,22 @@
         box-sizing: border-box;
         label{
             display: block;
-            .wpx2rem(30);
-            .hpx2rem(30);
+            .wpx2rem(32);
+            .hpx2rem(32);
             .mgtpx2rem(36);
             border-radius:100%;
             border:1px solid #b3b3b3;
+            box-sizing: border-box;
             input{display: none;}
+            &.checked{
+                border:0;
+                position: relative;
+                z-index: 1;
+                background-image: url(../images/icon_ok_cancle.png);
+                background-repeat: no-repeat;
+                background-size: 100% auto;
+                .bgppx2rem(0,0);
+            }
         }
         span{
             .ftpx2rem(30);
@@ -248,7 +270,7 @@
     border-bottom: 1px solid #E7E7E7;
     border-top: 1px solid #E7E7E7;
 }
-.no-list{
+.no-cart-list{
     .hpx2rem(340);
     .mgbpx2rem(20);
     .ftpx2rem(26);

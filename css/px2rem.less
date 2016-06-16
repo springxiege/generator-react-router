@@ -73,3 +73,9 @@
 .tpx2rem(@px){
     top: @px*320/@designWidth/20rem
 }
+.bgspx2rem(@px,auto){
+    background-size: @px*320/@designWidth/20rem auto;
+}
+.bgspx2rem(auto,@px){
+    background-size:auto @px*320/@designWidth/20rem;
+}

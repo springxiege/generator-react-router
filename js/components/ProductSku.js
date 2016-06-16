@@ -9,11 +9,10 @@ import {GoodsSelectedSku,ShowAndHideSelectSku} from '../actions/ActionFuncs'
 class SKU extends Component{
     selectsku(){
         this.props.dispatch(ShowAndHideSelectSku())
-        let _data = this.props.state.GoodsSelectSku
-        this.props.dispatch(GoodsSelectedSku(_data))
+        this.props.dispatch(GoodsSelectedSku())
     }
     render(){
-
+        console.log(this.props.state);
         return (
             <div className="main-module">
                 <div className="main-sku" onClick={e=>this.selectsku(e)}>

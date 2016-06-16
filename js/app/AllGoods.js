@@ -14,7 +14,7 @@ export default class AllGoods extends React.Component {
         return (
             <div>
                 <h2>AllGoods Page ....</h2>
-                <p><Link to="/ProductDetails">商品详情页</Link></p>
+                <p><Link to={`/ProductDetails/1`}>商品详情页</Link></p>
                 <p><Link to="/UserCenter">个人中心</Link></p>
             </div>
         )

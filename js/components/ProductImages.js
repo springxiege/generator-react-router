@@ -26,12 +26,22 @@ class ProductImages extends React.Component {
         )
     }
     componentDidMount() {
-        var mainImages = new Swiper(findDOMNode(this.refs.mainImages), {
-            pagination: findDOMNode(this.refs.mainImagesPage)
+        
+    }
+    componentDidUpdate(prevProps, prevState) {
+        this.mainImages = new Swiper(findDOMNode(this.refs.mainImages), {
+            pagination: findDOMNode(this.refs.mainImagesPage),
+            onInit:()=>{
+                
+            }
         })
+        this.mainImages.update()
+    }
+    componentWillUnmount() {
+        
     }
 };
 function select(state){
-    return {state: state.GoodsDetail.Images};
+    return {state: state.GoodsDetail.data.goods_images};
 }
 export default connect(select)(ProductImages);

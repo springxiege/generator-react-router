@@ -5,8 +5,24 @@ import React from 'react';
 import {connect} from 'react-redux'
 import {GetGoodComment,GetBadComment} from '../actions/ActionFuncs'
 class ProductComment extends React.Component {
-    componentWillMount(){
-        // console.log(this)
+    componentDidMount(){
+        // let _id  = this.props.params.DetailId || '1'
+        // this.serverRequest = $.ajax({
+        //     url: 'http://xds.51lianying.local/goods/comment/'+_id,
+        //     type: 'GET',
+        //     dataType: 'json',
+        //     data: {},
+        //     error:(error)=>{
+
+        //     },
+        //     success:(data)=>{
+        //         console.log(data)
+        //     }
+        // })
+        
+    }
+    componentWillUnmount() {
+          // this.serverRequest.abort()
     }
     _Get_Good_Comment(e){
         if(e.target.className == 'cur'){return false;}

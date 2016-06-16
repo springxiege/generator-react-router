@@ -35,7 +35,7 @@ class CollectList extends Component {
                                 </a>
                             </div>
                             <div className="main-mycollect-footer clearfix">
-                                <span className="fl">已收藏10天</span>
+                                <span className="fl">已收藏{_data.data.data.total}天</span>
                                 <a href="###" className="fr">去购买</a>
                             </div>
                         </div>
@@ -46,7 +46,7 @@ class CollectList extends Component {
         return (
             <div className="main">
                 <div className="main-module-tree main-mycollect-header">
-                    <h3 className="main-collect-title">收藏了<span>10</span>个宝贝</h3>
+                    <h3 className="main-collect-title">收藏了<span>{_data.data.data.total}</span>个宝贝</h3>
                 </div>
                 <div className="main-mycollect">
                     {collectHtml}

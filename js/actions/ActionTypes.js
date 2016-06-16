@@ -2,8 +2,13 @@
  * 商品详情页
  */
 
-export const TRADE = 'TRADE'
+export const REQUEST_GET = 'REQUEST_GET'
 
+export const TRADE = 'TRADE'
+/**
+ * [GOODS_DETAIL description]
+ * @type {String}
+ */
 export const GOODS_DETAIL = 'GOODS_DETAIL'
 // 商品一级规格
 export const GOODS_SELECT_SKU = 'GOODS_SELECT_SKU'
@@ -27,3 +32,18 @@ export const DECREMENT ='DECREMENT'
 export const GET_GOOD_COMMENT = 'GET_GOOD_COMMENT'
 // 获取差评
 export const GET_BAD_COMMENT = 'GET_BAD_COMMENT'
+
+/**
+ * 购物车
+ */
+export const SHOP_CART = 'SHOP_CART'
+
+export const DELETE_SHOP_GOODS = 'DELETE_SHOP_GOODS' 
+
+export const DELETE_CONFIRM = 'DELETE_CONFIRM'
+
+export const DELETE_CANCEL = 'DELETE_CANCEL'
+
+export const SELECT_SHOP_GOODS_SINGLE = 'SELECT_SHOP_GOODS_SINGLE'
+
+export const SELECT_SHOP_GOODS_MULTIPLE = 'SELECT_SHOP_GOODS_MULTIPLE'

@@ -2,11 +2,7 @@
 // 详情页底部
 import React from 'react';
 import {
-    Router,
-    Route,
     Link,
-    hashHistory,
-    IndexRoute
 } from 'react-router';
 export default class ProductDetailFooter extends React.Component {
     render() {
