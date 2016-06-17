@@ -55,23 +55,35 @@ export function CancelCollect(id){
 export function Increment(id){
     return {type:types.INCREMENT,id}
 }
+export function countIncrement(){
+    return {type:types.COUNT_INCREMENT}
+}
 /**
  * 数量减少
  */
 export function Decrement(id){
     return {type:types.DECREMENT,id}
 }
+export function countDecrement(){
+    return {type:types.COUNT_DECREMENT}
+}
+/**
+ * 获取评论列表
+ */
+export function GetComment(data){
+    return {type:types.GET_COMMENT,data}
+}
 /**
  * 获取好评
  */
-export function GetGoodComment(){
-    return {type:types.GET_GOOD_COMMENT}
+export function GetGoodComment(data){
+    return {type:types.GET_GOOD_COMMENT,data}
 }
 /**
  * 获取差评
  */
-export function GetBadComment(){
-    return {type:types.GET_BAD_COMMENT}
+export function GetBadComment(data){
+    return {type:types.GET_BAD_COMMENT,data}
 }
 
 /**

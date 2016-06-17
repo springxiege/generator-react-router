@@ -12,9 +12,21 @@ import '../plugins/swiper/swiper.min.css';
 class ProductImages extends React.Component {
 
     render() {
-        var items = this.props.state;
-        var html = React.Children.map(items,function(item, index){
-            return (<li className="swiper-slide"><img src={item} width="100%" alt={index} /></li>);
+        let items = this.props.state;
+        // 处理数据[过滤掉空数据]
+        let arr = []
+        for (let i = 0; i < items.length; i++) {
+            let v = items[i]
+            if(v!=""){
+                arr.push(v)
+            }
+        }
+        // 从过滤后的数据中循环出html
+        let html = React.Children.map(arr,function(item, index){
+
+            return (
+                <li className="swiper-slide" key={index}><img src={item} width="100%" alt={index} /></li>
+            );
         });
         return (
             <div className="main-images swiper-container" ref="mainImages">
@@ -30,10 +42,7 @@ class ProductImages extends React.Component {
     }
     componentDidUpdate(prevProps, prevState) {
         this.mainImages = new Swiper(findDOMNode(this.refs.mainImages), {
-            pagination: findDOMNode(this.refs.mainImagesPage),
-            onInit:()=>{
-                
-            }
+            pagination: findDOMNode(this.refs.mainImagesPage)
         })
         this.mainImages.update()
     }

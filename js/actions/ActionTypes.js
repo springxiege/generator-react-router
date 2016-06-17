@@ -26,8 +26,12 @@ export const CANCEL_COLLECT = 'CANCEL_COLLECT'
 export const REFRESHRECOMMEND = 'REFRESHRECOMMEND'
 // 添加购买数量
 export const INCREMENT = 'INCREMENT'
+export const COUNT_INCREMENT = 'COUNT_INCREMENT'
 // 减少购买数量
 export const DECREMENT ='DECREMENT'
+export const COUNT_DECREMENT = 'COUNT_DECREMENT'
+// 获取所有评论
+export const GET_COMMENT = 'GET_COMMENT'
 // 获取好评
 export const GET_GOOD_COMMENT = 'GET_GOOD_COMMENT'
 // 获取差评

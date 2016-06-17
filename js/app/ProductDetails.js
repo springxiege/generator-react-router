@@ -30,7 +30,6 @@ class ProductDetails extends React.Component {
                 window.location.reload();
             },
             success: (data)=>{
-                console.log(data);
                 this.props.dispatch(GoodsDetail(data));
             }
         })

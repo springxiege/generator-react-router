@@ -3,45 +3,80 @@
 import '../../css/main-comment.css'
 import React from 'react';
 import {connect} from 'react-redux'
-import {GetGoodComment,GetBadComment} from '../actions/ActionFuncs'
+import {GetComment,GetGoodComment,GetBadComment} from '../actions/ActionFuncs'
 class ProductComment extends React.Component {
     componentDidMount(){
-        // let _id  = this.props.params.DetailId || '1'
-        // this.serverRequest = $.ajax({
-        //     url: 'http://xds.51lianying.local/goods/comment/'+_id,
-        //     type: 'GET',
-        //     dataType: 'json',
-        //     data: {},
-        //     error:(error)=>{
-
-        //     },
-        //     success:(data)=>{
-        //         console.log(data)
-        //     }
-        // })
         
     }
     componentWillUnmount() {
-          // this.serverRequest.abort()
+          
     }
     _Get_Good_Comment(e){
         if(e.target.className == 'cur'){return false;}
-        this.props.dispatch(GetGoodComment())
+        let _id  = this.props.state.id || '1'
+        $.ajax({
+            url: 'http://xds.51lianying.local/goods/comment/'+_id+'?summary=1',
+            type: 'GET',
+            dataType: 'json',
+            data: {},
+            error:(error)=>{
+
+            },
+            success:(data)=>{
+                console.log(data)
+                if(parseInt(data.code)==0){
+                    this.props.dispatch(GetGoodComment(data))
+                }
+            }
+        })
+        
+        
     }
     _Get_Bad_Comment(e){
         if(e.target.className == 'cur'){return false;}
-        this.props.dispatch(GetBadComment())
+        let _id  = this.props.state.id || '1'
+        $.ajax({
+            url: 'http://xds.51lianying.local/goods/comment/'+_id+'?summary=2',
+            type: 'GET',
+            dataType: 'json',
+            data: {},
+            error:(error)=>{
+
+            },
+            success:(data)=>{
+                console.log(data)
+                if(parseInt(data.code)==0){
+                    this.props.dispatch(GetBadComment(data))
+                }
+            }
+        })
     }
     render() {
-        let _status = this.props.state.status
-        let _li = this.props.state.data[_status].map(function(item,index){
+        let state = this.props.state
+        let _status = state.status
+        let data = null
+        switch (parseInt(_status)){
+            case 0:
+                data = state.good_list
+                break;
+            case 1:
+                data = state.bad_list
+                break;
+            case 2:
+                data = state.list
+                break;
+        }
+        console.log(state)
+        console.log(data)
+        let _li = !data.data.data.length ? "" : data.data.data.map((item,index)=>{
             let _clsName = 'coment-stars stars'+item.comment_start
+            let buy = item.buy
             return (
                 <div className="coment-list" key={index}>
                     <div className="coment-header clearfix">
-                        <img src={item.user_image} alt="用户头像" className="fl" />
-                        <span className="coment-user fl">{item.user_name}</span>
-                        <span className="coment-time fr">{item.updated_at}</span>
+                        <img src={buy.headimgurl} alt={buy.id} className="fl" />
+                        <span className="coment-user fl">{buy.name}</span>
+                        <span className="coment-time fr">{item.created_at}</span>
                     </div>
                     <div className="coment-star">
                         <span className={_clsName}></span>
