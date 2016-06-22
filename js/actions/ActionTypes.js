@@ -18,6 +18,8 @@ export const GOODS_SELECT_SKU_SUB = 'GOODS_SELECT_SKU_SUB'
 export const GOODS_SELECTED_SKU = 'GOODS_SELECTED_SKU'
 // 显示隐藏商品规格
 export const SHOW_HIDE_SELECT_SKU = 'SHOW_HIDE_SELECT_SKU'
+// 收藏列表
+export const COLLECT_LIST = 'COLLECT_LIST'
 // 添加收藏
 export const ADD_COLLECT = 'ADD_COLLECT'
 // 取消收藏
@@ -51,3 +53,31 @@ export const DELETE_CANCEL = 'DELETE_CANCEL'
 export const SELECT_SHOP_GOODS_SINGLE = 'SELECT_SHOP_GOODS_SINGLE'
 
 export const SELECT_SHOP_GOODS_MULTIPLE = 'SELECT_SHOP_GOODS_MULTIPLE'
+/**
+ * 地址库
+ */
+export const ADDRESS = 'ADDRESS'
+
+export const ADDRESS_ADD = 'ADDRESS_ADD'
+
+export const ADDRESS_EDIT = 'ADDRESS_EDIT'
+
+export const ADDRESS_DELETE = 'ADDRESS_DELETE'
+
+export const ADDRESS_SELECT = 'ADDRESS_SELECT'
+
+export const ADDRESS_DEFAULT = 'ADDRESS_DEFAULT'
+
+export const ADDRESS_DELETE_UPDATE = 'ADDRESS_DELETE_UPDATE'
+
+export const ADDRESS_EDIT_DEFAULT = 'ADDRESS_EDIT_DEFAULT'
+
+
+
+
+
+
+
+
+
+

@@ -13,6 +13,12 @@
 .hpx2rem(@px){
     height:@px*320/@designWidth/20rem;
 }
+.minhpx2rem(@px){
+    min-height:@px*320/@designWidth/20rem;
+}
+.maxhpx2rem(@px){
+    max-height:@px*320/@designWidth/20rem;
+}
 .lhpx2rem(@px){
     line-height:@px*320/@designWidth/20rem;
 }
@@ -73,9 +79,18 @@
 .tpx2rem(@px){
     top: @px*320/@designWidth/20rem
 }
-.bgspx2rem(@px,auto){
-    background-size: @px*320/@designWidth/20rem auto;
+.bbpx2rem(@px,@solid,@color){
+    border-bottom: @px*320/@designWidth/20rem @solid @color;
 }
-.bgspx2rem(auto,@px){
-    background-size:auto @px*320/@designWidth/20rem;
+.btpx2rem(@px,@solid,@color){
+    border-top: @px*320/@designWidth/20rem @solid @color;
+}
+.blpx2rem(@px,@solid,@color){
+    border-left: @px*320/@designWidth/20rem @solid @color;
+}
+.brpx2rem(@px,@solid,@color){
+    border-right: @px*320/@designWidth/20rem @solid @color;
+}
+.bpx2rem(@px,@solid,@color){
+    border: @px*320/@designWidth/20rem @solid @color;
 }

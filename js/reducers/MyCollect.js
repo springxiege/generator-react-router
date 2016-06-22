@@ -1,12 +1,27 @@
 /**
  * 商品收藏
  */
-import { ADD_COLLECT,CANCEL_COLLECT } from '../actions/ActionTypes'
-import CollectDate from '../common/CollectDate'
+import { 
+    COLLECT_LIST,
+    ADD_COLLECT,
+    CANCEL_COLLECT 
+} from '../actions/ActionTypes'
 
-const initialState = CollectDate
+const initialState = {
+    data:{
+        data:[]
+    }
+}
+
 export default function Collect(state = initialState,action){
+    let _data = {}
     switch (action.type) {
+        case COLLECT_LIST:
+            _data = Object.assign({},state.data,action.data)
+            return Object.assign({},state,{
+                data:_data
+            })
+            break;
         case ADD_COLLECT:
             return Object.assign({},state,{
                 status:1,

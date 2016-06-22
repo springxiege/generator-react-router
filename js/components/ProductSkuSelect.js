@@ -29,10 +29,15 @@ class ProductSkuSelect extends React.Component {
         })
 
     }
+    // 规格二选择
     _subhandleClick(e){
         let index = e.target.getAttribute('data-index')
         let clsName = e.target.className
         if(clsName=='cur'){return false;}
+        if(this.props.state.GoodsSelectSku.selected === null){
+            alert('请先选择规格一')
+            return false;
+        }
         this.props.dispatch(GoodsSelectSkuSub(index))
         setTimeout(()=>{
             this.props.dispatch(GoodsSelectedSku())

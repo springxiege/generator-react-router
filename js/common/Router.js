@@ -6,7 +6,7 @@ import '../plugins/hotcss/hotcss.js';
 import routes from './routers.config'
 import React from "react";
 import ReactDOM from 'react-dom';
-import {Router,Route,Link,hashHistory,IndexRoute} from 'react-router';
+import {Router,Route,Link,hashHistory,IndexRoute,History} from 'react-router';
 import {createStore, combineReducers, applyMiddleware, compose } from 'redux'
 import { Provider, connect } from 'react-redux'
 import { createHistory } from 'history';

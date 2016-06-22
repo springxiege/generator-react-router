@@ -1,4 +1,3 @@
-import $ from 'jquery'
 import {
     GOODS_DETAIL,
     GOODS_SELECT_SKU,
@@ -94,7 +93,7 @@ export default function GoodsDetail(state = initialState, action) {
                 GoodsSelectSku: _tempObj,
                 CommentList:{
                     status: 2,
-                    id: action.data.id,
+                    id: action.data.data.id,
                     list:{data:{data:[]}},
                     good_list:{data:{data:[]}},
                     bad_list:{data:{data:[]}}
@@ -116,6 +115,7 @@ export default function GoodsDetail(state = initialState, action) {
         case GOODS_SELECT_SKU_SUB: // 选择规格二
             _tempObj = Object.assign({}, state.GoodsSelectSku, {
                 subselected: action.index,
+                price:state.data.goods_addon[state.GoodsSelectSku.selected].addon[action.index].goods_price,
                 originalprice:state.data.goods_addon[state.GoodsSelectSku.selected].addon[action.index].goods_price,
                 count:1
             })
@@ -156,7 +156,7 @@ export default function GoodsDetail(state = initialState, action) {
         case COUNT_INCREMENT: // 添加商品数量
             _tempObj = Object.assign({},state.GoodsSelectSku,{
                 count:++state.GoodsSelectSku.count,
-                price: state.GoodsSelectSku.originalprice*state.GoodsSelectSku.count
+                price: (state.GoodsSelectSku.originalprice*state.GoodsSelectSku.count).toFixed(2)
             })
             return Object.assign({}, state, {
                 GoodsSelectSku:_tempObj
@@ -165,7 +165,7 @@ export default function GoodsDetail(state = initialState, action) {
         case COUNT_DECREMENT: // 减少商品数量
             _tempObj = Object.assign({},state.GoodsSelectSku,{
                 count:--state.GoodsSelectSku.count,
-                price: state.GoodsSelectSku.originalprice*state.GoodsSelectSku.count
+                price: (state.GoodsSelectSku.originalprice*state.GoodsSelectSku.count).toFixed(2)
             })
             return Object.assign({}, state, {
                 GoodsSelectSku:_tempObj

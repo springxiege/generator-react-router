@@ -25,8 +25,9 @@ class ProductTabs extends React.Component {
             paginationClickable: true,
             bulletClass: "tab",
             bulletActiveClass: "cur",
-            paginationBulletRender: function(index, clsName) {
-                var _name, _comment_count = 1990;
+            paginationBulletRender:(index, clsName)=>{
+                console.log(clsName)
+                let _name, _comment_count = this.props.state.data.coumt_commet.count;
                 switch (index) {
                     case 0:
                         _name = "商品详情";
@@ -51,14 +52,16 @@ class ProductTabs extends React.Component {
                         url: 'http://xds.51lianying.local/goods/comment/'+_id,
                         type: 'GET',
                         dataType: 'json',
-                        data: {param1: 'value1'},
+                        data: {},
                         error:(error)=>{
                             console.error(error)
                         },
                         success:(data)=>{
                             if(parseInt(data.code)==0){
                                 this.props.dispatch(GetComment(data))
-                                swiper.update();
+                                setTimeout(()=>{
+                                    swiper.update();
+                                })
                             }
                         }
                     })
