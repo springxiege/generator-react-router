@@ -1,0 +1,109 @@
+@import url('./px2rem.less');
+.settings-header{
+    .hpx2rem(120);
+    .pdtpx2rem(30);
+    .pdbpx2rem(30);
+    .pdlpx2rem(30);
+    .mgbpx2rem(30);
+    background-color: #FA462F;
+}
+.settings-img{
+    .wpx2rem(110);
+    .hpx2rem(110);
+    .bopx2rem(5,solid,#fff);
+    position: relative;
+    z-index: 1;
+    border-radius: 100%;
+    img{
+        display: block;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        border-radius:100%;
+    }
+    input{
+        display: block;
+        position: absolute;
+        z-index: 3;
+        width: 100%;
+        height: 100%;
+        border-radius:100%;
+        opacity: 0;
+    }
+}
+.settings-name{
+    .pdlpx2rem(150);
+    .pdtpx2rem(26);
+    color:#fff;
+    h2{
+        .ftpx2rem(26);
+        .hpx2rem(40);
+        .lhpx2rem(40);
+        overflow: hidden;
+        a{
+            color:#fff601;
+            text-decoration: underline;
+            .mglpx2rem(30);
+        }
+    }
+    p{
+        .ftpx2rem(18);
+        .hpx2rem(28);
+        .lhpx2rem(28);
+    }
+}
+.settings{
+    display: block;
+    .pdlpx2rem(30);
+    .pdrpx2rem(30);
+    li{
+        display: block;
+        .hpx2rem(100);
+        .lhpx2rem(100);
+        .ftpx2rem(30);
+        position: relative;
+        z-index: 1;
+        &:not(:last-of-type){
+            border-bottom: 1px solid #E7E7E7;
+        }
+        a{
+            display: block;
+            color:#414141;
+        }
+        b{
+            .ftpx2rem(26);
+            font-weight: normal;
+            color:#bebebe;
+        }
+        span{
+            color:#999;
+            float: right;
+            .mgrpx2rem(45);
+            &.change{
+                color:#3d91ef;
+            }
+        }
+        &::before,&::after{
+            content:'';
+            border: .3rem solid transparent;
+            border-left: .3rem solid #fff;
+            width: 0;
+            height: 0;
+            position: absolute;
+            .tpx2rem(38);
+            .rpx2rem(0)
+        }
+        &::before{
+            border-left-color: #aaa;
+            .rpx2rem(-3);
+        }
+    }
+}
+.settings-notes{
+    .ftpx2rem(26);
+    .pdpx2rem(30,20,30,20);
+    background-color: #F2F3F5;
+    color: #b4b4b4;
+}

@@ -30,3 +30,13 @@ input::-webkit-inner-spin-button {
     -webkit-appearance: none !important;
     margin: 0;
 }
+.pdb0{
+    padding-bottom: 0 !important;
+}
+.pdt15{
+    padding-top: .375rem !important;
+}
+.mgt20{
+    margin-top: .5rem !important;
+}
+.bbn{border-bottom: 0 !important;}
