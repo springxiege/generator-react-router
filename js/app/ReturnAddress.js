@@ -2,15 +2,15 @@ import '../../css/main-address.css'
 import React,{Component} from 'react'
 import {connect} from 'react-redux'
 import {
-    Address,
-    AddressAdd,
-    AddressEdit,
-    AddressDelete,
-    AddressSelect,
-    AddressDefault,
-    AddressDeleteUpdate
+    ReturnAddress,
+    ReturnAddressAdd,
+    ReturnAddressEdit,
+    ReturnAddressDelete,
+    ReturnAddressSelect,
+    ReturnAddressDefault,
+    ReturnAddressDeleteUpdate
 } from '../actions/ActionFuncs'
-class AddressList extends Component {
+class ReturnAddressList extends Component {
     getHTML(data){
         let _HTML = 'address list page is loading...';
         if(data === null || data === undefined){
@@ -24,12 +24,12 @@ class AddressList extends Component {
                             <div className="address-con">
                                 <label className={item.selected == 1 ? "checked" : ""}>
                                     <input type="radio" name="address" id={item.id} onChange={e=>this.SelectAddress(e,item.id)} />
-                                    <h2>{item.name}　{item.tel}</h2>
+                                    <h2>{item.addressee}　{item.tel}</h2>
                                     <p>{item.address}</p>
                                 </label>
                             </div>
                             <div className="address-edit">
-                                <span className={item.is_default == 1 ? "default" : ""} onClick={e=>this.setDefault(e,item.id)}>{item.is_default == 1 ? "默认地址" : "设为默认"}</span>
+                                <span></span>
                                 <span data-id={item.id} onClick={e=>this.Delete(e,item.id)}>删除</span>
                                 <span data-id={item.id} onClick={e=>this.Edit(e,item.id)}>编辑</span>
                             </div>
@@ -38,60 +38,30 @@ class AddressList extends Component {
                 )
             })
         }else{
-            window.location.hash = '#AddressAdd'
+            window.location.hash = '#ReturnAddressAdd'
         }
         return _HTML;
     }
     // 添加地址
     AddressAdd(e){
-        window.location.hash = '#/AddressAdd'
+        window.location.hash = '#/ReturnAddressAdd'
     }
     // 选择地址
     SelectAddress(e,id){
-        this.props.dispatch(AddressSelect(id))
-    }
-    // 设置默认
-    setDefault(e,id){
-        let obj = {}
-        let _data = this.props.state.data
-        for (let i = 0; i < _data.length; i++) {
-            let item = _data[i]
-            if(parseInt(item.id) == parseInt(id)){
-                obj = Object.assign({},item,{
-                    _method:'PUT',
-                    is_default:1
-                })
-                break;
-            }
-        }
-        $.ajax({
-            url: config.url + '/user/address/'+id,
-            type: 'POST',
-            dataType: 'json',
-            data: obj,
-            error:(error)=>{
-                console.error(error)
-            },
-            success:(data)=>{
-                if(parseInt(data.code)==0){
-                    this.props.dispatch(AddressDefault(id))
-                }
-            }
-        })
-        
+        this.props.dispatch(ReturnAddressSelect(id))
     }
     // 删除
     Delete(e,id){
-        this.props.dispatch(AddressDelete(id))
+        this.props.dispatch(ReturnAddressDelete(id))
     }
     // 取消删除
     Cancel(e){
-        this.props.dispatch(AddressDelete())
+        this.props.dispatch(ReturnAddressDelete())
     }
     // 确认删除
     Confirm(e,id){
         $.ajax({
-            url: config.url + '/user/address/' + id,
+            url: config.url + '/user/returns/' + id,
             type: 'POST',
             dataType: 'json',
             data: {
@@ -102,7 +72,7 @@ class AddressList extends Component {
             },
             success:(data)=>{
                 if(parseInt(data.code)==0){
-                    this.props.dispatch(AddressDeleteUpdate(id))
+                    this.props.dispatch(ReturnAddressDeleteUpdate(id))
                 }
             }
         })
@@ -114,11 +84,11 @@ class AddressList extends Component {
     }
     // 编辑
     Edit(e,id){
-        window.location.hash = '#/AddressEdit/'+id
+        window.location.hash = '#/ReturnAddressEdit/'+id
     }
     componentDidMount(){
         this.serverRequest = $.ajax({
-            url: config.url + '/user/address',   
+            url: config.url + '/user/returns',   
             type: 'GET',
             dataType: 'json',
             data: {},
@@ -130,7 +100,7 @@ class AddressList extends Component {
             },
             success:(data)=>{
                 if(parseInt(data.code) == 0){
-                    this.props.dispatch(Address(data.data))
+                    this.props.dispatch(ReturnAddress(data.data))
                 }
             }
         })
@@ -162,6 +132,6 @@ class AddressList extends Component {
     }
 }
 function select(state){
-    return {state:state.Address};
+    return {state:state.ReturnAddress};
 }
-export default connect(select)(AddressList);
+export default connect(select)(ReturnAddressList);

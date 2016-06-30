@@ -35,7 +35,7 @@ class ShopCartList extends Component {
     deleteConfirm(){
         let _id = this.props.state.delete_id
         $.ajax({
-            url: 'http://xds.51lianying.local/goods/cart/'+_id,
+            url: config.url + '/goods/cart/'+_id,
             type: 'POST',
             dataType: 'json',
             data: {_method: 'delete'},

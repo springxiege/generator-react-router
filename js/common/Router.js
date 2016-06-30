@@ -14,9 +14,7 @@ import { reduxReactRouter, routerStateReducer, ReduxRouter,pushState } from 'red
 import trade from '../reducers/index'
 let store = createStore(trade);
 ReactDOM.render(
-    <div>
-        <Provider store={store}>
-            <Router history={hashHistory} routes={routes} />
-        </Provider>
-    </div>,
+    <Provider store={store}>
+        <Router history={hashHistory} routes={routes} />
+    </Provider>,
     document.getElementById('app'));

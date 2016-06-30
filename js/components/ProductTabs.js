@@ -26,7 +26,6 @@ class ProductTabs extends React.Component {
             bulletClass: "tab",
             bulletActiveClass: "cur",
             paginationBulletRender:(index, clsName)=>{
-                console.log(clsName)
                 let _name, _comment_count = this.props.state.data.coumt_commet.count;
                 switch (index) {
                     case 0:
@@ -49,7 +48,7 @@ class ProductTabs extends React.Component {
                     let length = this.props.state.CommentList.list.data.data.length
                     if(length){return false;}
                     $.ajax({
-                        url: 'http://xds.51lianying.local/goods/comment/'+_id,
+                        url: config.url + '/goods/comment/'+_id,
                         type: 'GET',
                         dataType: 'json',
                         data: {},
@@ -76,7 +75,11 @@ class ProductTabs extends React.Component {
             <div className="main-module">
                 <div className="main-detailtab">
                     <div className="main-tab">
-                        <ul className="main-tab-page clearfix" ref="productTabsPage"></ul>
+                        <ul className="main-tab-page clearfix" ref="productTabsPage">
+                            <li className="tab">商品详情</li>
+                            <li className="tab">产品售后</li>
+                            <li className="tab">评价<span>222</span></li>
+                        </ul>
                     </div>
                     <div className="main-product-content swiper-container" ref="productTabs">
                         <div className="main-product-wrapper swiper-wrapper">

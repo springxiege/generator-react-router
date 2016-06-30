@@ -7,7 +7,7 @@ import {getCollectList,CancelCollect} from '../actions/ActionFuncs'
 class CollectList extends Component {
     componentDidMount(){
         this.serverRequest = $.ajax({
-            url: 'http://xds.51lianying.local/goods/collect',
+            url: config.url + '/goods/collect',
             type: 'GET',
             dataType: 'json',
             data: {},
@@ -26,7 +26,7 @@ class CollectList extends Component {
     cancelCollect(e,id){
         console.log(id)
         $.ajax({
-            url: 'http://xds.51lianying.local/goods/collect/'+id,
+            url: config.url + '/goods/collect/'+id,
             type: 'POST',
             dataType: 'json',
             data: {

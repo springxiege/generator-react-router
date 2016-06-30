@@ -176,3 +176,51 @@ export function AddressDeleteUpdate(data){
 export function AddressEditDefault(data){
     return {type:types.ADDRESS_EDIT_DEFAULT,data}
 }
+/**
+ * 退换货地址库 [初始化数据]
+ */
+export function ReturnAddress(data){
+    return {type:types.RETURN_ADDRESS,data}
+}
+/**
+ * 添加地址
+ */
+export function ReturnAddressAdd(data){
+    return {type:types.RETURN_ADDRESS_ADD,data}
+}
+/**
+ * 编辑地址
+ */
+export function ReturnEditAddress(data){
+    return {type:types.RETURN_ADDRESS_EDIT,data}
+}
+/**
+ * 删除地址
+ */
+export function ReturnAddressDelete(data){
+    return {type:types.RETURN_ADDRESS_DELETE,data}
+}
+/**
+ * 选择地址
+ */
+export function ReturnAddressSelect(data){
+    return {type:types.RETURN_ADDRESS_SELECT,data}
+}
+/**
+ * 设为默认地址
+ */
+export function ReturnAddressDefault(data){
+    return {type:types.RETURN_ADDRESS_DEFAULT,data}
+}
+/**
+ * 删除后更新数据
+ */
+export function ReturnAddressDeleteUpdate(data){
+    return {type:types.RETURN_ADDRESS_DELETE_UPDATE,data}
+}
+/**
+ * 
+ */
+export function ReturnAddressEditDefault(data){
+    return {type:types.RETURN_ADDRESS_EDIT_DEFAULT,data}
+}

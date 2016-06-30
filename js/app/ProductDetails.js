@@ -1,6 +1,5 @@
 'use strict';
 // 详情页  page
-import $ from 'jquery'
 import React from 'react';
 import ReactDOM from 'react-dom'
 import { Provider, connect } from 'react-redux'
@@ -21,7 +20,7 @@ class ProductDetails extends React.Component {
         document.title = '商品详情';
         let _id = this.props.params.DetailId||'1';
         this.serverRequest = $.ajax({
-            url: 'http://xds.51lianying.local/goods/detail/'+_id,
+            url: config.url + '/goods/detail/'+_id,
             type: 'GET',
             dataType: 'json',
             data: {},

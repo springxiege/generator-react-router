@@ -39,7 +39,7 @@ class AddressList extends Component {
     }
     componentDidMount(){
         this.serverRequest = $.ajax({
-            url: 'http://xds.51lianying.local/user/address',   
+            url: config.url + '/user/address',   
             type: 'GET',
             dataType: 'json',
             data: {},

@@ -1,7 +1,6 @@
 'use strict';
 // SKU 属性选择
 import '../../css/main-sku.css'
-import $ from 'jquery'
 import React from 'react';
 import {connect} from 'react-redux'
 import { 
@@ -76,7 +75,7 @@ class ProductSkuSelect extends React.Component {
         goods_id = state.data.goods_addon[selected].goods_id
         addon_id = state.data.goods_addon[selected].addon[subselected].id
         $.ajax({
-            url: 'http://xds.51lianying.local/goods/cart',
+            url: config.url + '/goods/cart',
             type: 'POST',
             dataType: 'json',
             data: {

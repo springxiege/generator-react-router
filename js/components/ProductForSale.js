@@ -6,7 +6,7 @@ import {connect} from 'react-redux'
 class ProductForSale extends React.Component {
     render() {
         return (
-            <div className="main-product-sale swiper-slide">
+            <div className="main-product-sale swiper-slide swiper-no-swiping">
                 <div className="main-table">
                     <h4>基本参数</h4>
                     <div className="main-table-body">

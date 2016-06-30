@@ -15,7 +15,7 @@ class ProductComment extends React.Component {
         if(e.target.className == 'cur'){return false;}
         let _id  = this.props.state.id || '1'
         $.ajax({
-            url: 'http://xds.51lianying.local/goods/comment/'+_id+'?summary=1',
+            url: config.url + '/goods/comment/'+_id+'?summary=1',
             type: 'GET',
             dataType: 'json',
             data: {},
@@ -23,7 +23,6 @@ class ProductComment extends React.Component {
 
             },
             success:(data)=>{
-                console.log(data)
                 if(parseInt(data.code)==0){
                     this.props.dispatch(GetGoodComment(data))
                 }
@@ -36,7 +35,7 @@ class ProductComment extends React.Component {
         if(e.target.className == 'cur'){return false;}
         let _id  = this.props.state.id || '1'
         $.ajax({
-            url: 'http://xds.51lianying.local/goods/comment/'+_id+'?summary=2',
+            url: config.url + '/goods/comment/'+_id+'?summary=2',
             type: 'GET',
             dataType: 'json',
             data: {},
@@ -44,7 +43,6 @@ class ProductComment extends React.Component {
 
             },
             success:(data)=>{
-                console.log(data)
                 if(parseInt(data.code)==0){
                     this.props.dispatch(GetBadComment(data))
                 }
@@ -66,8 +64,6 @@ class ProductComment extends React.Component {
                 data = state.list
                 break;
         }
-        console.log(state)
-        console.log(data)
         let _li = !data.data.data.length ? "" : data.data.data.map((item,index)=>{
             let _clsName = 'coment-stars stars'+item.comment_start
             let buy = item.buy
@@ -90,7 +86,7 @@ class ProductComment extends React.Component {
             )
         })
         return (
-            <div className="main-product-comment swiper-slide">
+            <div className="main-product-comment swiper-slide swiper-no-swiping">
                 <div className="coment-tab">
                     <ul>
                         <li className={_status==0?"cur":""} onClick={e => this._Get_Good_Comment(e)}>好评<span>(12306)</span></li>

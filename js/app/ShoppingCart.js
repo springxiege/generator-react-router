@@ -4,7 +4,6 @@
 
 'use strict';
 import React from 'react'
-import $ from 'jquery'
 import { connect } from 'react-redux'
 import ShopCartList from '../components/ShopCartList'
 import { 
@@ -15,7 +14,7 @@ class ShoppingCart extends React.Component {
     componentDidMount() {
         document.title = '购物车';
         this.serverRequest = $.ajax({
-            url: 'http://xds.51lianying.local/goods/cart',
+            url: config.url + '/goods/cart',
             type: 'GET',
             dataType: 'json',
             data: {},
