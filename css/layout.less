@@ -59,9 +59,11 @@ footer{
     box-sizing: border-box;
 }
 .main-footer-btn a{
+    display: block;
     color:#fff;
+    overflow: hidden;
 }
-.main-footer-btn::before{
+.main-footer-btn a::before{
     display: block;
     width:1rem;
     height:1rem;
@@ -81,18 +83,18 @@ footer{
 .main-buy-now::before{
     display: none;
 }
-.main-footer-icon::before{
+.main-footer-icon a::before{
     background-image: url(../images/icon_product_footer.png);
     background-repeat: no-repeat;
     background-size: 180% auto;
 }
-.main-footer-btn:first-of-type::before{
+.main-footer-btn:first-of-type a::before{
     background-position: -0.4rem -0.3rem;
 }
-.main-footer-btn:nth-of-type(2)::before{
+.main-footer-btn:nth-of-type(2) a::before{
     background-position: -0.4rem -1.675rem;
 }
-.main-footer-btn:nth-of-type(3)::before{
+.main-footer-btn:nth-of-type(3) a::before{
     background-position: -0.4rem -2.775rem;
 }
 @media (min-width: 640px) {
