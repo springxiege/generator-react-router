@@ -11,7 +11,8 @@ import {
     COUNT_DECREMENT,
     GET_COMMENT,
     GET_GOOD_COMMENT,
-    GET_BAD_COMMENT
+    GET_BAD_COMMENT,
+    GO_TO_BUY
 } from '../actions/ActionTypes'
 import commentDate from '../common/commentDate'
 // 处理数据分发到每个模块
@@ -32,13 +33,21 @@ const GoodsSelectSku = {
     price: 0,
     originalprice: 0
 }
-
+const gotoBuy = {
+    id:0,
+    title:'',
+    count:0,
+    selected:null,
+    subselected:null
+}
 const initialState = {
+    userId:1,
     Collect: 0,
     CommentList: CommentList,
     GoodsSelectSku: GoodsSelectSku,
     SelectedSku: '选择：规格分类',
     activity_ids: [],
+    gotoBuy:gotoBuy,
     data: {
         "title": "1",
         "snum": "1",
@@ -76,7 +85,6 @@ const initialState = {
         }]
     }
 }
-
 export default function GoodsDetail(state = initialState, action) {
     let _originalprice = 0
     let _count         = 1
@@ -89,15 +97,17 @@ export default function GoodsDetail(state = initialState, action) {
             _tempObj = Object.assign({}, state.GoodsSelectSku, {
                 price: 0
             })
-            return Object.assign({}, state, action.data, {
+            return Object.assign({}, state, {
+                userId:action.data.user_id,
                 GoodsSelectSku: _tempObj,
                 CommentList:{
                     status: 2,
-                    id: action.data.data.id,
+                    id: action.data.id,
                     list:{data:{data:[]}},
                     good_list:{data:{data:[]}},
                     bad_list:{data:{data:[]}}
-                }
+                },
+                data:action.data
             })
             break;
         case GOODS_SELECT_SKU: //选择规格一
@@ -200,6 +210,12 @@ export default function GoodsDetail(state = initialState, action) {
             })
             return Object.assign({}, state, {
                 CommentList:_tempObj
+            })
+            break;
+        case GO_TO_BUY:
+            _tempObj = Object.assign({},state.gotoBuy,action.data)
+            return Object.assign({},state,{
+                gotoBuy:_tempObj
             })
             break;
         default:

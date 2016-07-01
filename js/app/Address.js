@@ -38,7 +38,7 @@ class AddressList extends Component {
                 )
             })
         }else{
-            window.location.hash = '#AddressAdd'
+            window.location.hash = '#/AddressAdd'
         }
         return _HTML;
     }

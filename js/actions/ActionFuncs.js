@@ -74,6 +74,12 @@ export function countDecrement(){
     return {type:types.COUNT_DECREMENT}
 }
 /**
+ * 立即购买
+ */
+export function gotoBuy(data){
+    return {type:types.GO_TO_BUY,data}
+}
+/**
  * 获取评论列表
  */
 export function GetComment(data){
@@ -223,4 +229,10 @@ export function ReturnAddressDeleteUpdate(data){
  */
 export function ReturnAddressEditDefault(data){
     return {type:types.RETURN_ADDRESS_EDIT_DEFAULT,data}
+}
+/**
+ * 全部商品列表
+ */
+export function getGoodsList(data){
+    return {type:types.GOODSLIST,data}
 }

@@ -10,7 +10,9 @@ import ReturnAddress from '../app/ReturnAddress'            //退换货地址列
 import ReturnAddressAdd from '../app/ReturnAddressAdd'      //添加退换货地址
 import ReturnAddressEdit from '../app/ReturnAddressEdit'    //编辑退换货地址
 import Settings from '../app/Settings'                      //个人设置
-import BindCashAccount from '../app/BindCashAccount'             //绑定银行卡
+import BindCashAccount from '../app/BindCashAccount'        //绑定银行卡
+import BuyList from '../app/BuyList'                        //购买页面
+import Buy from '../app/Buy'                                //合并付款页面
 export default {
     component: 'div',
     childRoutes: [{
@@ -26,7 +28,7 @@ export default {
         component: UserCenter
     },
     {
-        path: "/allgoods",
+        path: "/allgoods/:userId",
         component: AllGoods
     },
     {
@@ -64,6 +66,14 @@ export default {
     {
         path:"/Settings",
         component:Settings
+    },
+    {
+        path:"/BuyList/:buyId",
+        component:BuyList
+    },
+    {
+        path:"/Buy",
+        component:Buy
     },
     {
         path:"/BindCashAccount",

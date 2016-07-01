@@ -38,6 +38,8 @@ export const GET_COMMENT = 'GET_COMMENT'
 export const GET_GOOD_COMMENT = 'GET_GOOD_COMMENT'
 // 获取差评
 export const GET_BAD_COMMENT = 'GET_BAD_COMMENT'
+// 立即购买
+export const GO_TO_BUY = 'GO_TO_BUY'
 
 /**
  * 购物车
@@ -90,7 +92,10 @@ export const RETURN_ADDRESS_DELETE_UPDATE = 'RETURN_ADDRESS_DELETE_UPDATE'
 
 export const RETURN_ADDRESS_EDIT_DEFAULT = 'RETURN_ADDRESS_EDIT_DEFAULT'
 
-
+/**
+ * 商品列表
+ */
+export const GOODSLIST = 'GOODSLIST'
 
 
 

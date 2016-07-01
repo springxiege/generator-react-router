@@ -8,6 +8,7 @@ import Address from './Address'
 import AddressEdit from './AddressEdit'
 import ReturnAddress from './ReturnAddress'
 import ReturnAddressEdit from './ReturnAddressEdit'
+import GoodsList from './GoodsList'
 
 const trade = combineReducers({
     GoodsDetail:GoodsDetail,
@@ -16,7 +17,8 @@ const trade = combineReducers({
     Address:Address,
     AddressEdit:AddressEdit,
     ReturnAddress:ReturnAddress,
-    ReturnAddressEdit:ReturnAddressEdit
+    ReturnAddressEdit:ReturnAddressEdit,
+    GoodsList:GoodsList
 })
 
 export default trade

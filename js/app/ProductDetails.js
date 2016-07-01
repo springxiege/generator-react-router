@@ -29,7 +29,13 @@ class ProductDetails extends React.Component {
                 window.location.reload();
             },
             success: (data)=>{
-                this.props.dispatch(GoodsDetail(data));
+                if(parseInt(data.code) == 0){
+                    this.props.dispatch(GoodsDetail(data.data));
+                }else{
+                    alert('网络错误，页面将刷新重试！');
+                    window.location.reload();
+                }
+                
             }
         })
         
@@ -55,7 +61,7 @@ class ProductDetails extends React.Component {
                     <ProductTabs data={this.props.state.data} />
                     <Recommend />
                 </div>
-                <ProductDetailFooter />
+                <ProductDetailFooter userId={this.props.state.userId} />
                 <ProductSkuSelect />
             </div>
         )
