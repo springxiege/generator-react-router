@@ -29,9 +29,11 @@ export const REFRESHRECOMMEND = 'REFRESHRECOMMEND'
 // 添加购买数量
 export const INCREMENT = 'INCREMENT'
 export const COUNT_INCREMENT = 'COUNT_INCREMENT'
+export const BUY_COUNT_INCREMENT = 'BUY_COUNT_INCREMENT'
 // 减少购买数量
 export const DECREMENT ='DECREMENT'
 export const COUNT_DECREMENT = 'COUNT_DECREMENT'
+export const BUY_COUNT_DECREMENT = 'BUY_COUNT_DECREMENT'
 // 获取所有评论
 export const GET_COMMENT = 'GET_COMMENT'
 // 获取好评
@@ -40,6 +42,10 @@ export const GET_GOOD_COMMENT = 'GET_GOOD_COMMENT'
 export const GET_BAD_COMMENT = 'GET_BAD_COMMENT'
 // 立即购买
 export const GO_TO_BUY = 'GO_TO_BUY'
+// 购买页面添加商品
+export const ADD_BUY = 'ADD_BUY'
+// 购买页面删除商品
+export const MINUS_BUY = 'MINUS_BUY'
 
 /**
  * 购物车

@@ -12,7 +12,9 @@ import {
     GET_COMMENT,
     GET_GOOD_COMMENT,
     GET_BAD_COMMENT,
-    GO_TO_BUY
+    GO_TO_BUY,
+    ADD_BUY,
+    MINUS_BUY
 } from '../actions/ActionTypes'
 import commentDate from '../common/commentDate'
 // 处理数据分发到每个模块
@@ -33,21 +35,27 @@ const GoodsSelectSku = {
     price: 0,
     originalprice: 0
 }
-const gotoBuy = {
-    id:0,
-    title:'',
-    count:0,
+const BuyList = {
+    count:1,
     selected:null,
-    subselected:null
+    subselected:null,
+    price:0,
+    fare:0,
+    originalprice:0,
+    totalprice:0,
+    title:'占位标题',
+    images:'images/7.jpg',
+    data:[],
+    AddBuy:[]
 }
 const initialState = {
     userId:1,
     Collect: 0,
+    BuyList:BuyList,
     CommentList: CommentList,
     GoodsSelectSku: GoodsSelectSku,
     SelectedSku: '选择：规格分类',
     activity_ids: [],
-    gotoBuy:gotoBuy,
     data: {
         "title": "1",
         "snum": "1",
@@ -212,12 +220,22 @@ export default function GoodsDetail(state = initialState, action) {
                 CommentList:_tempObj
             })
             break;
-        case GO_TO_BUY:
-            _tempObj = Object.assign({},state.gotoBuy,action.data)
-            return Object.assign({},state,{
-                gotoBuy:_tempObj
+        case GO_TO_BUY: // 立即购买
+            _tempObj = Object.assign({},state.BuyList,{
+                title:state.data.title,
+                fare:state.data.fare,
+                count:state.GoodsSelectSku.count,
+                selected:state.GoodsSelectSku.selected,
+                subselected:state.GoodsSelectSku.subselected,
+                price:state.GoodsSelectSku.price,
+                originalprice:action.data[state.GoodsSelectSku.selected||0].addon[state.GoodsSelectSku.subselected||0].goods_price,
+                marketprice:action.data[state.GoodsSelectSku.selected||0].addon[state.GoodsSelectSku.subselected||0].market_price,
+                images:state.data.goods_images[0],
+                data:action.data
             })
-            break;
+            return Object.assign({},state,{
+                BuyList:_tempObj
+            })
         default:
             return state;
             break;

@@ -95,6 +95,26 @@ class ProductSkuSelect extends React.Component {
         })
         
     }
+    gotoBuy(e){
+        let _data      = this.props.state
+        let _selectObj = _data.GoodsSelectSku
+        let _select    = _selectObj.selected
+        let _subselect = _selectObj.subselected
+        let _count     = _selectObj.count
+        let _id        = _data.data.id
+        let _title     = _data.data.title
+        let _temp      = {}
+        if(_select === null || _subselect === null){
+            alert('请选择规格')
+            return false;
+        }
+        _temp.id          = _id;
+        _temp.count       = _count;
+        _temp.title       = _title;
+        _temp.selected    = _select;
+        _temp.subselected = _subselect;
+        window.location.hash = '#/BuyList/'+_id
+    }
     render() {
         let _state          = this.props.state
         let _data           = _state.data
@@ -160,7 +180,7 @@ class ProductSkuSelect extends React.Component {
                             </div>
                             <div className="sku-count clearfix">
                                 <div className="add-to-cart fl" onClick={e=>this.addtoCart(e)}>加入购物车</div>
-                                <span className="buy-right-now fr">立即购买</span>
+                                <span className="buy-right-now fr" onClick={e=>this.gotoBuy(e)}>立即购买</span>
                             </div>
                         </div>
                     </div>

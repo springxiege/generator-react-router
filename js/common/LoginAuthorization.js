@@ -1,8 +1,17 @@
-/**
- * @ 登录授权
- * @ author xiege
- */
+
 $(function(){
+    // 扩展store.min.js实现本地储存对象字符串
+    config.setStorage = function(objName,key,val){
+        var _data = {};
+        _data[objName] = {};
+        _data[objName].data = store.get(objName)||{};
+        _data[objName].data[key] = val;
+        store.set(objName,_data[objName].data);
+    };
+    /**
+     * @ 登录授权
+     * @ author xiege
+     */
     var LoginAuthorization = {
         UserAgent: window.navigator.userAgent.toLowerCase(),
         isWX: function(){
@@ -34,14 +43,6 @@ $(function(){
             //     }
             // });
         },
-        // 扩展store.min.js实现本地储存对象字符串
-        setStorage: function(objName,key,val){
-            var _data = {};
-            _data[objName] = {};
-            _data[objName].data = store.get(objName)||{};
-            _data[objName].data[key] = val;
-            store.set(objName,_data[objName].data);
-        },
         setToken: function(){
             var _this = this,
                 _token = _this.getToken();
@@ -51,8 +52,8 @@ $(function(){
                 dt.setMinutes(dt.getMinutes() - dt.getTimezoneOffset()); // 修正时区偏移
                 var date = dt.toISOString().slice(0, -5).replace(/[T]/g, ' ');
                 if(!tradeStore){
-                    this.setStorage('trade','token','111111111');
-                    this.setStorage('trade','time',date);
+                    config.setStorage('trade','token','111111111');
+                    config.setStorage('trade','time',date);
                 }else{
                     var _oldTime = store.get('trade').time;
                     var _oldSeconds = new Date(_oldTime).getTime()/1000,

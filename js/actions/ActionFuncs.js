@@ -64,6 +64,12 @@ export function Increment(id){
 export function countIncrement(){
     return {type:types.COUNT_INCREMENT}
 }
+export function BuyIncrement(data){
+    return {type:types.ADD_BUY,data}
+}
+export function BuyCountIncrement(){
+    return {type:types.BUY_COUNT_INCREMENT}
+}
 /**
  * 数量减少
  */
@@ -72,6 +78,12 @@ export function Decrement(id){
 }
 export function countDecrement(){
     return {type:types.COUNT_DECREMENT}
+}
+export function BuyDecrement(){
+    return {type:types.MINUS_BUY,data}
+}
+export function BuyCountDecrement(){
+    return {type:types.BUY_COUNT_DECREMENT}
 }
 /**
  * 立即购买

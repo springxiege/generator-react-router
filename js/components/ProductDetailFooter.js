@@ -6,7 +6,6 @@ import {connect} from 'react-redux'
 import {gotoBuy} from '../actions/ActionFuncs'
 class ProductDetailFooter extends React.Component {
     gotobuy(){
-        console.log(this)
         let _data      = this.props.state.GoodsDetail
         let _selectObj = _data.GoodsSelectSku
         let _select    = _selectObj.selected
@@ -24,7 +23,6 @@ class ProductDetailFooter extends React.Component {
         _temp.title       = _title;
         _temp.selected    = _select;
         _temp.subselected = _subselect;
-        this.props.dispatch(gotoBuy(_temp))
         window.location.hash = '#/BuyList/'+_id
     }
     render() {
