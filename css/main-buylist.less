@@ -82,44 +82,45 @@
 }
 .buy-number{
     .pdlpx2rem(100);
-    .lhpx2rem(52);
-    span:first-of-type,
-    span:nth-of-type(2),
-    input{
-        display: inline-block;
-        float: left;
-        .hpx2rem(52);
-    }
-    span:first-of-type,
-    span:nth-of-type(2){
-        .wpx2rem(48);
-        .hpx2rem(48);
+    .lhpx2rem(50);
+    .number-wrapper{
         border: 2px solid #848689;
-        background-image: url(../images/icon_sp.png);
-        background-repeat: no-repeat;
-        background-size: 2.875rem auto;
+        border-radius: .15rem;
+        span:first-of-type,
+        span:nth-of-type(2),
+        input{
+            display: inline-block;
+            float: left;
+            .hpx2rem(50);
+        }
+        span:first-of-type,
+        span:nth-of-type(2){
+            .wpx2rem(50);
+            .hpx2rem(50);
+            background-image: url(../images/icon_sp.png);
+            background-repeat: no-repeat;
+            background-size: 2.875rem auto;
+        }
+        span:first-of-type{
+            .bgppx2rem(13,-422);
+        }
+        span:nth-of-type(2){
+            .bgppx2rem(13,-475);
+        }
+        input{
+            display: block;
+            .wpx2rem(78);
+            .hpx2rem(50);
+            .ftpx2rem(26);
+            text-align: center;
+            border:0;
+            border-left:2px solid #848689;
+            border-right:2px solid #848689;
+            box-sizing: border-box;
+        }
     }
-    span:first-of-type{
-        border-top-left-radius: .15rem;
-        border-bottom-left-radius: .15rem;
-        .bgppx2rem(13,-422);
-    }
-    span:nth-of-type(2){
-        border-top-right-radius: .15rem;
-        border-bottom-right-radius: .15rem;
-        .bgppx2rem(13,-475);
-    }
-    input{
-        display: block;
-        .wpx2rem(78);
-        .hpx2rem(52);
-        .ftpx2rem(26);
-        text-align: center;
-        border:0;
-        border-top:2px solid #848689;
-        border-bottom:2px solid #848689;
-        box-sizing: border-box;
-    }
+    
+    
     i{
         font-style: normal;
         .ftpx2rem(24);
