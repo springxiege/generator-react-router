@@ -42,10 +42,11 @@ class ProductSkuSelect extends React.Component {
             this.props.dispatch(GoodsSelectedSku())
         })
     }
+    // 增加购买数量
     _Increment(e){
         let current = this.props.state.GoodsSelectSku.count
         let state = this.props.state
-        let stock = state.data.goods_addon[(state.GoodsSelectSku.selected||0)].stock
+        let stock = state.data.goods_addon[(state.GoodsSelectSku.selected||0)].addon[0].stock
         if(state.GoodsSelectSku.selected !== null && state.GoodsSelectSku.subselected !== null){
             stock = state.data.goods_addon[state.GoodsSelectSku.selected].addon[state.GoodsSelectSku.subselected].stock
         }
@@ -53,6 +54,7 @@ class ProductSkuSelect extends React.Component {
             this.props.dispatch(countIncrement())
         }
     }
+    // 减少购买数量
     _Decrement(e){
         let current = this.props.state.GoodsSelectSku.count
         if(parseInt(current) > 1){
@@ -60,6 +62,7 @@ class ProductSkuSelect extends React.Component {
         }
         
     }
+    // 添加至购物车
     addtoCart(e){
         let state          = this.props.state
         let GoodsSelectSku = state.GoodsSelectSku
@@ -68,12 +71,16 @@ class ProductSkuSelect extends React.Component {
         let goods_id       = null
         let addon_id       = null
         let amount         = GoodsSelectSku.count
-        if(selected === null || subselected ===null){
+        if(selected === null && subselected ===null){
             alert('请选择规格')
             return false;
         }
         goods_id = state.data.goods_addon[selected].goods_id
-        addon_id = state.data.goods_addon[selected].addon[subselected].id
+        if(subselected===null){
+            addon_id = state.data.goods_addon[selected].id
+        }else{
+            addon_id = state.data.goods_addon[selected].addon[subselected].id
+        }
         $.ajax({
             url: config.url + '/goods/cart',
             type: 'POST',
@@ -104,15 +111,28 @@ class ProductSkuSelect extends React.Component {
         let _id        = _data.data.id
         let _title     = _data.data.title
         let _temp      = {}
-        if(_select === null || _subselect === null){
+        if(_select === null && _subselect === null){
             alert('请选择规格')
             return false;
+        }
+        let _addon = _data.data.goods_addon[_select].addon
+        if(_addon.length === 1 && _addon[0].feature_sub === ''){
+            if(parseInt(_addon[0].stock) === 0){
+                alert('库存为0，不可购买');
+                return false;
+            }
+        }else{
+            if(parseInt(_addon[_subselect].stock) === 0){
+                alert('库存为0，不可购买');
+                return false;
+            }
         }
         _temp.id          = _id;
         _temp.count       = _count;
         _temp.title       = _title;
         _temp.selected    = _select;
         _temp.subselected = _subselect;
+        this._closeSKU()
         window.location.hash = '#/BuyList/'+_id
     }
     render() {
@@ -131,23 +151,28 @@ class ProductSkuSelect extends React.Component {
                 <li className={_selected == index ? "cur" : ""} onClick={e=>this._handleClick(e)} data-stock={item.stock} data-index={index} key={index}>{item.feature_main}</li>
             )
         })
-        let subsku = !subskudata.length?"":subskudata.map((item,index)=>{
-            return (
-                <li className={_subselected == index ? "cur" : ""} onClick={e=>this._subhandleClick(e)} data-stock={item.stock} data-index={index} key={index}>{item.feature_sub}</li>
-            )
-        })
-    
-
-        let subskuwrap = subskudata.length > 0 ? (
-            <div className="sku-info clearfix">
-                <span className="sku-prop-name fl">规格二</span>
-                <div className="sku-prop-item">
-                    <ul className="clearfix">
-                        {subsku}
-                    </ul>
+        let subsku = ''
+        let subskuwrap = ''
+        if(subskudata.length === 1 && subskudata[0].feature_sub === ''){
+            
+        }else{
+            subsku = subskudata.map((item,index)=>{
+                return (
+                    <li className={_subselected == index ? "cur" : ""} onClick={e=>this._subhandleClick(e)} data-stock={item.stock} data-index={index} key={index}>{item.feature_sub}</li>
+                )
+            })
+            subskuwrap = (
+                <div className="sku-info clearfix">
+                    <span className="sku-prop-name fl">规格二</span>
+                    <div className="sku-prop-item">
+                        <ul className="clearfix">
+                            {subsku}
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        ) : '';
+            )
+        }
+        
         return (
             <section className={_clsName} ref="skupop">
                 <section className="sku-content">

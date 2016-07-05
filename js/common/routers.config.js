@@ -72,7 +72,7 @@ export default {
         component:BuyList
     },
     {
-        path:"/Buy",
+        path:"/Buy/:type",
         component:Buy
     },
     {

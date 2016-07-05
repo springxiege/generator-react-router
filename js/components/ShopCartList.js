@@ -78,6 +78,7 @@ class ShopCartList extends Component {
         let html = ''
         if(data.length){
             html = data.map((item,index)=>{
+                let _link = '/ProductDetails/'+item.id
                 return (
                     <div className="main-module" key={index}>
                         <div className="cart-info">
@@ -88,12 +89,10 @@ class ShopCartList extends Component {
                                 <a href="javascript:;" className="fr" data-id={item.id} onClick={e=>this.deleteThis(e)}>删除</a>
                             </div>
                             <div className="cart-info-item clearfix">
-                                <a href="#" className="fl">
-                                    <img src="images/7.jpg" alt="" />
-                                </a>
+                                <Link to={_link} className="fl"><img src="images/7.jpg" alt="" /></Link>
                                 <div>
-                                    <p><a href="#">{item.goods.title}</a></p>
-                                    <p>{item.goods_addon.parent_addon.feature_main}  {item.goods_addon.feature_sub}</p>
+                                    <p><Link to={_link}>{item.goods.title}</Link></p>
+                                    <p>{item.goods_addon.parent_addon ? item.goods_addon.parent_addon.feature_main : ""}  {item.goods_addon.feature_sub}</p>
                                     <p>&yen;{item.goods_addon.goods_price}<span>快递：{item.goods.fare}元</span></p>
                                     <div className="cart-setcount">
                                         <span className="fl" onClick={e=>this.decrement(e)} data-id={item.id}></span>

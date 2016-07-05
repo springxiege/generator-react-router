@@ -5,7 +5,27 @@ import {
 } from 'react-router'
 import {connect} from 'react-redux'
 class Buy extends Component{
+    componentDidMount() {
+        this.serverRequest = $.ajax({
+            url: '/path/to/file',
+            type: 'default GET (Other values: POST)',
+            dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
+            data: {param1: 'value1'},
+            error:(error)=>{
+                console.error(error)
+            },
+            success:(data)=>{
+                console.log(data)
+            }
+        })
+             
+    }
+    componentWillUnmount() {
+        this.serverRequest.abort()
+    }
     render(){
+        let _data = this.props.state
+        
         return (
             <div className="main">
                 <div className="part-address">
@@ -66,6 +86,6 @@ class Buy extends Component{
     }
 }
 function select(state){
-    return {state:state};
+    return {state:state.GoodsDetail.BuyList};
 }
 export default connect(select)(Buy);

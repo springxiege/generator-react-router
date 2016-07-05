@@ -45,12 +45,16 @@ class ProductPriceAndFuncs extends React.Component {
         let goods_id       = null
         let addon_id       = null
         let amount         = GoodsSelectSku.count
-        if(selected === null || subselected ===null){
+        if(selected === null && subselected ===null){
             alert('请选择规格')
             return false;
         }
         goods_id = state.data.goods_addon[selected].goods_id
-        addon_id = state.data.goods_addon[selected].addon[subselected].id
+        if(subselected===null){
+            addon_id = state.data.goods_addon[selected].id
+        }else{
+            addon_id = state.data.goods_addon[selected].addon[subselected].id
+        }
         $.ajax({
             url: config.url + '/goods/cart',
             type: 'POST',

@@ -25,15 +25,15 @@ class ProductDetails extends React.Component {
             dataType: 'json',
             data: {},
             error:(error)=>{
-                alert('网络错误，页面将刷新重试！');
-                window.location.reload();
+                alert('网络错误，请刷新页面重试！');
+                // window.location.reload();
             },
             success: (data)=>{
                 if(parseInt(data.code) == 0){
                     this.props.dispatch(GoodsDetail(data.data));
                 }else{
-                    alert('网络错误，页面将刷新重试！');
-                    window.location.reload();
+                    alert('请求成功，返回错误,错误code:'+data.code+'，请刷新页面重试！');
+                    // window.location.reload();
                 }
                 
             }
@@ -46,7 +46,6 @@ class ProductDetails extends React.Component {
     render() {
         // var _Children = React.Children.map(this.props.children, function(data) {});
         var price=66666888;
-        var originalprice=333;
         return (
             <div>
                 <div className="main">
@@ -54,8 +53,8 @@ class ProductDetails extends React.Component {
                         <ProductImages />
                         <ProductTitle title={this.props.state.data.title} />
                         <ProductDescription description={this.props.state.data.description} />
-                        <ProductPriceAndFuncs price={price} />
-                        <ProductOriginalPriceAndFee originalprice={originalprice} fare={this.props.state.data.fare} />
+                        <ProductPriceAndFuncs price={this.props.state.GoodsSelectSku.price} />
+                        <ProductOriginalPriceAndFee originalprice={this.props.state.GoodsSelectSku.originalprice} fare={this.props.state.data.fare} />
                     </div>
                     <ProductSku />
                     <ProductTabs data={this.props.state.data} />
