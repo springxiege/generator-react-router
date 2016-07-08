@@ -14,6 +14,9 @@ import CollectList from '../components/CollectList'
 import CopyRight from '../components/CopyRight'
 import ReturnTop from '../components/ReturnTop'
 class MyCollect extends React.Component {
+    componentDidMount(){
+        document.title = '收藏列表'
+    }
     render(){
         return (
             <div>

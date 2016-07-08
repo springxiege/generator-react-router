@@ -120,7 +120,25 @@ class ShopCartList extends Component {
         }
         return html;
     }
-
+    componentDidMount() {
+        document.title = '购物车';
+        this.serverRequest = $.ajax({
+            url: config.url + '/goods/cart',
+            type: 'GET',
+            dataType: 'json',
+            data: {},
+            error:(error)=>{
+                alert('网络错误，页面将刷新重试！');
+                window.location.reload();
+            },
+            success:(data)=>{
+                this.props.dispatch(ShopCart(data))
+            },
+        })
+    }
+    componentWillUnmount() {
+        this.serverRequest.abort()
+    }
     render(){
         let _html = this._getList();
         return (
@@ -137,7 +155,7 @@ class ShopCartList extends Component {
                         <span className="fl">全选</span>
                         <p className="fr">合计：<span>{this.props.state.totalAmount}</span></p>
                     </aside>
-                    <a href="#">去结算</a>
+                    <Link to="/Buy/shopcart">去结算</Link>
                 </footer>
                 <div className={this.props.state.pop}>
                     <div className="pop-container">

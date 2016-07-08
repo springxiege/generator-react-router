@@ -4,7 +4,7 @@ import {findDOMNode} from 'react-dom'
 import {connect} from 'react-redux'
 class ReturnAddressAdd extends Component {
     componentDidMount(){
-        
+        document.title = '添加退换货地址'
     }
     componentWillUnmount() {
         

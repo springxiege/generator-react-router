@@ -4,88 +4,301 @@ import {
     Link
 } from 'react-router'
 import {connect} from 'react-redux'
+import {
+    Address,
+    GenerateTempOrders
+} from '../actions/ActionFuncs'
 class Buy extends Component{
     componentDidMount() {
-        this.serverRequest = $.ajax({
-            url: '/path/to/file',
-            type: 'default GET (Other values: POST)',
-            dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
-            data: {param1: 'value1'},
+        document.title = '合并付款'
+        let _Address = this.props.state.Address.data
+        if(_Address === null || _Address.length === 0){
+            this.serverRequest = $.ajax({
+                url: config.url + '/user/address',
+                type: 'GET',
+                dataType: 'json',
+                data: {},
+                error:(error)=>{
+                    console.error(error)
+                },
+                success:(data)=>{
+                    console.log(data)
+                    if(parseInt(data.code) == 0){
+                        this.props.dispatch(Address(data.data))
+                    }
+                }
+            })
+        }
+        let _mapDate = []
+        let _data   = this.props.state
+        let _type   = this.props.params.buyType
+        function getTransferDate(){
+            let _mapDate = []
+            let _trade = {}
+            let _tempObj = {}
+            let _Array  = []
+            let _user   = _data.GoodsDetail.data.get_users
+            switch (_type){
+                case 'buylist':
+                    _Array              = _data.GoodsDetail.BuyList
+                    _tempObj.userId     = _user.user_id
+                    _tempObj.userName   = _user.realname
+                    _tempObj.logo       = _user.logo
+                    _tempObj.is_activity = 0
+                    _tempObj.list       = _Array
+                    _mapDate.push(_tempObj)
+                    break;
+                case 'shopcart':
+                    _Array = _data.ShopCart.data
+                    $.each(_Array,function(index,item) {
+                        if(_trade[item.goods.get_users.user_id] === undefined){
+                            _trade[item.goods.get_users.user_id]          = {};
+                            _trade[item.goods.get_users.user_id].list     = [];
+                            _trade[item.goods.get_users.user_id].user_id  = item.goods.get_users.user_id;
+                            _trade[item.goods.get_users.user_id].logo     = item.goods.get_users.logo;
+                            _trade[item.goods.get_users.user_id].userName = item.goods.get_users.realname;
+                        }
+                        if(_data.ShopCart.amount[item.id].checked){
+                            let _Obj           = {};
+                            _Obj.count         = item.amount;
+                            _Obj.goods_addon   = item.goods_addon;
+                            _Obj.title          = item.goods.title;
+                            _Obj.images         = item.goods.goods_images[0];
+                            _Obj.price         = item.goods_addon.goods_price;
+                            _Obj.originalprice = item.goods.max_price;
+                            _Obj.fare          = item.goods.fare;
+                            _Obj.is_activity   = 0;
+                            _trade[item.goods.get_users.user_id].list.push(_Obj) 
+                        }
+                    });
+                    $.each(_trade, function(index, val) {
+                        _mapDate.push(val)
+                    });
+                    break;
+                default:
+                    break;
+            }
+            return _mapDate;
+        }
+        if(store.get('BuyTempOrder') === undefined){  // 不存在缓存，则获取传递数据
+            _mapDate = getTransferDate();
+            store.set('BuyTempOrder',_mapDate);
+        }else{
+            let _temp = store.get('BuyTempOrder')
+            let _data = getTransferDate()
+            console.log(config)
+            if(config.isObjectValueEqual(_temp,_data)){
+                _mapDate = store.get('BuyTempOrder') || [];
+            }else{
+                store.set('BuyTempOrder',_data);
+                _mapDate = _data;
+            }
+            
+        }
+        console.log(_mapDate)
+        this.props.dispatch(GenerateTempOrders(_mapDate))
+    }
+    componentWillUnmount() {
+        this.serverRequest && this.serverRequest.abort();
+    }
+    getOrder(e){
+        let _type = this.props.params.buyType
+        let _data = this.props.state.BuyTempOrder.data
+        let _temp = []
+        let _params = []
+        let address = this.props.state.Address.data
+        let addressId = 0
+        $.each(_data, function(index, item) {
+            $.each(item.list, function(subindex, subitem) {
+                _temp.push(subitem)
+            });
+        });
+        $.each(_temp, function(index,item) {
+            _params[index] = {}
+            _params[index].goods_id = item.goods_id || item.goods_addon.parent_addon.id
+            _params[index].addon_id = item.addon_id || item.goods_addon.id
+            _params[index].amount = item.count
+        });
+        if(address && address.length){
+            $.each(address, function(index, val) {
+                if(val.selected == 1){
+                    addressId = val.id
+                }
+            });
+        }else{
+            alert('请选择地址');
+            return false;
+        }
+        
+        $.ajax({
+            url: config.url + '/goods/order',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                addressId:addressId,
+                data:_params
+            },
             error:(error)=>{
                 console.error(error)
             },
             success:(data)=>{
-                console.log(data)
+                if(parseInt(data.code) === 0){
+                    store.remove('BuyTempOrder');
+                    window.location.hash = '#/SelectPay/'+data.data.data.orderNumber
+                }else{
+                    console.error('错误代码:'+data.code+','+data.data.msg.msg);
+                }
             }
-        })
-             
-    }
-    componentWillUnmount() {
-        this.serverRequest.abort()
+        });
+        
     }
     render(){
-        let _data = this.props.state
+        console.log(this.props.state)
+        let _data   = this.props.state
+        let _address = _data.Address.data
+        let defaultAddress = {}
+        let _mapDate = _data.BuyTempOrder.data
+        let _type   = this.props.params.buyType
+        let _HTML = ''
+        let _link = ''
+        if(_mapDate.length){
+            switch (_type){
+                case 'buylist': // 从购买页面进入 
+                    _HTML = _mapDate.map((item,index)=>{
+                        return (
+                            <div className="part-item" key={index}>
+                                <h3><img src={item.logo} alt="" />{item.userName}</h3>
+                                <div className="part-list">
+                                    {item.list.map((subitem,subindex)=>{
+                                        return(
+                                            <div className="part-info clearfix" key={subindex}>
+                                                <img src={subitem.images} alt="" className="fl" />
+                                                <div className="part-detail">
+                                                    <h4>{subitem.title}</h4>
+                                                    <p>{subitem.sku}</p>
+                                                    <p>&yen;{subitem.price} <s>&yen;{subitem.originalprice}</s> <span className="fr">快递：{subitem.fare}元</span></p>
+                                                    <span>&times;{subitem.count}</span>
+                                                </div>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                                {item.is_activity==0? '' : (
+                                    <div className="part-activities">
+                                        <span className="fl">商家活动：</span>
+                                        <div className="clearfix">
+                                            <p>满500包邮<span className="fr">-20.00元</span></p>
+                                            <p>满500包邮<span className="fr">-20.00元</span></p>
+                                        </div>
+                                    </div>
+                                )}
+                                <div className="part-subtotal">小计：<span>1398.00</span>元</div>
+                            </div>
+                        )
+                    })
+                    _link = '/Address/buy'
+                    break;
+                case 'shopcart': // 从购物车页面进入
+                    _HTML = _mapDate.map((item,index)=>{
+                        return (
+                            <div className="part-item" key={index}>
+                                <h3><img src={item.logo} alt="" />{item.userName}</h3>
+                                <div className="part-list">
+                                    {item.list.map((subitem,subindex)=>{
+                                        return(
+                                            <div className="part-info clearfix" key={subindex}>
+                                                <img src={subitem.images} alt="" className="fl" />
+                                                <div className="part-detail">
+                                                    <h4>{subitem.title}</h4>
+                                                    <p>{subitem.goods_addon.parent_addon.feature_main} {subitem.goods_addon.feature_sub}</p>
+                                                    <p>&yen;{subitem.price} <s>&yen;{subitem.originalprice}</s> <span className="fr">快递：{subitem.fare}元</span></p>
+                                                    <span>&times;{subitem.count}</span>
+                                                </div>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                                {item.is_activity==0? '' : (
+                                    <div className="part-activities">
+                                        <span className="fl">商家活动：</span>
+                                        <div className="clearfix">
+                                            <p>满500包邮<span className="fr">-20.00元</span></p>
+                                            <p>满500包邮<span className="fr">-20.00元</span></p>
+                                        </div>
+                                    </div>
+                                )}
+                                <div className="part-subtotal">小计：<span>1398.00</span>元</div>
+                            </div>
+                        )
+                    })
+                    _link = '/Address/shopcart'
+                    break;
+                default:
+                    break;
+            }
+        }else{
+            if(_type == 'shopcart'){
+                window.location.hash = '#/ShoppingCart'
+            }else{
+                
+            }
+        }
         
+        if(_address && _address.length){
+            $.each(_address,function(index,item) {
+                if(parseInt(item.selected) === 1){
+                    defaultAddress.id         = item.id
+                    defaultAddress.tel        = item.tel
+                    defaultAddress.name       = item.name
+                    defaultAddress.address    = item.address
+                    defaultAddress.selected   = item.selected
+                    defaultAddress.is_default = item.is_default
+                    return false
+                }
+                if(parseInt(item.is_default) === 1){
+                    defaultAddress.id         = item.id
+                    defaultAddress.tel        = item.tel
+                    defaultAddress.name       = item.name
+                    defaultAddress.address    = item.address
+                    defaultAddress.selected   = item.selected
+                    defaultAddress.is_default = item.is_default
+                    return true
+                }
+                if(parseInt(item.selected) != 1 && parseInt(item.is_default) != 1){
+                    defaultAddress.id = 0
+                }
+            });
+        }else{
+            defaultAddress.id = 0
+        }
         return (
             <div className="main">
-                <div className="part-address">
-                    <h2>收货人：汤琪 <span className="fr">13136140570</span></h2>
-                    <p>收货地址：浙江省杭州市西湖区万塘路252号计量大厦610</p>
-                    <p><a href="#" className="fr">修改收货地址</a></p>
-                </div>
-                <div className="main-module">
-                    <div className="part-item">
-                        <h3><img src="images/3.jpg" alt="" />王小二的时尚卖手</h3>
-                        <div className="part-list">
-                            <div className="part-info clearfix">
-                                <img src="images/7.jpg" alt="" className="fl" />
-                                <div className="part-detail">
-                                    <h4>方糖音箱 无线WiFi音响 迷你智能小音箱 原木体感触控桌面 便</h4>
-                                    <p>黑色，38.5</p>
-                                    <p>&yen;699.00 <s>&yen;999.00</s> <span className="fr">快递：20元</span></p>
-                                    <span>&times;2</span>
-                                </div>
-                            </div>
-                            <div className="part-info clearfix">
-                                <img src="images/7.jpg" alt="" className="fl" />
-                                <div className="part-detail">
-                                    <h4>方糖音箱 无线WiFi音响 迷你智能小音箱 原木体感触控桌面 便</h4>
-                                    <p>黑色，38.5</p>
-                                    <p>&yen;699.00 <s>&yen;999.00</s> <span className="fr">快递：20元</span></p>
-                                    <span>&times;2</span>
-                                </div>
-                            </div>
-                            <div className="part-info clearfix">
-                                <img src="images/7.jpg" alt="" className="fl" />
-                                <div className="part-detail">
-                                    <h4>方糖音箱 无线WiFi音响 迷你智能小音箱 原木体感触控桌面 便</h4>
-                                    <p>黑色，38.5</p>
-                                    <p>&yen;699.00 <s>&yen;999.00</s> <span className="fr">快递：20元</span></p>
-                                    <span>&times;2</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="part-activities">
-                            <span className="fl">商家活动：</span>
-                            <div className="clearfix">
-                                <p>满500包邮<span className="fr">-20.00元</span></p>
-                                <p>满500包邮<span className="fr">-20.00元</span></p>
-                            </div>
-                        </div>
-                        <div className="part-subtotal">小计：<span>1398.00</span>元</div>
+                
+                {defaultAddress.id == 0 ? (
+                    <div className="part-address">
+                        <p><span>未获取收货地址</span><Link to={_link} className="fr">选择(添加)收货地址</Link></p>
                     </div>
+                ) : (
+                    <div className="part-address" data-id={defaultAddress.id}>
+                        <h2>收货人：{defaultAddress.name} <span className="fr">{defaultAddress.tel}</span></h2>
+                        <p>收货地址：{defaultAddress.address}</p>
+                        <p><Link to={_link} className="fr">修改收货地址</Link></p>
+                    </div>
+                )}
+                <div className="main-module">
+                {_HTML}
                 </div>
                 <footer className="cart-footer buy-footer clearfix">
                     <aside className="fl">
                         <p className="fr">合计：<span>2097.00元</span></p>
                     </aside>
-                    <a href="#">立即支付</a>
+                    <a href="javascript:;" onClick={e=>this.getOrder(e)}>立即支付</a>
                 </footer>
             </div>
         )
     }
 }
 function select(state){
-    return {state:state.GoodsDetail.BuyList};
+    return {state:state};
 }
 export default connect(select)(Buy);

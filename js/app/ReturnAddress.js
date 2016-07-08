@@ -87,6 +87,7 @@ class ReturnAddressList extends Component {
         window.location.hash = '#/ReturnAddressEdit/'+id
     }
     componentDidMount(){
+        document.title = '退换货地址列表'
         this.serverRequest = $.ajax({
             url: config.url + '/user/returns',   
             type: 'GET',

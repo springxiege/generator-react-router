@@ -13,6 +13,7 @@ import Settings from '../app/Settings'                      //个人设置
 import BindCashAccount from '../app/BindCashAccount'        //绑定银行卡
 import BuyList from '../app/BuyList'                        //购买页面
 import Buy from '../app/Buy'                                //合并付款页面
+import SelectPay from '../app/SelectPay'                    //支付选择页面
 export default {
     component: 'div',
     childRoutes: [{
@@ -40,7 +41,7 @@ export default {
         component: MyCollect
     },
     {
-        path: "/Address",
+        path: "/Address/:transfertype",
         component: AddressList
     },
     {
@@ -48,7 +49,7 @@ export default {
         component: AddressEdit
     },
     {
-        path: "/AddressAdd",
+        path: "/AddressAdd/:transfertype",
         component: AddressAdd
     },
     {
@@ -72,8 +73,12 @@ export default {
         component:BuyList
     },
     {
-        path:"/Buy/:type",
+        path:"/Buy/:buyType",
         component:Buy
+    },
+    {
+        path:"/SelectPay/:orderNumber",
+        component:SelectPay
     },
     {
         path:"/BindCashAccount",

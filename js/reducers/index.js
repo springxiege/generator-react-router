@@ -9,7 +9,8 @@ import AddressEdit from './AddressEdit'
 import ReturnAddress from './ReturnAddress'
 import ReturnAddressEdit from './ReturnAddressEdit'
 import GoodsList from './GoodsList'
-// import BuyList from './BuyList'
+import BuyTempOrder from './BuyTempOrder'
+// import BuyTempList from './BuyTempList'
 
 const trade = combineReducers({
     GoodsDetail:GoodsDetail,                    //商品详情页
@@ -20,7 +21,8 @@ const trade = combineReducers({
     ReturnAddress:ReturnAddress,                //退换货地址库
     ReturnAddressEdit:ReturnAddressEdit,        //退换货地址编辑
     GoodsList:GoodsList,                        //全部宝贝列表
-    // BuyList:BuyList                             //购买列表
+    BuyTempOrder:BuyTempOrder,                  //合并付款临时订单列表
+    // BuyTempList:BuyTempList                     //购买页面商品临时列表
 })
 
 export default trade

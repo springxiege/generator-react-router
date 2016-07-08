@@ -9,28 +9,41 @@ import {
     BuyIncrement,
     BuyDecrement,
     BuySelectSku,
-    BuySelectSubSku
+    BuySelectSubSku,
+    GENERATE_TEMP_BUYLIST,
+    updateBuyList
 } from '../actions/ActionFuncs'
 class BuyList extends Component{
+    componentWillMount() {
+            
+    }
     componentDidMount() {
         document.title = '购买页面'
-        this.serverRequest = $.ajax({
-            url: config.url + '/goods/addon/' + (this.props.params.buyId||'1'),
-            type: 'GET',
-            dataType: 'json',
-            data: {},
-            error:(error)=>{
-                console.error(error)
-            },
-            success:(data)=>{
-                if(parseInt(data.code) == 0){
-                    this.props.dispatch(gotoBuy(data.data))
+        if(store.get('BuyList') === undefined){
+            this.serverRequest = $.ajax({
+                url: config.url + '/goods/addon/' + (this.props.params.buyId||'1'),
+                type: 'GET',
+                dataType: 'json',
+                data: {},
+                error:(error)=>{
+                    console.error(error)
+                },
+                success:(data)=>{
+                    if(parseInt(data.code) == 0){
+                        this.props.dispatch(gotoBuy(data.data))
+                        let _data = this.props.state.BuyList
+                        store.set('BuyList',_data)
+                    }
                 }
-            }
-        })
+            })
+        }else{
+            this.props.dispatch(updateBuyList(store.get('BuyList')))
+        }
     }
     componentWillUnmount() {
-        this.serverRequest.abort();
+        // alert('确定要离开吗？')
+        this.serverRequest && this.serverRequest.abort();
+        store.remove('BuyList');
     }
     // 商品数量增加
     BuyCountAdd(e){
@@ -88,7 +101,6 @@ class BuyList extends Component{
         
     }
     render(){
-        console.log(this.props.state)
         let _data = this.props.state.BuyList
         let _link = '/ProductDetails/'+this.props.params.buyId
         let _trade = store.get('trade')
@@ -98,6 +110,7 @@ class BuyList extends Component{
         // 计算价格
         
         // 购买商品列表
+        
         let _goods = _data.map((item,index)=>{
             _totalprice += ((item.originalprice-0)*item.count+(item.fare-0))
             // 规格一列表
@@ -136,8 +149,8 @@ class BuyList extends Component{
                                 <span className="fr">&times;{item.count}</span>
                             </p>
                             <p className="buy-price">
-                                &yen;{item.originalprice} 
-                                <s>&yen;{item.marketprice}</s>
+                                &yen;{item.price} 
+                                <s>&yen;{item.originalprice}</s>
                                 <span className="fr">快递：{item.fare}元</span>
                             </p>
                         </div>
@@ -184,6 +197,7 @@ class BuyList extends Component{
     }
 }
 function select(state){
+    console.log(state)
     return {state:state.GoodsDetail};
 }
 export default connect(select)(BuyList);

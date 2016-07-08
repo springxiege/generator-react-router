@@ -18,7 +18,8 @@ import {
     BUY_COUNT_INCREMENT,
     BUY_COUNT_DECREMENT,
     GODDS_BUY_SKU,
-    GODDS_BUY_SKU_SUB
+    GODDS_BUY_SKU_SUB,
+    UPDATA_BUYLIST
 } from '../actions/ActionTypes'
 import commentDate from '../common/commentDate'
 // 处理数据分发到每个模块
@@ -40,18 +41,20 @@ const GoodsSelectSku = {
     originalprice: 0
 }
 const BuyList = [
-    {
-        count:1,
-        selected:null,
-        subselected:null,
-        price:0,
-        fare:0,
-        originalprice:0,
-        totalprice:0,
-        title:'占位标题',
-        images:'images/7.jpg',
-        data:[]
-    }
+    // {
+    //     count:1,
+    //     goods_id:0,
+    //     addon_id:0,
+    //     selected:null,
+    //     subselected:null,
+    //     price:0,
+    //     fare:0,
+    //     originalprice:0,
+    //     totalprice:0,
+    //     title:'占位标题',
+    //     images:'images/7.jpg',
+    //     data:[]
+    // }
 ]
 const initialState = {
     userId:1,
@@ -236,10 +239,12 @@ export default function GoodsDetail(state = initialState, action) {
                 title:state.data.title,
                 fare:state.data.fare,
                 count:state.GoodsSelectSku.count,
+                goods_id:state.data.id,
+                addon_id:state.data.goods_addon[state.GoodsSelectSku.selected].addon[state.GoodsSelectSku.subselected||0].id,
                 selected:state.GoodsSelectSku.selected,
                 subselected:state.GoodsSelectSku.subselected,
-                price:state.GoodsSelectSku.price,
-                originalprice:_price,
+                price:_price,
+                originalprice:_count,
                 marketprice:_count,
                 images:state.data.goods_images[0],
                 sku:state.SelectedSku,
@@ -250,6 +255,11 @@ export default function GoodsDetail(state = initialState, action) {
             _Array[0] = _tempObj
             return Object.assign({},state,{
                 BuyList:_Array
+            })
+            break;
+        case UPDATA_BUYLIST:
+            return Object.assign({},state,{
+                BuyList:action.data
             })
             break;
         case BUY_COUNT_INCREMENT: // 增加购买数量
@@ -277,7 +287,10 @@ export default function GoodsDetail(state = initialState, action) {
             _Array[action.data.index] = Object.assign({},state.BuyList[action.data.index],{
                 selected:action.data.selected,
                 subselected:null,
-                originalprice:state.BuyList[action.data.index].data[action.data.selected].goods_price
+                goods_id:state.BuyList[action.data.index].goods_id,
+                addon_id:state.BuyList[action.data.index].data[action.data.selected||0].addon[0].id,
+                sku:state.BuyList[action.data.index].data[action.data.selected].feature_main,
+                price:state.BuyList[action.data.index].data[action.data.selected].addon[0].goods_price
             })
             return Object.assign({},state,{
                 BuyList:_Array
@@ -287,7 +300,10 @@ export default function GoodsDetail(state = initialState, action) {
             _Array = state.BuyList
             _Array[action.data.index] = Object.assign({},state.BuyList[action.data.index],{
                 subselected:action.data.subselected,
-                originalprice:state.BuyList[action.data.index].data[state.BuyList[action.data.index].selected].addon[action.data.subselected].goods_price
+                goods_id:state.BuyList[action.data.index].goods_id,
+                addon_id:state.BuyList[action.data.index].data[state.BuyList[action.data.index].selected].addon[action.data.subselected].id,
+                sku:state.BuyList[action.data.index].data[state.BuyList[action.data.index].selected].feature_main + ' ' +state.BuyList[action.data.index].data[state.BuyList[action.data.index].selected].addon[action.data.subselected].feature_sub,
+                price:state.BuyList[action.data.index].data[state.BuyList[action.data.index].selected].addon[action.data.subselected].goods_price
             })
             return Object.assign({},state,{
                 BuyList:_Array

@@ -8,6 +8,9 @@ import Recommend from '../components/Recommend'
 import BrowseHistory from '../components/BrowseHistory'
 import CopyRight from '../components/CopyRight'
 export default class UserCenter extends React.Component {
+    componentDidMount() {
+        document.title = '个人中心'     
+    }
     render(){
         return (
             <div className="main">

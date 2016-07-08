@@ -54,7 +54,11 @@
  export const ADD_BUY                      = 'ADD_BUY'
  // 购买页面删除商品
  export const MINUS_BUY                    = 'MINUS_BUY'
- 
+ // 生成临时订单
+ export const GENERATE_TEMP_ORDERS         = 'GENERATE_TEMP_ORDERS'
+// 生成临时购买列表
+ export const GENERATE_TEMP_BUYLIST        = 'GENERATE_TEMP_BUYLIST'
+ export const UPDATA_BUYLIST               = 'UPDATA_BUYLIST'
  /**
  * 购物车
  */

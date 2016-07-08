@@ -38,13 +38,14 @@ class AddressList extends Component {
                 )
             })
         }else{
-            window.location.hash = '#/AddressAdd'
+
+            window.location.hash = '#/AddressAdd/'+this.props.params.transfertype
         }
         return _HTML;
     }
     // 添加地址
     AddressAdd(e){
-        window.location.hash = '#/AddressAdd'
+        window.location.hash = '#/AddressAdd/'+this.props.params.transfertype
     }
     // 选择地址
     SelectAddress(e,id){
@@ -110,13 +111,24 @@ class AddressList extends Component {
     }
     // 确定
     OK(e){
-
+        switch(this.props.params.transfertype){
+            case 'buy':
+                window.location.hash = '#/Buy/buylist'
+                break;
+            case 'shopcart':
+                window.location.hash = '#/Buy/shopcart'
+                break;
+            default:
+                window.location.hash = '#/Settings'
+                break;
+        }
     }
     // 编辑
     Edit(e,id){
         window.location.hash = '#/AddressEdit/'+id
     }
     componentDidMount(){
+        document.title = '坡地库'
         this.serverRequest = $.ajax({
             url: config.url + '/user/address',   
             type: 'GET',

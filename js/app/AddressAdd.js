@@ -4,7 +4,7 @@ import {findDOMNode} from 'react-dom'
 import {connect} from 'react-redux'
 class AddressAdd extends Component {
     componentDidMount(){
-        
+        document.title = '添加地址'
     }
     componentWillUnmount() {
         
@@ -34,7 +34,7 @@ class AddressAdd extends Component {
             },
             success:(data)=>{
                 if(parseInt(data.code) == 0){
-                    window.location.hash = '#/Address'
+                    window.location.hash = '#/Address/'+this.props.params.transfertype
                 }
             }
         })

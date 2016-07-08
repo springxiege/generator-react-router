@@ -16,11 +16,7 @@ let initialState = {
     amount:{},
     totalAmount:0,
     checkedAll:false,
-    data:{
-        data:{
-            data:[]
-        }
-    }
+    data:[]
 }
 export default function ShopCart(state=initialState,action){
     let _amount = {},_totalAmount=0,currentAmount=0,_checkedAll=false;

@@ -5,6 +5,9 @@ import {
     Link
 } from 'react-router';
 export default class Settings extends Component{
+    componentDidMount() {
+        document.title = '设置'     
+    }
     render(){
         return (
             <div className="main">
@@ -22,7 +25,7 @@ export default class Settings extends Component{
                     <ul className="settings">
                         <li><Link to="#">绑定51账号 <span>13136140570</span></Link></li>
                         <li><Link to="#">绑定提现账号</Link></li>
-                        <li><Link to="/Address">收货地址</Link></li>
+                        <li><Link to="/Address/setting">收货地址</Link></li>
                         <li><Link to="/ReturnAddress">退换货地址</Link></li>
                     </ul>
                 </div>

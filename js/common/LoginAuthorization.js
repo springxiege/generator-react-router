@@ -1,13 +1,5 @@
 
 $(function(){
-    // 扩展store.min.js实现本地储存对象字符串
-    config.setStorage = function(objName,key,val){
-        var _data = {};
-        _data[objName] = {};
-        _data[objName].data = store.get(objName)||{};
-        _data[objName].data[key] = val;
-        store.set(objName,_data[objName].data);
-    };
     /**
      * @ 登录授权
      * @ author xiege

@@ -97,6 +97,21 @@ export function BuySelectSku(data){
 export function BuySelectSubSku(data){
     return {type:types.GODDS_BUY_SKU_SUB,data}
 }
+export function updateBuyList(data){
+    return {type:types.UPDATA_BUYLIST,data}
+}
+/**
+ * 生成临时订单
+ */
+export function GenerateTempOrders(data){
+    return {type:types.GENERATE_TEMP_ORDERS,data}
+}
+/**
+ * 生成临时购买列表
+ */
+export function GenerateTempBuyList(data){
+    return {type:types.GENERATE_TEMP_BUYLIST,data}
+}
 /**
  * 获取评论列表
  */
