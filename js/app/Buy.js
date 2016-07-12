@@ -86,7 +86,6 @@ class Buy extends Component{
         }else{
             let _temp = store.get('BuyTempOrder')
             let _data = getTransferDate()
-            console.log(config)
             if(config.isObjectValueEqual(_temp,_data)){
                 _mapDate = store.get('BuyTempOrder') || [];
             }else{
@@ -99,7 +98,10 @@ class Buy extends Component{
         this.props.dispatch(GenerateTempOrders(_mapDate))
     }
     componentWillUnmount() {
-        this.serverRequest && this.serverRequest.abort();
+        let _Address = this.props.state.Address.data
+        if(_Address === null || _Address.length === 0){
+            this.serverRequest.abort();
+        };
     }
     getOrder(e){
         let _type = this.props.params.buyType
@@ -161,6 +163,7 @@ class Buy extends Component{
         let _type   = this.props.params.buyType
         let _HTML = ''
         let _link = ''
+        let _totalprice = 0
         if(_mapDate.length){
             switch (_type){
                 case 'buylist': // 从购买页面进入 
@@ -170,6 +173,7 @@ class Buy extends Component{
                                 <h3><img src={item.logo} alt="" />{item.userName}</h3>
                                 <div className="part-list">
                                     {item.list.map((subitem,subindex)=>{
+                                        _totalprice += ((subitem.price - 0)*(subitem.count - 0) + (subitem.fare-0))
                                         return(
                                             <div className="part-info clearfix" key={subindex}>
                                                 <img src={subitem.images} alt="" className="fl" />
@@ -192,7 +196,7 @@ class Buy extends Component{
                                         </div>
                                     </div>
                                 )}
-                                <div className="part-subtotal">小计：<span>1398.00</span>元</div>
+                                <div className="part-subtotal">小计：<span>{_totalprice}</span>元</div>
                             </div>
                         )
                     })
@@ -200,11 +204,13 @@ class Buy extends Component{
                     break;
                 case 'shopcart': // 从购物车页面进入
                     _HTML = _mapDate.map((item,index)=>{
+                        let _totalprice = 0
                         return (
                             <div className="part-item" key={index}>
                                 <h3><img src={item.logo} alt="" />{item.userName}</h3>
                                 <div className="part-list">
                                     {item.list.map((subitem,subindex)=>{
+                                        _totalprice += ((subitem.price - 0)*(subitem.count - 0) + (subitem.fare-0))
                                         return(
                                             <div className="part-info clearfix" key={subindex}>
                                                 <img src={subitem.images} alt="" className="fl" />
@@ -227,7 +233,7 @@ class Buy extends Component{
                                         </div>
                                     </div>
                                 )}
-                                <div className="part-subtotal">小计：<span>1398.00</span>元</div>
+                                <div className="part-subtotal">小计：<span>{_totalprice}</span>元</div>
                             </div>
                         )
                     })
@@ -238,7 +244,7 @@ class Buy extends Component{
             }
         }else{
             if(_type == 'shopcart'){
-                window.location.hash = '#/ShoppingCart'
+                // window.location.hash = '#/ShoppingCart'
             }else{
                 
             }
@@ -273,7 +279,6 @@ class Buy extends Component{
         }
         return (
             <div className="main">
-                
                 {defaultAddress.id == 0 ? (
                     <div className="part-address">
                         <p><span>未获取收货地址</span><Link to={_link} className="fr">选择(添加)收货地址</Link></p>
@@ -290,7 +295,7 @@ class Buy extends Component{
                 </div>
                 <footer className="cart-footer buy-footer clearfix">
                     <aside className="fl">
-                        <p className="fr">合计：<span>2097.00元</span></p>
+                        <p className="fr">合计：<span>{_totalprice}元</span></p>
                     </aside>
                     <a href="javascript:;" onClick={e=>this.getOrder(e)}>立即支付</a>
                 </footer>

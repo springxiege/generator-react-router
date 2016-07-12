@@ -269,3 +269,33 @@ export function ReturnAddressEditDefault(data){
 export function getGoodsList(data){
     return {type:types.GOODSLIST,data}
 }
+/**
+ * 订单
+ */
+export function getPendingPayOrder(data){
+    return {type:types.PENDING_PAY_ORDER,data}
+}
+
+export function getUnfilledOrder(data){
+    return {type:types.UNFILLED_ORDER,data}
+}
+
+export function getReceiptOrder(data){
+    return {type:types.RECEIPT_ORDER,data}
+}
+
+export function getReturnOrder(data){
+    return {type:types.RETURN_ORDER,data}
+}
+
+export function DeleteOrder(data){
+    return {type:types.DELETE_ORDER,data}
+}
+
+export function DeleteOrderCancel(data){
+    return {type:types.DELETE_ORDER_CANCEL,data}
+}
+
+export function DeleteOrderConfirm(data){
+    return {type:types.DELETE_ORDER_CONFIRM,data}
+}

@@ -112,7 +112,7 @@ class BuyList extends Component{
         // 购买商品列表
         
         let _goods = _data.map((item,index)=>{
-            _totalprice += ((item.originalprice-0)*item.count+(item.fare-0))
+            _totalprice += ((item.price-0)*item.count+(item.fare-0))
             // 规格一列表
             let sku = item.data.map((subitem,subindex)=>{
                 return (

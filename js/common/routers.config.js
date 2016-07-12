@@ -14,6 +14,13 @@ import BindCashAccount from '../app/BindCashAccount'        //绑定银行卡
 import BuyList from '../app/BuyList'                        //购买页面
 import Buy from '../app/Buy'                                //合并付款页面
 import SelectPay from '../app/SelectPay'                    //支付选择页面
+import PaySuccess from '../app/PaySuccess'                  //支付后跳转成功或失败页面
+import Order from '../app/Order'                            //订单列表
+import PendingPayOrder from '../app/PendingPayOrder'        //待付款订单
+import UnfilledOrder from '../app/UnfilledOrder'            //未发货订单
+import ReceiptOrder from '../app/ReceiptOrder'              // 已发货订单
+import ReturnOrder from '../app/ReturnOrder'                //退换货
+import RateOrder from '../app/RateOrder'                    //评价
 export default {
     component: 'div',
     childRoutes: [{
@@ -69,16 +76,50 @@ export default {
         component:Settings
     },
     {
-        path:"/BuyList/:buyId",
+        path:"/BuyList/:buyId", // buyId表示购买的临时id
         component:BuyList
     },
     {
-        path:"/Buy/:buyType",
+        path:"/Buy/:buyType", // buyType表示从哪里进入购买页面
         component:Buy
     },
     {
-        path:"/SelectPay/:orderNumber",
+        path:"/SelectPay/:orderNumber", //orderNumber表示生成的订单号
         component:SelectPay
+    },
+    {
+        path:"/PaySuccess/:payStatus", //payStatus表示支付成功的状态，0为失败，1为成功
+        component:PaySuccess
+    },
+    {
+        path:"/Order",
+        component:Order,
+        indexRoute:{
+            component:PendingPayOrder
+        },
+        childRoutes:[
+            {
+                path:"/PendingPayOrder",
+                component:PendingPayOrder
+            },
+            {
+                path:"/UnfilledOrder",
+                component:UnfilledOrder
+            },
+            {
+                path:"/ReceiptOrder",
+                component:ReceiptOrder
+            },
+            {
+                path:"/RateOrder",
+                component:RateOrder
+            },
+            {
+                path:"/ReturnOrder",
+                component:ReturnOrder
+            }
+
+        ]
     },
     {
         path:"/BindCashAccount",

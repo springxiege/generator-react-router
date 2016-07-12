@@ -25,14 +25,14 @@ export default class UserCenter extends React.Component {
                 <div className="main-module">
                     <div className="user-myorder">
                         <span>我的订单</span>
-                        <Link to="#">全部订单</Link>
+                        {/*<Link to="#">全部订单</Link>*/}
                     </div>
                     <ul className="user-order clearfix">
-                        <li><Link to="#"><p>待付款</p><span>1</span></Link></li>
-                        <li><Link to="#"><p>未发货</p><span>2</span></Link></li>
-                        <li><Link to="#"><p>确认收货</p><span>3</span></Link></li>
-                        <li><Link to="#"><p>评价</p><span>4</span></Link></li>
-                        <li><Link to="#"><p>退换货</p><span>5</span></Link></li>
+                        <li><Link to="/PendingPayOrder"><p>待付款</p><span>1</span></Link></li>
+                        <li><Link to="/UnfilledOrder"><p>未发货</p><span>2</span></Link></li>
+                        <li><Link to="/ReceiptOrder"><p>确认收货</p><span>3</span></Link></li>
+                        <li><Link to="/RateOrder"><p>评价</p><span>4</span></Link></li>
+                        <li><Link to="/ReturnOrder"><p>退换货</p><span>5</span></Link></li>
                     </ul>
                 </div>
                 <div className="main-module">

@@ -115,8 +115,23 @@
  */
  export const GOODSLIST                    = 'GOODSLIST'
  
+ /**
+  * 订单
+  */
+ // 待支付订单
+ export const PENDING_PAY_ORDER            = 'PENDING_PAY_ORDER'
+ // 未发货订单
+ export const UNFILLED_ORDER               = 'UNFILLED_ORDER'
+ // 确认收货订单
+ export const RECEIPT_ORDER                = 'RECEIPT_ORDER'
+ // 退换货订单
+ export const RETURN_ORDER                 = 'RETURN_ORDER'
  
- 
+ export const DELETE_ORDER                 = 'DELETE_ORDER'
+
+ export const DELETE_ORDER_CANCEL          = 'DELETE_ORDER_CANCEL'
+
+ export const DELETE_ORDER_CONFIRM         = 'DELETE_ORDER_CONFIRM'
  
  
  

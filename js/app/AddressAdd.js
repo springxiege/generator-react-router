@@ -34,6 +34,7 @@ class AddressAdd extends Component {
             },
             success:(data)=>{
                 if(parseInt(data.code) == 0){
+                    console.log(this.props.params.transfertype)
                     window.location.hash = '#/Address/'+this.props.params.transfertype
                 }
             }

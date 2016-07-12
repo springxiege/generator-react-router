@@ -80,21 +80,60 @@ class ShoppingCart extends React.Component {
     increment(e){
         let _id = $(e.target).data('id'),
             _current = this.props.state.amount[_id].count,
-            _stock = $(e.target).data('stock');
+            _stock = $(e.target).data('stock'),
+            $this = this;
         if(parseInt(_current)==parseInt(_stock)){
             return false;
         }else{
-            this.props.dispatch(Increment(_id))
+            $.ajax({
+                url: config.url + '/goods/cart/' + _id,
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    _method:'PUT',
+                    amount:++_current
+                },
+                error:(error)=>{
+                    console.error(error)
+                },
+                success:(data)=>{
+                    console.log(data)
+                    if(parseInt(data.code) == 0){
+                        $this.props.dispatch(Increment(_id))
+                    }
+                }
+            })
+            
+            
         }
         
     }
     decrement(e){
         let _id = $(e.target).data('id'),
-            _current = this.props.state.amount[_id].count;
+            _current = this.props.state.amount[_id].count,
+            $this = this;
         if(parseInt(_current)==1){
             return false;
         }else{
-            this.props.dispatch(Decrement(_id))
+            $.ajax({
+                url: config.url + '/goods/cart/' + _id,
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    _method:'PUT',
+                    amount:--_current
+                },
+                error:(error)=>{
+                    console.error(error)
+                },
+                success:(data)=>{
+                    console.log(data)
+                    if(parseInt(data.code) == 0){
+                        $this.props.dispatch(Decrement(_id))
+                    }
+                }
+            })
+            
         }
         
     }

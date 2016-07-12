@@ -39,7 +39,7 @@ class AddressList extends Component {
             })
         }else{
 
-            window.location.hash = '#/AddressAdd/'+this.props.params.transfertype
+            // window.location.hash = '#/AddressAdd/'+this.props.params.transfertype
         }
         return _HTML;
     }
@@ -142,7 +142,11 @@ class AddressList extends Component {
             },
             success:(data)=>{
                 if(parseInt(data.code) == 0){
-                    this.props.dispatch(Address(data.data))
+                    if(data.data.length){
+                        this.props.dispatch(Address(data.data))
+                    }else{
+                        window.location.hash = '#/AddressAdd/'+this.props.params.transfertype
+                    }
                 }
             }
         })
