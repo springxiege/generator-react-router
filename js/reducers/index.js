@@ -1,16 +1,19 @@
 'use strict';
 import {combineReducers} from 'redux'
 
-import GoodsDetail from './GoodsDetail'
-import MyCollect from './MyCollect'
-import ShopCart from './ShopCart'
-import Address from './Address'
-import AddressEdit from './AddressEdit'
-import ReturnAddress from './ReturnAddress'
-import ReturnAddressEdit from './ReturnAddressEdit'
-import GoodsList from './GoodsList'
-import BuyTempOrder from './BuyTempOrder'
-// import BuyTempList from './BuyTempList'
+import GoodsDetail from './reducer.GoodsDetail'
+import MyCollect from './reducer.MyCollect'
+import ShopCart from './reducer.ShopCart'
+import Address from './reducer.Address'
+import AddressEdit from './reducer.AddressEdit'
+import ReturnAddress from './reducer.ReturnAddress'
+import ReturnAddressEdit from './reducer.ReturnAddressEdit'
+import GoodsList from './reducer.GoodsList'
+import BuyTempOrder from './reducer.BuyTempOrder'
+import PendingPayOrder from './reducer.PendingPayOrder'
+import UnfilledOrder from './reducer.UnfilledOrder'
+import ReceiptOrder from './reducer.ReceiptOrder'
+import ReturnOrder from './reducer.ReturnOrder'
 
 const trade = combineReducers({
     GoodsDetail:GoodsDetail,                    //商品详情页
@@ -22,7 +25,11 @@ const trade = combineReducers({
     ReturnAddressEdit:ReturnAddressEdit,        //退换货地址编辑
     GoodsList:GoodsList,                        //全部宝贝列表
     BuyTempOrder:BuyTempOrder,                  //合并付款临时订单列表
-    // BuyTempList:BuyTempList                     //购买页面商品临时列表
+    PendingPayOrder:PendingPayOrder,            //待支付订单
+    UnfilledOrder:UnfilledOrder,                //未发货订单
+    ReceiptOrder:ReceiptOrder,                  //已发货订单
+    ReturnOrder:ReturnOrder,                    //退换货订单
+
 })
 
 export default trade
