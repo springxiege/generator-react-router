@@ -110,3 +110,34 @@
         text-decoration: none;
     }
 }
+.main-notes{
+    .pdtpx2rem(90);
+    .mgbpx2rem(30);
+    color:#333;
+    text-align: center;
+    &::before{
+        display: block;
+        content:'';
+        .wpx2rem(162);
+        .hpx2rem(162);
+        margin-left: auto;
+        margin-right: auto;
+        background-image: url(../images/icon_notes.png);
+        background-repeat: no-repeat;
+        background-size: 100% auto;
+        background-position: 0 0;
+    }
+    h1{
+        .ftpx2rem(42);
+        .hpx2rem(90);
+        .lhpx2rem(90);
+    }
+    p{
+        .ftpx2rem(26);
+        .hpx2rem(40);
+        .lhpx2rem(40);
+    }
+}
+.main-notes.fail::before{
+    .bgppx2rem(0,-162)
+}

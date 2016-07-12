@@ -1,0 +1,97 @@
+@import url('./px2rem.less');
+.rate{
+    display: block;
+    background-color: #fff;
+    textarea{
+        display: block;
+        width: 100%;
+        .hpx2rem(280);
+        .pdpx2rem(20,20,20,20);
+        .ftpx2rem(30);
+        .lhpx2rem(42);
+        resize:none;
+        box-sizing: border-box;
+        border:0;
+    }
+    &>p{
+        .hpx2rem(60);
+        .lhpx2rem(60);
+        .ftpx2rem(24);
+        .pdrpx2rem(20);
+        border-bottom: 1px solid #eee;
+        text-align: right;
+        color:#bebebe;
+    }
+    &>div{
+        .hpx2rem(100);
+        .lhpx2rem(100);
+        .pdlpx2rem(20);
+        .pdrpx2rem(20);
+        border-bottom: 1px solid #eee;
+        span{
+            .ftpx2rem(30);
+            color:#333;
+        }
+        &>div{
+            .pdlpx2rem(270);
+            input{display: none;}
+        }
+    }
+}
+.rate-star{
+    div{
+        height: 100%;
+        .pdtpx2rem(33);
+        box-sizing: border-box;
+    }
+    label{
+        display: inline-block;
+        float: left;
+        .wpx2rem(34);
+        .hpx2rem(33);
+        background-image: url(../images/icon_star_selected.png);
+        background-repeat: no-repeat;
+        background-size: 100% auto;
+        background-position: 0 0;
+        &:not(:last-of-type){
+            .mgrpx2rem(35);
+        }
+    }
+}
+.rate-ctrl{
+    div{
+        .lhpx2rem(90);
+    }
+    label{
+        .ftpx2rem(26);
+        &::before{
+            display: inline-block;
+            content:'';
+            .wpx2rem(37);
+            .hpx2rem(35);
+            .mgrpx2rem(10);
+            .vpx2rem(-5);
+            background-repeat: no-repeat;
+            background-size: 100% auto;
+            background-position: 0 0;
+        }
+        &:first-of-type::before{
+            background-image: url(../images/icon_good.png);
+        }
+        &:last-of-type::before{
+            background-image: url(../images/icon_bad.png);
+        }
+        &:first-of-type{
+            .mgrpx2rem(70);
+        }
+    }
+}
+.rate-footer{
+    aside{
+        a{
+            .ftpx2rem(30);
+            color:#aeaeae;
+            text-decoration: underline;
+        }
+    }
+}
