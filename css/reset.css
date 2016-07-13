@@ -30,6 +30,11 @@ input::-webkit-inner-spin-button {
     -webkit-appearance: none !important;
     margin: 0;
 }
+input,
+button,
+textarea{
+    -webkit-appearance: none !important;
+}
 .pdb0{
     padding-bottom: 0 !important;
 }

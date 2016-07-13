@@ -82,7 +82,7 @@
     }
 }
 .return-detail{
-    .hpx2rem(250);
+    .minhpx2rem(250);
     .pdpx2rem(50,50,50,50);
     background-color: #E7E7E7;
     box-sizing: border-box;
@@ -197,5 +197,66 @@
                 border-left-color:#A0A0A0;
             }
         }
+    }
+}
+.comment-order{
+    span:first-of-type{
+        border: 1px solid #f15353 !important;
+        color:#f15353 !important;
+    }
+    span:first-of-type::after{
+        display: none;
+    }
+}
+.comment-detail{
+    .pdpx2rem(40,20,40,20);
+    .comment-con{
+        .mgbpx2rem(20);
+        header{
+            .ftpx2rem(20);
+            .hpx2rem(40);
+            .lhpx2rem(20);
+            .pdpx2rem(10,0,10,0);
+            color:#afafaf;
+            box-sizing: border-box;
+            span{
+                display: inline-block;
+                .wpx2rem(120);
+                .hpx2rem(20);
+                background-image: url(../images/icon_stars_small.png);
+                background-repeat: no-repeat;
+                background-size: 100% auto;
+                &.stars-1{
+                    .bgppx2rem(0,-116);
+                }
+                &.stars-2{
+                    .bgppx2rem(0,-87);
+                }
+                &.stars-3{
+                    .bgppx2rem(0,-58);
+                }
+                &.stars-4{
+                    .bgppx2rem(0,-29);
+                }
+                &.stars-5{
+                    background-position: 0 0;
+                }
+            }
+        }
+        article,
+        summary{
+            .ftpx2rem(24);
+            .lhpx2rem(30);
+            color:#252525;
+        }
+        .comment-replay{
+            .pdlpx2rem(24);
+            summary{
+                color:#e8402a;
+            }
+        }
+    }
+    &::before{
+        .rpx2rem(238);
     }
 }
