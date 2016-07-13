@@ -14,6 +14,7 @@ import PendingPayOrder from './reducer.PendingPayOrder'
 import UnfilledOrder from './reducer.UnfilledOrder'
 import ReceiptOrder from './reducer.ReceiptOrder'
 import ReturnOrder from './reducer.ReturnOrder'
+import RateOrder from './reducer.RateOrder'
 
 const trade = combineReducers({
     GoodsDetail:GoodsDetail,                    //商品详情页
@@ -29,6 +30,7 @@ const trade = combineReducers({
     UnfilledOrder:UnfilledOrder,                //未发货订单
     ReceiptOrder:ReceiptOrder,                  //已发货订单
     ReturnOrder:ReturnOrder,                    //退换货订单
+    RateOrder:RateOrder,                        //待评价订单
 
 })
 
