@@ -1,0 +1,151 @@
+@import url('./px2rem.less');
+.main-mycollect-header{
+    position: fixed;
+    left:50%;
+    top:0;
+    z-index: 99;
+    .wpx2rem(640);
+    .hpx2rem(83);
+    .mglpx2rem(-320);
+}
+.main-collect-title{
+    .hpx2rem(83);
+    .lhpx2rem(83);
+    .ftpx2rem(24);
+    color:#686868;
+    text-align: center;
+    font-weight: normal;
+    span{
+        color:#f15353;
+    }
+    &::before{
+        display: inline-block;
+        content:' ';
+        .wpx2rem(34);
+        .hpx2rem(30);
+        .vpx2rem(-7);
+        .mgrpx2rem(20);
+        background-image: url(../images/icon-collect.png);
+        background-repeat: no-repeat;
+        background-position: 0 0;
+        background-size: 100% auto;
+    }
+}
+.main-mycollect{
+    .pdtpx2rem(103);
+}
+.main-mycollect-list{
+    .pdpx2rem(10,20,0,20);
+    border-bottom: 1px solid #E7E7E7;
+    border-top: 1px solid #E7E7E7;
+    &:first-of-type{
+        border-top: 1px solid #E7E7E7;
+    }
+}
+.main-mycollect-funcs{
+    .hpx2rem(35);
+    .pdpx2rem(20,0,20,0);
+    box-sizing: content-box;
+    border-bottom: 1px solid #E7E7E7;
+    img{
+        display: block;
+        .wpx2rem(35);
+        .hpx2rem(35);
+        border-radius: 100%;
+    }
+    h4{
+        .lhpx2rem(35);
+        .ftpx2rem(26);
+        .pdlpx2rem(18);
+        color:#434343;
+        font-weight: normal;
+    }
+    span{
+        .ftpx2rem(20);
+        .lhpx2rem(40);
+        color:#2398dc;
+        cursor: pointer;
+    }
+}
+.main-mycollect-item{
+    .pdpx2rem(20,0,30,0);
+    border-bottom: 1px dashed #D7D6DA;
+    a{
+        display: block;
+        width: 100%;
+        height: 100%;
+        text-decoration: none;
+        img{
+            display: block;
+            .wpx2rem(130);
+            .hpx2rem(130);
+            margin: 0;
+            padding: 0;
+            border:0;
+        }
+        .main-mycollect-info{
+            .pdlpx2rem(150);
+            .hpx2rem(130);
+            h5{
+                .ftpx2rem(22);
+                .hpx2rem(64);
+                .lhpx2rem(32);
+                overflow: hidden;
+                color: #333;
+            }
+            p{
+                .hpx2rem(36);
+                .ftpx2rem(24);
+                .mgtpx2rem(30);
+                span{
+                    .ftpx2rem(20);
+                    color:#898989;
+                    text-decoration: line-through;
+                }
+            }
+        }
+    }
+}
+.main-mycollect-footer{
+    .hpx2rem(50);
+    .lhpx2rem(50);
+    .pdtpx2rem(12);
+    .pdbpx2rem(12);
+    overflow: hidden;
+    span{
+        .ftpx2rem(22);
+        color:#898989;
+    }
+    a{
+        display: block;
+        .wpx2rem(146);
+        .hpx2rem(50);
+        .lhpx2rem(48);
+        .ftpx2rem(22);
+        .bdrapx2rem(10);
+        border:1px solid #f15353;
+        color:#f15353;
+        text-align: center;
+        text-decoration: none;
+    }
+}
+.no-list{
+    .hpx2rem(340);
+    .mgbpx2rem(20);
+    .ftpx2rem(26);
+    text-align: center;
+    background-color: #fff;
+    overflow: hidden;
+    background-image: url(../images/icon-nocollect.png);
+    background-repeat: no-repeat;
+    background-position: center 2.25rem;
+    background-size: 2.625rem 2.325rem;
+    p{
+        color:#d9d9d9;
+        .hpx2rem(38);
+        .lhpx2rem(38);
+        &:first-of-type{
+            .mgtpx2rem(182);
+        }
+    }
+}
