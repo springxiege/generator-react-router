@@ -193,19 +193,53 @@ footer{
                 border-bottom: 1px solid #D3D3D3;
             }
             .pop-title{
+                &.lytitle{
+                    text-align: center;
+                    color:#333;
+                    .hpx2rem(100);
+                    .lhpx2rem(100);
+                    .pdlpx2rem(30);
+                    .pdrpx2rem(30);
+                    .ftpx2rem(36);
+                    p{
+                        border-bottom: 1px solid #D5D5D5;
+                        &::before{
+                            display: inline-block;
+                            content:'';
+                            .wpx2rem(30);
+                            .hpx2rem(35);
+                            .vpx2rem(-4);
+                            .mgrpx2rem(18);
+                            background-image: url(../images/icon_bell.png);
+                            background-repeat: no-repeat;
+                            background-size: 100% auto;
+                            background-position: 0 0;
+                        }
+                    }
+                    
+                }
+            }
+            .pop-content{
                 .pdpx2rem(50,50,50,50);
+                text-align: center;
                 border-bottom: 1px solid #d3d3d3;
-                input{
+                input,select{
                     width: 100%;
                     .hpx2rem(90);
                     .pdlpx2rem(25);
                     .pdrpx2rem(25);
                     .bdrapx2rem(6);
                     .ftpx2rem(30);
+                    text-align: left;
                     color:#A8A8A8;
                     border: 1px solid #D3D3D3;
                     background-color: #F4F4F4;
                     box-sizing: border-box;
+                }
+                &.lynote{
+                    .ftpx2rem(26);
+                    .pdpx2rem(30,40,30,40);
+                    text-align: left;
                 }
             }
             .pop-btns{
@@ -229,6 +263,9 @@ footer{
                     &:last-of-type{
                         border-bottom-right-radius: .375rem;
                     }
+                    &.disabled{
+                        color:#939393;
+                    }
                 }
             }
         }
@@ -243,7 +280,21 @@ footer{
         -webkit-animation:fadeinout .5s forwards;
     }
 }
-
+.pop-error{
+    position: fixed;
+    z-index: 99999;
+    top:50%;
+    left:50%;
+    .ftpx2rem(24);
+    .pdpx2rem(0,30,0,30);
+    .hpx2rem(60);
+    .lhpx2rem(60);
+    .mgtpx2rem(-20);
+    text-align: center;
+    color:#fff;
+    border-radius: 4px;
+    background-color: rgba(0,0,0,.8);
+}
 .btn-add-address{
     .wpx2rem(640);
     .hpx2rem(100);

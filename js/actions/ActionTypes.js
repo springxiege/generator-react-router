@@ -68,8 +68,6 @@
  
  export const DELETE_CONFIRM               = 'DELETE_CONFIRM'
  
- export const DELETE_CANCEL                = 'DELETE_CANCEL'
- 
  export const SELECT_SHOP_GOODS_SINGLE     = 'SELECT_SHOP_GOODS_SINGLE'
  
  export const SELECT_SHOP_GOODS_MULTIPLE   = 'SELECT_SHOP_GOODS_MULTIPLE'
@@ -126,6 +124,10 @@
  export const RECEIPT_ORDER                = 'RECEIPT_ORDER'
  // 退换货订单
  export const RETURN_ORDER                 = 'RETURN_ORDER'
+ // 待评价订单
+ export const RATE_ORDER                   = 'RATE_ORDER'
+
+ export const ORDER_COMMENT                = 'ORDER_COMMENT'
  
  export const DELETE_ORDER                 = 'DELETE_ORDER'
 

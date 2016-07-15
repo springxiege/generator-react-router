@@ -209,6 +209,7 @@
     }
 }
 .comment-detail{
+    display: none;
     .pdpx2rem(40,20,40,20);
     .comment-con{
         .mgbpx2rem(20);
@@ -258,5 +259,43 @@
     }
     &::before{
         .rpx2rem(238);
+    }
+}
+.return-money{
+    select{
+        display: block;
+        .hpx2rem(100);
+        .pdlpx2rem(20);
+        .pdrpx2rem(20);
+        .ftpx2rem(26);
+        .mgbpx2rem(20);
+        width: 100%;
+        color:#545454;
+        border-left: 0;
+        border-right: 0;
+        border-top: 0;
+        border-bottom: 1px solid #E7E7E7;
+    }
+    textarea{
+        display: block;
+        width: 100%;
+        .hpx2rem(280);
+        .pdpx2rem(20,20,20,20);
+        .ftpx2rem(30);
+        .lhpx2rem(42);
+        color:#545454;
+        resize:none;
+        box-sizing: border-box;
+        border:0;
+    }
+    &>p{
+        .hpx2rem(60);
+        .lhpx2rem(60);
+        .ftpx2rem(24);
+        .pdrpx2rem(20);
+        border-bottom: 1px solid #eee;
+        text-align: right;
+        color:#bebebe;
+        background-color: #fff;
     }
 }

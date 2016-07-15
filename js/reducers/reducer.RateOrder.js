@@ -2,7 +2,8 @@ import {
     RATE_ORDER
 } from '../actions/ActionTypes'
 const initialState = {
-    data:[]
+    data:[],
+    comment:[]
 }
 export default function RateOrder (state = initialState,action){
     switch(action.type){

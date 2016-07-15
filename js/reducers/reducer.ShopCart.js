@@ -5,7 +5,6 @@ import {
     INCREMENT,
     DECREMENT,
     DELETE_CONFIRM,
-    DELETE_CANCEL,
     SELECT_SHOP_GOODS_SINGLE,
     SELECT_SHOP_GOODS_MULTIPLE
 } from '../actions/ActionTypes'
@@ -79,16 +78,8 @@ export default function ShopCart(state=initialState,action){
                 totalAmount:GetTotalAmount(_amount)
             })
             break;
-        case DELETE_CANCEL:
-            return Object.assign({},state,{
-                pop:'pop-confirm Unask',
-                delete_id:0,
-            })
-            break;
         case DELETE_CONFIRM:
             return Object.assign({},state,{
-                pop:'pop-confirm Unask',
-                delete_id:0,
                 totalAmount:GetTotalAmount(_amount)
             })
             break;

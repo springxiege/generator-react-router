@@ -144,12 +144,6 @@ export function DeleteCartGoods(id){
     return {type:types.DELETE_SHOP_GOODS,id}
 }
 /**
- * 取消删除
- */
-export function DeleteCancel(){
-    return {type:types.DELETE_CANCEL}
-}
-/**
  * 确认删除
  */
 export function DeleteConfirm(){
@@ -272,30 +266,39 @@ export function getGoodsList(data){
 /**
  * 订单
  */
+// 获取待支付订单
 export function getPendingPayOrder(data){
     return {type:types.PENDING_PAY_ORDER,data}
 }
-
+// 获取未发货订单
 export function getUnfilledOrder(data){
     return {type:types.UNFILLED_ORDER,data}
 }
-
+// 获取确认收货订单
 export function getReceiptOrder(data){
     return {type:types.RECEIPT_ORDER,data}
 }
-
+// 获取退换货订单
 export function getReturnOrder(data){
     return {type:types.RETURN_ORDER,data}
 }
-
+// 获取待评论订单
+export function getRateOrder(data){
+    return {type:types.RATE_ORDER,data}
+}
+// 获取订单评论
+export function getOrderComment(data){
+    return {type:types.ORDER_COMMENT,data}
+}
+// 删除订单
 export function DeleteOrder(data){
     return {type:types.DELETE_ORDER,data}
 }
-
+// 取消删除
 export function DeleteOrderCancel(data){
     return {type:types.DELETE_ORDER_CANCEL,data}
 }
-
+// 确认删除
 export function DeleteOrderConfirm(data){
     return {type:types.DELETE_ORDER_CONFIRM,data}
 }

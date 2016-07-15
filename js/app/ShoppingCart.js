@@ -52,28 +52,27 @@ class ShoppingCart extends React.Component {
         e.preventDefault();
         e.stopPropagation();
         let id = $(e.target).data('id');
-        this.props.dispatch(DeleteCartGoods(id))
-    }
-    deleteCancel(){
-        this.props.dispatch(DeleteCancel())
-    }
-    deleteConfirm(){
-        let _id = this.props.state.delete_id
-        $.ajax({
-            url: config.url + '/goods/cart/'+_id,
-            type: 'POST',
-            dataType: 'json',
-            data: {_method: 'delete'},
-            beforeSend:function(){
+        $.confirm({
+            content:'删除后无法恢复',
+            okBtn:function(){
+                $.ajax({
+                    url: config.url + '/goods/cart/'+id,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {_method: 'delete'},
+                    beforeSend:function(){
 
-            },
-            error:function(error){
-                console.error(error)
-            },
-            success:(data)=>{
-                if(parseInt(data.code)==0){
-                    this.props.dispatch(DeleteConfirm())
-                }
+                    },
+                    error:function(error){
+                        console.error(error)
+                    },
+                    success:(data)=>{
+                        if(parseInt(data.code)==0){
+                            $.error('删除成功！')
+                            this.props.dispatch(DeleteConfirm())
+                        }
+                    }
+                })
             }
         })
     }
@@ -202,18 +201,6 @@ class ShoppingCart extends React.Component {
                     </aside>
                     <Link to="/Buy/shopcart">去结算</Link>
                 </footer>
-                <div className={this.props.state.pop}>
-                    <div className="pop-container">
-                        <div className="pop-main">
-                            <i className="pop-btn-close"></i>
-                            <h2>删除后无法恢复</h2>
-                            <div className="pop-btns clearfix">
-                                <span className="pop-btn-cancle fl" onClick={e=>this.deleteCancel(e)}>取消</span>
-                                <span className="pop-btn-ok fr" onClick={e=>this.deleteConfirm(e)}>确认</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         )
     }

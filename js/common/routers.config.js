@@ -21,6 +21,7 @@ import UnfilledOrder from '../app/UnfilledOrder'            //未发货订单
 import ReceiptOrder from '../app/ReceiptOrder'              // 已发货订单
 import ReturnOrder from '../app/ReturnOrder'                //退换货
 import RateOrder from '../app/RateOrder'                    //评价
+import Reason from '../app/Reason'                          //退换货原因
 export default {
     component: 'div',
     childRoutes: [{
@@ -90,6 +91,10 @@ export default {
     {
         path:"/PaySuccess/:payStatus", //payStatus表示支付成功的状态，0为失败，1为成功
         component:PaySuccess
+    },
+    {
+        path:"/Reason/:orderId",
+        component:Reason
     },
     {
         path:"/Order",

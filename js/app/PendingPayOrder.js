@@ -5,7 +5,7 @@ import {findDOMNode} from 'react-dom'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
 import { 
-    getPendingPayOrder
+    getPendingPayOrder,
     DeleteOrder,
     DeleteOrderCancel,
     DeleteOrderConfirm
@@ -24,7 +24,12 @@ class PendingPayOrder extends Component{
             success:(data)=>{
                 console.log(data)
                 if(parseInt(data.code) === 0){
-                    this.props.dispatch(getPendingPayOrder(data.data.data))
+                    if(data.data.data){
+                        this.props.dispatch(getPendingPayOrder(data.data.data))
+                    }else{
+                        alert(data.data.msg)
+                    }
+                    
                 }
             }
         })
@@ -39,28 +44,31 @@ class PendingPayOrder extends Component{
         $order.find('.part-list').each(function(index,item){
             _ids.push($(item).data('id'))
         })
-
-        $.ajax({
-            url: config.url + '/orders/cancel',
-            type: 'POST',
-            dataType: 'json',
-            data: {
-                _method:'delete',
-                ids:_ids
-            },
-            error:(error)=>{
-                console.error(error)
-            },
-            success:(data)=>{
-                if(parseInt(data.code) === 0){
-                    $order.remove();
-                }
+        $.confirm({
+            content:'取消订单后无法恢复',
+            okBtn:function(){
+                $.ajax({
+                    url: config.url + '/orders/cancel',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        _method:'delete',
+                        ids:_ids
+                    },
+                    error:(error)=>{
+                        console.error(error)
+                    },
+                    success:(data)=>{
+                        if(parseInt(data.code) === 0){
+                            $order.remove();
+                        }
+                    }
+                })
             }
-        })
-        
+        });
     }
     render(){
-        let _HTML = ''
+        let _HTML = '暂无待支付订单'
         let _data = this.props.state.data
         if(_data.length){
             _HTML = _data.map((item,index)=>{
@@ -69,14 +77,14 @@ class PendingPayOrder extends Component{
                 return (
                    <div className="main-module" key={index}>
                         <div className="part-item">
-                            <h3><img src="images/3.jpg" alt="" />&ensp;&ensp;王小二的时尚卖手 <span className="order-status fr">买家待付款</span></h3>
+                            <h3><img src="images/3.jpg" alt="" />&ensp;&ensp;{item.shop_name} <span className="order-status fr">买家待付款</span></h3>
                             {item.items.map((subitem,subindex)=>{
                                 let _link = '/ProductDetails/'+subitem.goods_id
                                 _totalPrice += (subitem.preferential-0)
                                 return (
                                     <div className="part-list" key={subindex} data-id={subitem.id}>
-                                        <div className="part-info clearfix">
-                                            <Link to={_link}>
+                                        <div className="part-info">
+                                            <Link to={_link} className="clearfix">
                                                 <img src={subitem.goods.goods_images[0]} alt="" className="fl" />
                                                 <div className="part-detail">
                                                     <h4>{subitem.goods.title}</h4>
