@@ -1,37 +1,81 @@
 'use strict';
-// 详情页  page  
+// 详情页  page
 import React from 'react';
-import ProductImages from '../ProductImages.js';
-import ProductTitle from '../ProductTitle.js';
-import ProductDescription from '../ProductDescription.js';
-import ProductPriceAndFuncs from '../ProductPriceAndFuncs.js';
-import ProductOriginalPriceAndFee from '../ProductOriginalPriceAndFee.js';
-import ProductTabs from '../ProductTabs.js';
-import Recommend from '../Recommend.js';
-import ProductDetailFooter from '../ProductDetailFooter.js';
-export class ProductDetails extends React.Component {
-    render() {
-        var _Children = React.Children.map(this.props.children, function(data) {
-            console.log(data);
-            console.log(React.cloneElement(data, {
-                doSomething: '1111'
-            }))
+import ReactDOM from 'react-dom'
+import {
+    Provider,
+    connect
+} from 'react-redux'
+import ProductImages from '../components/ProductImages.js';
+import ProductTitle from '../components/ProductTitle.js';
+import ProductDescription from '../components/ProductDescription.js';
+import ProductPriceAndFuncs from '../components/ProductPriceAndFuncs.js';
+import ProductOriginalPriceAndFee from '../components/ProductOriginalPriceAndFee.js';
+import ProductSku from '../components/ProductSku.js';
+import ProductTabs from '../components/ProductTabs.js';
+import Recommend from '../components/Recommend.js';
+import ProductSkuSelect from '../components/ProductSkuSelect'
+import ProductDetailFooter from '../components/ProductDetailFooter.js';
+import ProductDate from '../common/ProductDate.js';
+import {
+    GoodsDetail,
+    AddCollect,
+    CancelCollect
+} from '../actions/ActionFuncs'
+class ProductDetails extends React.Component {
+    componentDidMount() {
+        document.title = '商品详情';
+        let _id = this.props.params.DetailId || '1';
+        this.serverRequest = $.ajax({
+            url: config.url + '/goods/detail/' + _id,
+            type: 'GET',
+            dataType: 'json',
+            data: {},
+            error: (error) => {
+                alert('网络错误，请刷新页面重试！');
+                // window.location.reload();
+            },
+            success: (data) => {
+                if (parseInt(data.code) == 0) {
+                    this.props.dispatch(GoodsDetail(data.data));
+                } else {
+                    alert('请求成功，返回错误,错误code:' + data.code + '，请刷新页面重试！');
+                    // window.location.reload();
+                }
+
+            }
         })
+
+    }
+    componentWillUnmount() {
+        this.serverRequest.abort()
+    }
+    render() {
+        // var _Children = React.Children.map(this.props.children, function(data) {});
         return (
             <div>
                 <div className="main">
                     <div className="main-module">
-                        <ProductImages images={ProductDate.goods_images} />
-                        <ProductTitle title={ProductDate.title} />
-                        <ProductDescription description={ProductDate.Description} />
-                        <ProductPriceAndFuncs price={price} />
-                        <ProductOriginalPriceAndFee originalprice={originalprice} fare={ProductDate.fare} />
+                        <ProductImages />
+                        <ProductTitle title={this.props.state.data.title} />
+                        <ProductDescription description={this.props.state.data.description} />
+                        <ProductPriceAndFuncs price={this.props.state.GoodsSelectSku.price} />
+                        <ProductOriginalPriceAndFee originalprice={this.props.state.GoodsSelectSku.originalprice} fare={this.props.state.data.fare} />
                     </div>
-                    <ProductTabs  />
+                    <ProductSku />
+                    <ProductTabs data={this.props.state.data} />
                     <Recommend />
                 </div>
-                <ProductDetailFooter />
+                <ProductDetailFooter userId={this.props.state.userId} />
+                <ProductSkuSelect />
             </div>
         )
     }
 };
+
+function select(state) {
+    return {
+        state: state.GoodsDetail
+    };
+}
+export default connect(select)(ProductDetails);

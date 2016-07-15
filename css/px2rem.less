@@ -13,6 +13,12 @@
 .hpx2rem(@px){
     height:@px*320/@designWidth/20rem;
 }
+.minhpx2rem(@px){
+    min-height:@px*320/@designWidth/20rem;
+}
+.maxhpx2rem(@px){
+    max-height:@px*320/@designWidth/20rem;
+}
 .lhpx2rem(@px){
     line-height:@px*320/@designWidth/20rem;
 }
@@ -57,4 +63,34 @@
 }
 .bgppx2rem(@px1,@px2){
     background-position: @px1*320/@designWidth/20rem @px2*320/@designWidth/20rem;
+}
+.vpx2rem(@px){
+    vertical-align: @px*320/@designWidth/20rem
+}
+.rpx2rem(@px){
+    right: @px*320/@designWidth/20rem
+}
+.bpx2rem(@px){
+    bottom: @px*320/@designWidth/20rem
+}
+.lpx2rem(@px){
+    left: @px*320/@designWidth/20rem
+}
+.tpx2rem(@px){
+    top: @px*320/@designWidth/20rem
+}
+.bbpx2rem(@px,@solid,@color){
+    border-bottom: @px*320/@designWidth/20rem @solid @color;
+}
+.btpx2rem(@px,@solid,@color){
+    border-top: @px*320/@designWidth/20rem @solid @color;
+}
+.blpx2rem(@px,@solid,@color){
+    border-left: @px*320/@designWidth/20rem @solid @color;
+}
+.brpx2rem(@px,@solid,@color){
+    border-right: @px*320/@designWidth/20rem @solid @color;
+}
+.bopx2rem(@px,@solid,@color){
+    border: @px*320/@designWidth/20rem @solid @color;
 }

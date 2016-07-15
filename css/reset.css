@@ -3,7 +3,11 @@
 body, div, dl, dt, dd, ul, ol, li,h 1, h 2, h 3, h 4, h 5, h 6, pre, code,form, fieldset, legend, input, button,textarea, p, blockquote, th, td {margin: 0;padding: 0;font-size:12px;}
 img {border: 0;}
 cite,em,strong,th{font-style: inherit;font-weight:inherit; *font-style:normal;}
+<<<<<<< HEAD
 h 1, h 2, h 3, h 4, h 5, h 6 {font-size:100%;font-weight:normal;}
+=======
+h1, h2, h3, h4, h5, h6 {font-size:100%;font-weight:normal;}
+>>>>>>> e7f2fccc1cb3f3be08f785d1fe3250e02e882be6
 input,button,textarea,select{font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit;}
 input,button,textarea,select{*font-size:100%;}
 body {background-color:#F2F3F5;line-height:1.5; 
@@ -21,7 +25,35 @@ form{display:inline;}
 a{text-decoration:none;}
 a:link{color:#333;}
 a:visited{color:#333;}
+<<<<<<< HEAD
 a:hover{color:#333;text-decoration:underline;}
 /*---------------------全局css定义结束-------------------*/
 .fl{float: left;}
 .fr{float: right;}
+=======
+a:hover{color:#333;text-decoration:none;}
+/*---------------------全局css定义结束-------------------*/
+.fl{float: left;}
+.fr{float: right;}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
+}
+input,
+button,
+textarea{
+    -webkit-appearance: none !important;
+}
+.pdb0{
+    padding-bottom: 0 !important;
+}
+.pdt15{
+    padding-top: .375rem !important;
+}
+.mgt20{
+    margin-top: .5rem !important;
+}
+.bbn{border-bottom: 0 !important;}
+.pdt100{padding-top: 2.5rem !important;}
+>>>>>>> e7f2fccc1cb3f3be08f785d1fe3250e02e882be6

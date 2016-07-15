@@ -1,24 +1,42 @@
 'use strict';
 // 总路由配置
+import '../../css/reset.css';
+import '../../css/layout.css';
+import '../plugins/hotcss/hotcss.js';
+import routes from './routers.config'
 import React from "react";
 import ReactDOM from 'react-dom';
-import ProductDetails from '../ProductDetails.js';
-import UserCenter from '../UserCenter.js';
-import AllGoods from '../AllGoods.js';
-import ShoppingCart from '../ShoppingCart.js';
 import {
     Router,
     Route,
     Link,
     hashHistory,
-    IndexRoute
+    IndexRoute,
+    History
 } from 'react-router';
+import {
+    createStore,
+    combineReducers,
+    applyMiddleware,
+    compose
+} from 'redux'
+import {
+    Provider,
+    connect
+} from 'react-redux'
+import {
+    createHistory
+} from 'history';
+import {
+    reduxReactRouter,
+    routerStateReducer,
+    ReduxRouter,
+    pushState
+} from 'redux-react-router';
+import trade from '../reducers/index'
+let store = createStore(trade);
 ReactDOM.render(
-    <Router history={hashHistory}>
-        <Route path="/" component={ProductDetails} />
-        <Route path="/ProductDetails" component={ProductDetails} />
-        <Route path="/UserCenter" component={UserCenter} />
-        <Route path="/allgoods" component={AllGoods} />
-        <Route path="/ShoppingCart" component={ShoppingCart} />
-    </Router>,
+    <Provider store={store}>
+        <Router history={hashHistory} routes={routes} />
+    </Provider>,
     document.getElementById('app'));

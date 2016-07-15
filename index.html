@@ -6,6 +6,15 @@
 </head>
 <body>
     <div id="app"></div>
-    <script src="js/common/Router.js"></script>
+    <div id="sku"></div>
+    <script>
+        window.config = {};
+        window.config.url = 'http://xds.51lianying.local';
+        // window.config.url = 'http://test.api.51lianying.com';
+    </script>
+    <script src="js/plugins/jquery/jquery-1.12.4.min.js"></script>
+    <script src="/js/plugins/store-localstorage/store.min.js"></script>
+    <script src="/js/common/LoginAuthorization.js"></script>
+    <script src="dist/js/app/bundle.js"></script>
 </body>
 </html>
