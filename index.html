@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta content="telephone=no" name="format-detection">
+	<meta name="baidu-site-verification" content="8Fnp0XSqkK" />
+	<title>服饰</title>
+	<script src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
+	<script type="text/javascript" src="http://s.51lianying.com/js/mobi/for_alipay/jquery.iosslider.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="http://s.51lianying.com/css/mobi/for_alipay/main.css" />
+</head>
+
+<body><div class="wrap-body">
+	<!--header-->
+	<div class="header">
+		<h1>艾美服饰</h1>
+	</div>
+	<!--search-->
+	<div class="search">
+		<input type="text" class="seaInp"/ >
+	</div>
+	<!--banner-->
+	<div class="banner">
+		<div class="banPic">
+			<ul class="slider">
+				<li><img src="http://s.51lianying.com/images/mobi/for_alipay/banner-01.jpg" width="320" height="172" /></li>
+				<li><img src="http://s.51lianying.com/images/mobi/for_alipay/banner-02.jpg" width="320" height="172" /></li>
+				<li><img src="http://s.51lianying.com/images/mobi/for_alipay/banner-03.jpg" width="320" height="172" /></li>
+				<li><img src="http://s.51lianying.com/images/mobi/for_alipay/banner-04.jpg" width="320" height="172" /></li>
+			</ul>
+
+		<div class="banNum">
+			<div class="button"></div>
+			<div class="button"></div>
+			<div class="button"></div>
+			<div class="button"></div>
+		</div>
+		</div>
+	</div>
+<script type="text/javascript">
+			$(document).ready(function() {
+
+				$('.banPic').iosSlider({
+					scrollbar: true,
+					snapToChildren: true,
+					desktopClickDrag: true,
+					autoSlide: true,
+					scrollbarLocation: 'top',
+					scrollbarMargin: '10px 10px 0 10px',
+					scrollbarBorderRadius: '0',
+					responsiveSlideWidth: true,
+					navSlideSelector: $('.banNum .button'),
+					infiniteSlider: true,
+					startAtSlide: '2',
+					onSlideChange: slideContentChange,
+					onSlideComplete: slideContentChange,
+					onSliderLoaded: slideContentChange
+
+				});
+
+				function slideContentChange(args) {
+
+					/* indicator */
+					$(args.sliderObject).parent().find('.banNum .button').removeClass('selected');
+					$(args.sliderObject).parent().find('.banNum .button:eq(' + (args.currentSlideNumber - 1) + ')').addClass('selected');
+				}
+			});
+		</script>
+	<!--entery-->
+	<div class="entery">
+		<img src="http://s.51lianying.com/images/mobi/for_alipay/adv.jpg">
+	</div>
+    <div class="scroll_body" style="width:310px;height:auto;margin:10px auto;overflow:hidden">
+	<!--infinite_scroll-->
+	<div class="infinite_scroll">
+		<div class="list_item masonry_brick">
+			<a href="http://www.51lianying.mobi/static/for_alipay/goods/1.html"><img src="http://s.51lianying.com/images/mobi/for_alipay/show_01.jpg"/></a>
+			<p><a href="http://www.51lianying.mobi/static/for_alipay/goods/1.html" class="title">partysu同款</a><span class="price">￥99.99</span></p>
+			<span class="lover">234</span>
+			<span class="words">15</span>
+		</div>
+		<div class="list_item masonry_brick">
+			<a href="http://www.51lianying.mobi/static/for_alipay/goods/2.html"><img src="http://s.51lianying.com/images/mobi/for_alipay/show02-1.png"/></a>
+			<p><a href="http://www.51lianying.mobi/static/for_alipay/goods/2.html" class="title">甜美优雅仙女连衣裙</a><span class="price">￥99.99</span></p>
+			<span class="lover">234</span>
+			<span class="words">15</span>
+		</div>
+		<div class="list_item masonry_brick">
+			<a href="http://www.51lianying.mobi/static/for_alipay/goods/3.html"><img src="http://s.51lianying.com/images/mobi/for_alipay/show03-1.png"/></a>
+			<p><a href="http://www.51lianying.mobi/static/for_alipay/goods/3.html" class="title">中长裙波西米亚</a><span class="price">￥99.99</span></p>
+			<span class="lover">234</span>
+			<span class="words">15</span>
+		</div>
+		<div class="list_item masonry_brick">
+			<a href="http://www.51lianying.mobi/static/for_alipay/goods/4.html"><img src="http://s.51lianying.com/images/mobi/for_alipay/show04-1.png"/></a>
+			<p><a href="http://www.51lianying.mobi/static/for_alipay/goods/4.html" class="title">圆领短袖字母雪纺连衣裙</a><span class="price">￥99.99</span></p>
+			<span class="lover">234</span>
+			<span class="words">15</span>
+		</div>
+		<div class="list_item masonry_brick">
+			<a href="http://www.51lianying.mobi/static/for_alipay/goods/5.html"><img src="http://s.51lianying.com/images/mobi/for_alipay/show05-1.png"/></a>
+			<p><a href="http://www.51lianying.mobi/static/for_alipay/goods/5.html" class="title">大摆不规则长裙</a><span class="price">￥99.99</span></p>
+			<span class="lover">234</span>
+			<span class="words">15</span>
+		</div>
+		<div class="list_item masonry_brick">
+			<a href="http://www.51lianying.mobi/static/for_alipay/goods/6.html"><img src="http://s.51lianying.com/images/mobi/for_alipay/show06-1.png"/></a>
+			<p><a href="http://www.51lianying.mobi/static/for_alipay/goods/6.html" class="title">欧美甜美优雅连衣裙</a><span class="price">￥99.99</span></p>
+			<span class="lover">234</span>
+			<span class="words">15</span>
+		</div>
+		<!-- 
+		<div class="list_item masonry_brick">
+			<a href="http://www.51lianying.cn/index.php/microWeb/index/pageid/685"><img src="http://s.51lianying.com/images/mobi/for_alipay/show07-1.jpg"/></a>
+			<p><a href="http://www.51lianying.cn/index.php/microWeb/index/pageid/685" class="title">八爪鱼</a><span class="price">￥25.00</span></p>
+			<span class="lover">552</span>
+			<span class="words">150</span>
+		</div>
+				<div class="list_item masonry_brick">
+			<a href="http://www.51lianying.cn/index.php/microWeb/index/pageid/745"><img src="http://s.51lianying.com/images/mobi/for_alipay/show08-1.jpg"/></a>
+			<p><a href="http://www.51lianying.cn/index.php/microWeb/index/pageid/745" class="title">水蜜桃</a><span class="price">￥68.00</span></p>
+			<span class="lover">652</span>
+			<span class="words">250</span>
+		</div>
+		 -->
+	</div>
+	</div>
+	<script type="text/javascript" src="http://s.51lianying.com/js/mobi/for_alipay/jquery.masonry.js"></script>
+    <script type="text/javascript" src="http://s.51lianying.com/js/mobi/for_alipay/jquery.infinitescroll.js"></script>
+    <script type="text/javascript">
+    $(function(){
+        var $container = $('.infinite_scroll');
+        $container.imagesLoaded( function(){
+            $container.masonry({
+            itemSelector : '.masonry_brick',
+            gutterWidth : 10,
+            isAnimated: true,
+            });
+        });
+
+    })
+    </script>
+
+
+</div>
+<!--footer-->
+<div class="copyright">
+	<p>增值电信业务经营许可证:浙B2-20080252-13</p>
+</div>
+<div class="footer">
+	<div class="footCont">
+	<dl><a href="">
+		<dt><img src="http://s.51lianying.com/images/mobi/for_alipay/tel.png"/></dt>
+		<dd>电话</dd>
+	</a></dl>
+	<dl><a href="">
+		<dt><img src="http://s.51lianying.com/images/mobi/for_alipay/share.png"/></dt>
+		<dd>分享</dd>
+	</a></dl>
+	<dl><a href="">
+		<dt><img src="http://s.51lianying.com/images/mobi/for_alipay/msg.png"/></dt>
+		<dd>短信</dd>
+	</a></dl>
+	<dl><a href="">
+		<dt><img src="http://s.51lianying.com/images/mobi/for_alipay/words.png"/></dt>
+		<dd>留言</dd>
+	</a></dl>
+	<dl><a href="">
+		<dt><img src="http://s.51lianying.com/images/mobi/for_alipay/map.png"/></dt>
+		<dd>地图</dd>
+	</a></dl>
+	</div>
+</div>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?7c4885f8aa34ddcdf57d83b147b81875";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<script type="text/javascript">
+/*<![CDATA[*/
+jQuery(function($) {
+});
+/*]]>*/
+</script>
+</body>
+</html>
+
