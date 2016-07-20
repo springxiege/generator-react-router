@@ -76,7 +76,7 @@ class UnfilledOrder extends Component{
         })
     }
     render(){
-        let _HTML = '暂无待支付订单'
+        let _HTML = (<p className="nolist">暂无待发货订单</p>)
         let _data = this.props.state.data
         if(_data.length){
             _HTML = _data.map((item,index)=>{

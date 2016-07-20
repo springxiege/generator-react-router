@@ -49,12 +49,15 @@
         float: left;
         .wpx2rem(34);
         .hpx2rem(33);
-        background-image: url(../images/icon_star_selected.png);
+        background-image: url(../images/icon_star_unselected.png);
         background-repeat: no-repeat;
         background-size: 100% auto;
         background-position: 0 0;
         &:not(:last-of-type){
             .mgrpx2rem(35);
+        }
+        &.cur{
+            background-image: url(../images/icon_star_selected.png);
         }
     }
 }
@@ -76,10 +79,16 @@
             background-position: 0 0;
         }
         &:first-of-type::before{
+            background-image: url(../images/icon_good_unselected.png);
+        }
+        &:first-of-type.cur::before{
             background-image: url(../images/icon_good.png);
         }
         &:last-of-type::before{
             background-image: url(../images/icon_bad.png);
+        }
+        &:last-of-type.cur::before{
+            background-image: url(../images/icon_bad_selected.png);
         }
         &:first-of-type{
             .mgrpx2rem(70);

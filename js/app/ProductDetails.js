@@ -10,7 +10,7 @@ import ProductPriceAndFuncs from '../components/ProductPriceAndFuncs.js';
 import ProductOriginalPriceAndFee from '../components/ProductOriginalPriceAndFee.js';
 import ProductSku from '../components/ProductSku.js';
 import ProductTabs from '../components/ProductTabs.js';
-import Recommend from '../components/Recommend.js';
+// import Recommend from '../components/Recommend.js';
 import ProductSkuSelect from '../components/ProductSkuSelect'
 import ProductDetailFooter from '../components/ProductDetailFooter.js';
 import ProductDate from '../common/ProductDate.js';
@@ -58,7 +58,7 @@ class ProductDetails extends React.Component {
                     </div>
                     <ProductSku />
                     <ProductTabs data={this.props.state.data} />
-                    <Recommend />
+                    {/*<Recommend />*/}
                 </div>
                 <ProductDetailFooter userId={this.props.state.userId} />
                 <ProductSkuSelect />

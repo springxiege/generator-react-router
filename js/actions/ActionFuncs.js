@@ -6,6 +6,24 @@ export function GoodsDetail(data){
     return {type: types.GOODS_DETAIL,data}
 }
 /**
+ * 获取用户信息
+ */
+export function getUserInfo(data){
+    return {type: types.GET_USER_INFO,data}
+}
+/**
+ * 个人中心数据
+ */
+export function getUserCenterInfo(data){
+    return {type: types.GET_USER_CENTER_INFO,data}
+}
+/**
+ * 修改用户昵称
+ */
+export function ModifyNickName(name){
+    return {type:types.MODIFY_NICKNAME,name}
+}
+/**
  * 商品sku
  */
 export function GoodsSelectSku(index){
@@ -278,29 +296,29 @@ export function getUnfilledOrder(data){
 export function getReceiptOrder(data){
     return {type:types.RECEIPT_ORDER,data}
 }
+// 获取更多确认收货订单
+export function getMoreReceiptOrder(data){
+    return {type:types.LOAD_MORE_RECEIPT_ORDER,data}
+}
 // 获取退换货订单
 export function getReturnOrder(data){
     return {type:types.RETURN_ORDER,data}
+}
+// 获取更多退换货订单
+export function loadMoreReturnOrder(data){
+    return {type:types.LOAD_MORE_RETURN_ORDER,data}
 }
 // 获取待评论订单
 export function getRateOrder(data){
     return {type:types.RATE_ORDER,data}
 }
+// 获取更多待评论订单
+export function getMoreRateOrder(data){
+    return {type:types.LOAD_MORE_RATE_ORDER}
+}
 // 获取订单评论
 export function getOrderComment(data){
     return {type:types.ORDER_COMMENT,data}
-}
-// 删除订单
-export function DeleteOrder(data){
-    return {type:types.DELETE_ORDER,data}
-}
-// 取消删除
-export function DeleteOrderCancel(data){
-    return {type:types.DELETE_ORDER_CANCEL,data}
-}
-// 确认删除
-export function DeleteOrderConfirm(data){
-    return {type:types.DELETE_ORDER_CONFIRM,data}
 }
 // 获取售后跟踪信息
 export function getTracking(data){

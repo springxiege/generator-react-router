@@ -4,13 +4,15 @@ import React,{Component} from 'react'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
 import {  
-    getReturnOrder
+    getReturnOrder,
+    loadMoreReturnOrder
 } from '../actions/ActionFuncs'
 class ReturnOrder extends Component{
     componentDidMount() {
-        document.title = '退换货'    
+        document.title = '退换货' 
+        let _this = this   
         this.serverRequest = $.ajax({
-            url: config.url + '/orders/abandon',
+            url: config.url + '/orders/abandon?pagesize=2',
             type: 'GET',
             dataType: 'json',
             data: {},
@@ -22,6 +24,19 @@ class ReturnOrder extends Component{
                 if(parseInt(data.code) === 0){
                     if(data.data.data){
                         this.props.dispatch(getReturnOrder(data.data.data))
+                        // 加载更多列表
+                        $.loadpage({
+                            url:config.url + '/orders/abandon?pagesize=2',
+                            callback:function(pdata){
+                                if(parseInt(pdata.code) === 0){
+                                    if(pdata.data.data&&pdata.data.data.length){
+                                        let curData = _this.props.state.data
+                                        let newData = curData.concat(pdata.data.data)
+                                        _this.props.dispatch(loadMoreReturnOrder(newData))
+                                    }
+                                }
+                            }
+                        })
                     }
                 }
             }
@@ -32,7 +47,7 @@ class ReturnOrder extends Component{
         this.serverRequest.abort();
     }
     render(){
-        let _HTML = '暂无退换货订单'
+        let _HTML = (<p className="nolist">暂无退换货订单</p>)
         let _data = this.props.state.data
         if(_data.length){
             _HTML = _data.map((item,index)=>{
@@ -59,16 +74,16 @@ class ReturnOrder extends Component{
                             </div>
                             <div className="part-subtotal">小计：<span>{_totalPrice}</span>元</div>
                             <div className="part-funcs return-order">
-                                <span className="fr">{item.abandon_type == 1?"退款中":"退货中"}</span>
+                                <span className="fr">{(item.abandon_type == 1) ? (item.is_confirm==1?"已退款":"退款中") : (item.is_confirm==1 ? "已换货" : "换货中")}</span>
                                 <span className="fr"><Link to={"/Tracking/"+item.order_id}>售后跟踪</Link></span>
                             </div>
                             <div className="return-detail clearfix">
                                 <div className="return-logo fl"><p>{(item.abandon_type == 1) ? (item.is_confirm==1?"已退款":"退款中") : (item.is_confirm==1 ? "已换货" : "换货中")}</p></div>
                                 <div className="return-info">
-                                    {item.tel===null ? (
+                                    {item.shop.user_info.service_mobile == "" ? (
                                         <p>商家联系电话：<a href="javascript:;">暂无联系方式</a></p>
                                     ) : (
-                                        <p>商家联系电话：<a href="tel://$item.tel">item.tel</a></p>
+                                        <p>商家联系电话：<a href={`tel//${item.shop.user_info.service_mobile}`}>{item.shop.user_info.service_mobile}</a></p>
                                     )}
                                     
                                     <p>等待商家确认：<span>{item.is_confirm==1?"已确认":"未确认"}</span></p>
@@ -81,7 +96,7 @@ class ReturnOrder extends Component{
             })
         }
         return (
-            <div>{_HTML}</div>
+            <div id="boxmodel">{_HTML}</div>
         )
     }
 }

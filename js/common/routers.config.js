@@ -24,6 +24,7 @@ import RateOrder from '../app/RateOrder'                    //评价
 import Reason from '../app/Reason'                          //换货原因
 import Back from '../app/Back'                              //退货原因
 import Tracking from '../app/Tracking'                      //售后跟踪
+import Comment from '../app/Comment'                        //售后跟踪
 export default {
     component: 'div',
     childRoutes: [{
@@ -105,6 +106,10 @@ export default {
     {
         path:"/Tracking/:orderId",
         component:Tracking
+    },
+    {
+        path:"/Comment/:orderId",
+        component:Comment
     },
     {
         path:"/Order",

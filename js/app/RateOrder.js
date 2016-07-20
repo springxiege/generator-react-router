@@ -5,13 +5,14 @@ import {Link} from 'react-router'
 import {connect} from 'react-redux'
 import {  
     getRateOrder,
-    getOrderComment
+    getOrderComment,
+    getMoreRateOrder
 } from '../actions/ActionFuncs'
 class RateOrder extends Component{
     componentDidMount() {
         document.title = '评价'   
         this.serverRequest = $.ajax({
-            url: config.url + '/orders/comment',
+            url: config.url + '/orders/comment?pagesize=2',
             type: 'GET',
             dataType: 'json',
             data: {},
@@ -23,6 +24,19 @@ class RateOrder extends Component{
                 if(parseInt(data.code) === 0){
                     if(data.data.data){
                         this.props.dispatch(getRateOrder(data.data.data))
+                        // 加载更多列表
+                        $.loadpage({
+                            url:config.url + '/orders/comment?pagesize=2',
+                            callback:function(pdata){
+                                if(parseInt(pdata.code) === 0){
+                                    if(pdata.data.data&&pdata.data.data.length){
+                                        let curData = _this.props.state.data
+                                        let newData = curData.concat(pdata.data.data)
+                                        _this.props.dispatch(getMoreRateOrder(newData))
+                                    }
+                                }
+                            }
+                        })
                     }
                 }
             }
@@ -32,42 +46,55 @@ class RateOrder extends Component{
     componentWillUnmount() {
         this.serverRequest.abort()
     }
-    ConfirmOrder(e){
-        
-    }
     ShowComment(e){
         let $target = $(e.target)
         let $origin = $target.closest('.part-funcs').siblings('.comment-detail')
         let id = $target.data('id')
-        $.ajax({
-            url: config.url + '/orders/comment/' + id,
-            type: 'GET',
-            dataType: 'json',
-            data: {},
-            error:(error)=>{
-                console.error(error)
-            },
-            success:(data)=>{
-                console.log(data)
-                if(parseInt(data.code) === 0){
-                    if(data.data.data){
-                        let _HTML = ''
-                        $.each(data.data.data,function(index,item){
-                            _HTML += '<div class="comment-con"><header>评价：2016年07月13日 17:18 <span class="fr stars stars-1"></span></header>'
-                                    +'<article>宝贝很不错，这个价格挺值的，喜欢的亲们不要犹豫呀！</article></div>'
-                        })
-                        $origin.empty().append(_HTML).slideToggle()
-                    }else{
-                        $.error(data.data.msg,1000)
+        if($origin.hasClass('show')){
+            $origin.removeClass('show').slideUp()
+        }else{
+            $.ajax({
+                url: config.url + '/orders/comment/' + id,
+                type: 'GET',
+                dataType: 'json',
+                data: {},
+                error:(error)=>{
+                    console.error(error)
+                },
+                success:(data)=>{
+                    console.log(data)
+                    if(parseInt(data.code) === 0){
+                        if(data.data.data.length){
+                            let _HTML = ''
+                            $.each(data.data.data,function(index,item){
+                                if(parseInt(item.type) === 1){
+                                    _HTML += '<div class="comment-con">'
+                                                +'<header>评价：'+item.created_at
+                                                    +'<span class="fr stars stars-'+item.satisfaction_star+'"></span>'
+                                                +'</header>'
+                                                +'<article>'+item.content+'</article>'
+                                            +'</div>'
+                                }else{
+                                    _HTML += '<div class="comment-replay">'
+                                                +'<header>商家回复：'+item.created_at+'</header>'
+                                                +'<summary>商家：'+item.content+'</summary>'
+                                            +'</div>'
+                                }
+                            })
+                            $origin.empty().append(_HTML).addClass('show').slideDown()
+                        }else{
+                            $.error(data.data.msg,1000)
+                        }
+                        
                     }
-                    
                 }
-            }
-        })
+            })
+        }
+        
         
     }
     render(){
-        let _HTML = '暂无待评价订单'
+        let _HTML = (<p className="nolist">暂无待评价订单</p>)
         let _data = this.props.state.data
         if(_data.length){
             _HTML = _data.map((item,index)=>{
@@ -95,7 +122,16 @@ class RateOrder extends Component{
                                 小计：<span>{_totalPrice}</span>元
                             </div>
                             <div className="part-funcs">
-                                <span className="fr" onClick={e=>this.ConfirmOrder(e)}>评价</span>
+                                {item.comment_stats==0 ? (
+                                    <span className="fr"><Link to={"/Comment/"+item.id}>评价</Link></span>
+                                ) : (
+                                    item.comment_stats==1 ? (
+                                        <span className="fr">待商家回复</span>
+                                    ) : (
+                                        <span className="fr"><Link to={"/Comment/"+item.id}>追评</Link></span>
+                                    )
+                                )}
+                                
                                 <span className="fr" onClick={e=>this.ShowComment(e)} data-id={item.id}>查看评价</span>
                             </div>
                             <div className="return-detail comment-detail clearfix">

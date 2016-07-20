@@ -1,5 +1,6 @@
 import {
-    RATE_ORDER
+    RATE_ORDER,
+    LOAD_MORE_RATE_ORDER
 } from '../actions/ActionTypes'
 const initialState = {
     data:[],
@@ -12,6 +13,10 @@ export default function RateOrder (state = initialState,action){
                 data:action.data
             })
             break;
+        case LOAD_MORE_RATE_ORDER:
+            return Object.assign({},state,{
+                data:action.data
+            })
         default:
             return state;
             break;

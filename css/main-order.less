@@ -20,6 +20,11 @@
             color:#686868;
             border:1px solid #D7D7D7;
         }
+        a{
+            display: block;
+            color:#F15353;
+            text-decoration: none;
+        }
     }
 }
 .order-status{
@@ -209,6 +214,8 @@
     }
 }
 .comment-detail{
+    display: none;
+    .minhpx2rem(0);
     .pdpx2rem(40,20,40,20);
     .comment-con{
         .mgbpx2rem(20);
@@ -249,15 +256,25 @@
             .lhpx2rem(30);
             color:#252525;
         }
-        .comment-replay{
-            .pdlpx2rem(24);
-            summary{
-                color:#e8402a;
-            }
-        }
     }
     &::before{
         .rpx2rem(238);
+    }
+}
+.comment-replay{
+    .pdlpx2rem(24);
+    header{
+        .ftpx2rem(20);
+        .hpx2rem(40);
+        .lhpx2rem(20);
+        .pdpx2rem(10,0,10,0);
+        color:#afafaf;
+        box-sizing: border-box;
+    }
+    summary{
+        .ftpx2rem(24);
+        .lhpx2rem(30);
+        color:#e8402a;
     }
 }
 .return-money{

@@ -70,7 +70,9 @@ class ProductTabs extends React.Component {
         this.productTabs.update();
     }
     render() {
-
+        let _data = this.props.state.data
+        let _good_comment = _data.coumt_commet.favorable_comment
+        let _bad_comment = _data.coumt_commet.bad_review
         return (
             <div className="main-module">
                 <div className="main-detailtab">
@@ -85,7 +87,7 @@ class ProductTabs extends React.Component {
                         <div className="main-product-wrapper swiper-wrapper">
                             <ProductDetailsChild content={this.props.data.content} />
                             <ProductForSale snum={this.props.data.snum} madeby={this.props.data.made_by} expire={this.props.data.expire} maintain={this.props.data.maintain} deliver_address={this.props.data.deliver_address} />
-                            <ProductComment />
+                            <ProductComment good_count={_good_comment} bad_count={_bad_comment} />
                         </div>
                     </div>
                 </div>

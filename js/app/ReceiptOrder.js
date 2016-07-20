@@ -4,7 +4,8 @@ import React,{Component} from 'react'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
 import {  
-    getReceiptOrder
+    getReceiptOrder,
+    getMoreReceiptOrder
 } from '../actions/ActionFuncs'
 class ReceiptOrder extends Component{
     componentDidMount() {
@@ -22,6 +23,19 @@ class ReceiptOrder extends Component{
                 if(parseInt(data.code) === 0){
                     if(data.data.data){
                         this.props.dispatch(getReceiptOrder(data.data.data))
+                        // 加载更多列表
+                        $.loadpage({
+                            url:config.url + '/orders/posting?pagesize=2',
+                            callback:function(pdata){
+                                if(parseInt(pdata.code) === 0){
+                                    if(pdata.data.data&&pdata.data.data.length){
+                                        let curData = _this.props.state.data
+                                        let newData = curData.concat(pdata.data.data)
+                                        _this.props.dispatch(getMoreReceiptOrder(newData))
+                                    }
+                                }
+                            }
+                        })
                     }else{
                         alert(data.data.msg)
                     }
@@ -71,7 +85,7 @@ class ReceiptOrder extends Component{
         
     }
     render(){
-        let _HTML = '暂无待确认收货订单'
+        let _HTML = (<p className="nolist">暂无待确认收货订单</p>)
         let _data = this.props.state.data
         if(_data.length){
             _HTML = _data.map((item,index)=>{

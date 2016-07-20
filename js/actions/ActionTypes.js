@@ -1,10 +1,13 @@
  /**
  * 商品详情页
  */
- 
- export const REQUEST_GET                  = 'REQUEST_GET'
- 
  export const TRADE                        = 'TRADE'
+ // 获取用户信息
+ export const GET_USER_INFO                = 'GET_USER_INFO'
+ // 修改用户昵称
+ export const MODIFY_NICKNAME              = 'MODIFY_NICKNAME'
+ // 获取个人中心数据
+ export const GET_USER_CENTER_INFO         = 'GET_USER_CENTER_INFO'
  /**
  * [GOODS_DETAIL description]
  * @type {String}
@@ -118,24 +121,26 @@
   */
  // 待支付订单
  export const PENDING_PAY_ORDER            = 'PENDING_PAY_ORDER'
+ // 更多待支付订单
+ export const LOAD_MORE_PENDING_PAY_ORDER  = 'LOAD_MORE_PENDING_PAY_ORDER'
  // 未发货订单
  export const UNFILLED_ORDER               = 'UNFILLED_ORDER'
+ // 更多未发货订单
+ export const LOAD_MORE_UNFILLED_ORDER     = 'LOAD_MORE_UNFILLED_ORDER'
  // 确认收货订单
  export const RECEIPT_ORDER                = 'RECEIPT_ORDER'
+ // 更多确认收货订单
+ export const LOAD_MORE_RECEIPT_ORDER      = 'LOAD_MORE_RECEIPT_ORDER'
  // 退换货订单
  export const RETURN_ORDER                 = 'RETURN_ORDER'
+ // 退换货加载更多
+ export const LOAD_MORE_RETURN_ORDER       = 'LOAD_MORE_RETURN_ORDER'
  // 待评价订单
  export const RATE_ORDER                   = 'RATE_ORDER'
+ // 待评价订单加载更多
+ export const LOAD_MORE_RATE_ORDER         = 'LOAD_MORE_RATE_ORDER'
  // 退换货信息
  export const TRACKING                     = 'TRACKING'
-
- export const ORDER_COMMENT                = 'ORDER_COMMENT'
- 
- export const DELETE_ORDER                 = 'DELETE_ORDER'
-
- export const DELETE_ORDER_CANCEL          = 'DELETE_ORDER_CANCEL'
-
- export const DELETE_ORDER_CONFIRM         = 'DELETE_ORDER_CONFIRM'
  
  
  

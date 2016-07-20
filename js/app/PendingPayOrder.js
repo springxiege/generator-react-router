@@ -6,9 +6,7 @@ import {Link} from 'react-router'
 import {connect} from 'react-redux'
 import { 
     getPendingPayOrder,
-    DeleteOrder,
-    DeleteOrderCancel,
-    DeleteOrderConfirm
+    LOAD_MORE_PENDING_PAY_ORDER
 } from '../actions/ActionFuncs'
 class PendingPayOrder extends Component{
     componentDidMount() {
@@ -68,7 +66,7 @@ class PendingPayOrder extends Component{
         });
     }
     render(){
-        let _HTML = '暂无待支付订单'
+        let _HTML = (<p className="nolist">暂无待支付订单</p>)
         let _data = this.props.state.data
         if(_data.length){
             _HTML = _data.map((item,index)=>{

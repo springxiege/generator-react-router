@@ -1,7 +1,8 @@
 'use strict';
 // 详情页评论
 import '../../css/main-comment.css'
-import React from 'react';
+import React from 'react'
+import {findDOMNode} from 'react-dom'
 import {connect} from 'react-redux'
 import {GetComment,GetGoodComment,GetBadComment} from '../actions/ActionFuncs'
 class ProductComment extends React.Component {
@@ -13,6 +14,7 @@ class ProductComment extends React.Component {
     }
     _Get_Good_Comment(e){
         if(e.target.className == 'cur'){return false;}
+        let $target = $(findDOMNode(e.target))
         let _id  = this.props.state.id || '1'
         $.ajax({
             url: config.url + '/goods/comment/'+_id+'?summary=1',
@@ -24,6 +26,7 @@ class ProductComment extends React.Component {
             },
             success:(data)=>{
                 if(parseInt(data.code)==0){
+                    $target.addClass('cur').siblings('li').removeClass('cur');
                     this.props.dispatch(GetGoodComment(data))
                 }
             }
@@ -33,6 +36,7 @@ class ProductComment extends React.Component {
     }
     _Get_Bad_Comment(e){
         if(e.target.className == 'cur'){return false;}
+        let $target = $(findDOMNode(e.target))
         let _id  = this.props.state.id || '1'
         $.ajax({
             url: config.url + '/goods/comment/'+_id+'?summary=2',
@@ -44,6 +48,7 @@ class ProductComment extends React.Component {
             },
             success:(data)=>{
                 if(parseInt(data.code)==0){
+                    $target.addClass('cur').siblings('li').removeClass('cur');
                     this.props.dispatch(GetBadComment(data))
                 }
             }
@@ -65,7 +70,7 @@ class ProductComment extends React.Component {
                 break;
         }
         let _li = !data.data.data.length ? "" : data.data.data.map((item,index)=>{
-            let _clsName = 'coment-stars stars'+item.comment_start
+            let _clsName = 'coment-stars stars'+item.satisfaction_star
             let buy = item.buy
             return (
                 <div className="coment-list" key={index}>
@@ -89,8 +94,8 @@ class ProductComment extends React.Component {
             <div className="main-product-comment swiper-slide swiper-no-swiping">
                 <div className="coment-tab">
                     <ul>
-                        <li className={_status==0?"cur":""} onClick={e => this._Get_Good_Comment(e)}>好评<span>(12306)</span></li>
-                        <li className={_status==1?"cur":""} onClick={e => this._Get_Bad_Comment(e)}>差评<span>(11)</span></li>
+                        <li onClick={e => this._Get_Good_Comment(e)}>好评<span>({this.props.good_count})</span></li>
+                        <li onClick={e => this._Get_Bad_Comment(e)}>差评<span>({this.props.bad_count})</span></li>
                     </ul>
                 </div>
                 <div className="coment-container">

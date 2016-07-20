@@ -74,6 +74,11 @@ const initialState = {
             "/images/1.jpg",
             "/images/1.jpg"
         ],
+        "coumt_commet":{
+            "bad_review":0,
+            "count":0,
+            "favorable_comment":0
+        },
         "content": "<p><img src=\"/images/2.jpg\"><p>",
         "made_by": "1",
         "deliver_address": "1",

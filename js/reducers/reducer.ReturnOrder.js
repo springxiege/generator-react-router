@@ -1,5 +1,6 @@
 import {
-    RETURN_ORDER
+    RETURN_ORDER,
+    LOAD_MORE_RETURN_ORDER
 } from '../actions/ActionTypes'
 const initialState = {
     data:[]
@@ -11,6 +12,10 @@ export default function ReturnOrder (state = initialState,action){
                 data:action.data
             })
             break;
+        case LOAD_MORE_RETURN_ORDER:
+            return Object.assign({},state,{
+                data:action.data
+            })
         default:
             return state;
             break;

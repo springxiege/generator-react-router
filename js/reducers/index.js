@@ -16,6 +16,8 @@ import ReceiptOrder from './reducer.ReceiptOrder'
 import ReturnOrder from './reducer.ReturnOrder'
 import RateOrder from './reducer.RateOrder'
 import Tracking from './reducer.Tracking'
+import Settings from './reducer.Settings'
+import UserCenter from './reducer.UserCenter'
 
 const trade = combineReducers({
     GoodsDetail:GoodsDetail,                    //商品详情页
@@ -33,6 +35,8 @@ const trade = combineReducers({
     ReturnOrder:ReturnOrder,                    //退换货订单
     RateOrder:RateOrder,                        //待评价订单
     Tracking:Tracking,                          //售后跟踪信息
+    Settings:Settings,                          //设置页面的用户信息
+    UserCenter:UserCenter,                      //个人中心数据
 
 })
 
