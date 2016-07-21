@@ -16,6 +16,9 @@ class ReturnOrder extends Component{
             type: 'GET',
             dataType: 'json',
             data: {},
+            beforeSend:()=>{
+                $.loading.show();
+            },
             error:(error)=>{
                 console.error(error)
             },
@@ -24,6 +27,7 @@ class ReturnOrder extends Component{
                 if(parseInt(data.code) === 0){
                     if(data.data.data){
                         this.props.dispatch(getReturnOrder(data.data.data))
+                        $.loading.hide();
                         // 加载更多列表
                         $.loadpage({
                             url:config.url + '/orders/abandon?pagesize=2',

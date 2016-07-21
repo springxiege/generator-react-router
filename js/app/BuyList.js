@@ -25,14 +25,18 @@ class BuyList extends Component{
                 type: 'GET',
                 dataType: 'json',
                 data: {},
+                beforeSend:()=>{
+                    $.loading.show();
+                },
                 error:(error)=>{
                     console.error(error)
                 },
                 success:(data)=>{
                     if(parseInt(data.code) == 0){
-                        this.props.dispatch(gotoBuy(data.data))
-                        let _data = this.props.state.BuyList
-                        store.set('BuyList',_data)
+                        this.props.dispatch(gotoBuy(data.data));
+                        $.loading.hide();
+                        let _data = this.props.state.BuyList;
+                        store.set('BuyList',_data);
                     }
                 }
             })

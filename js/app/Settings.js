@@ -17,6 +17,9 @@ class Settings extends Component{
             type: 'GET',
             dataType: 'json',
             data: {},
+            beforeSend:()=>{
+                $.loading.show()
+            },
             error:(error)=>{
                 console.error(error)
             },
@@ -25,6 +28,7 @@ class Settings extends Component{
                 if(parseInt(data.code) === 0){
                     if(data.data.data){
                         this.props.dispatch(getUserInfo(data.data.data))
+                        $.loading.hide();
                     }
                 }
             }
@@ -80,28 +84,54 @@ class Settings extends Component{
     }
     // 上传图片
     uploadImage(e){
-        var imgCanvas=document.createElement('canvas'),
-            imgContext=imgCanvas.getContext('2d'),
-            imgAsDataURL=imgCanvas.toDataURL(e.target.value);
-        console.log(imgAsDataURL)
-        $.ajax({
-            url: 'http://s.51lianying.com/upload/?c=image&m=process_for_form&type=trade&item=product&field=photo&nodomain=1',
-            type: 'POST',
-            dataType: 'json',
-            data: {
-                url:imgAsDataURL
-            },
-            contentType: false,
-            cache: false,
-            processData:false,
-            error:(error)=>{
-                console.error(error)
-            },
-            success:(data)=>{
-                console.log(data)
-            }
-        })
-        
+        var reader = new FileReader();
+        reader.readAsDataURL(e.target.files[0]);
+        if(e.target.files[0].size > 2*1024*1024){
+            $.error('上传图片大于2M，请上传小图片')
+            return false;
+        }
+        reader.onload = function(e){
+            // console.log(e.target.result);
+            var base64 = e.target.result;
+            base64 = base64.substr( base64.indexOf(',') + 1 );
+            
+            $.ajax({
+                url: 'http://s.51lianying.com/upload/?c=image&m=process_for_form&type=trade&item=avator&base64=1&field=photo',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    'image_data':base64
+                },
+                error:(error)=>{
+                    console.error(error)
+                },
+                success:(datas)=>{
+                    console.log(datas)
+                    $.ajax({
+                        url: config.url + '/user/info',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                            _method:'put',
+                            headimgurl:datas.data.url
+                        },
+                        error:(error)=>{
+                            console.error(error)
+                        },
+                        success:(idata)=>{
+                            console.log(idata)
+                            if(parseInt(idata.code) === 0){
+                                $.error('上传成功');
+                                $('#logo').prop('src', datas.data.url)
+                            }else{
+                                $.error('上传失败，请重试！')
+                            }
+                        }
+                    })
+                    
+                }
+            })
+        }
     }
     render(){
         let _data = this.props.state
@@ -111,7 +141,7 @@ class Settings extends Component{
                 <div className="settings-header">
                     <div className="settings-img fl">
                         <input type="file" name="photo" accept="image/*" id="" onChange={e=>this.uploadImage(e)} />
-                        <img src={_data.headimgurl} alt="" />
+                        <img id="logo" src={_data.headimgurl} alt="" />
                     </div>
                     <div className="settings-name">
                         <h2>

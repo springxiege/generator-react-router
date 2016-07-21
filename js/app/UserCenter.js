@@ -17,13 +17,17 @@ class UserCenter extends React.Component {
             type: 'GET',
             dataType: 'json',
             data: {},
+            beforeSend:()=>{
+                $.loading.show();
+            },
             error:(error)=>{
                 console.error(error)
             },
             success:(data)=>{
                 console.log(data)
                 if(parseInt(data.code)===0){
-                    this.props.dispatch(getUserCenterInfo(data.data))
+                    this.props.dispatch(getUserCenterInfo(data.data));
+                    $.loading.hide();
                 }
             }
         })

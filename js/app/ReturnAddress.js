@@ -94,14 +94,15 @@ class ReturnAddressList extends Component {
             dataType: 'json',
             data: {},
             beforeSend:()=>{
-                console.log('beforeSend');
+                $.loading.show();
             },
             error:(error)=>{
-                console.error(error)
+                console.error(error);
             },
             success:(data)=>{
                 if(parseInt(data.code) == 0){
-                    this.props.dispatch(ReturnAddress(data.data))
+                    this.props.dispatch(ReturnAddress(data.data));
+                    $.loading.hide();
                 }
             }
         })

@@ -3,7 +3,10 @@
 import React from 'react';
 import {Link} from 'react-router';
 import {connect} from 'react-redux'
-import {gotoBuy} from '../actions/ActionFuncs'
+import {
+    gotoBuy,
+    ShowAndHideSelectSku
+} from '../actions/ActionFuncs'
 class ProductDetailFooter extends React.Component {
     gotobuy(){
         let _data      = this.props.state.GoodsDetail
@@ -15,7 +18,7 @@ class ProductDetailFooter extends React.Component {
         let _title     = _data.data.title
         let _temp      = {}
         if(_select === null || _subselect === null){
-            alert('请选择规格')
+            this.props.dispatch(ShowAndHideSelectSku())
             return false;
         }
         _temp.id          = _id;

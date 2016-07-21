@@ -21,7 +21,6 @@ import {
     GODDS_BUY_SKU_SUB,
     UPDATA_BUYLIST
 } from '../actions/ActionTypes'
-import commentDate from '../common/commentDate'
 // 处理数据分发到每个模块
 
 // 评论

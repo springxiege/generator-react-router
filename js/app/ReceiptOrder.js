@@ -9,12 +9,16 @@ import {
 } from '../actions/ActionFuncs'
 class ReceiptOrder extends Component{
     componentDidMount() {
-        document.title = '已发货'     
+        document.title = '已发货'  
+        let _this = this   
         this.serverRequest = $.ajax({
             url: config.url + '/orders/posting',
             type: 'GET',
             dataType: 'json',
             data: {},
+            beforeSend:function(){
+                $.loading.show();
+            },
             error:(error)=>{
                 console.error(error)
             },
@@ -22,7 +26,8 @@ class ReceiptOrder extends Component{
                 console.log(data)
                 if(parseInt(data.code) === 0){
                     if(data.data.data){
-                        this.props.dispatch(getReceiptOrder(data.data.data))
+                        this.props.dispatch(getReceiptOrder(data.data.data));
+                        $.loading.hide();
                         // 加载更多列表
                         $.loadpage({
                             url:config.url + '/orders/posting?pagesize=2',

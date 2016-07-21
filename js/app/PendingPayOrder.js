@@ -6,16 +6,20 @@ import {Link} from 'react-router'
 import {connect} from 'react-redux'
 import { 
     getPendingPayOrder,
-    LOAD_MORE_PENDING_PAY_ORDER
+    getMorePendingPayOrder
 } from '../actions/ActionFuncs'
 class PendingPayOrder extends Component{
     componentDidMount() {
         document.title = '待支付订单' 
+        let _this = this
         this.serverRequest = $.ajax({
             url: config.url + '/orders/prepayment?pagesize=2&page=1',
             type: 'GET',
             dataType: 'json',
             data: {},
+            beforeSend:function(){
+                $.loading.show()
+            },
             error:(error)=>{
                 console.error(error)
             },
@@ -24,6 +28,20 @@ class PendingPayOrder extends Component{
                 if(parseInt(data.code) === 0){
                     if(data.data.data){
                         this.props.dispatch(getPendingPayOrder(data.data.data))
+                        $.loading.hide()
+                        // 加载更多列表
+                        $.loadpage({
+                            url:config.url + '/orders/prepayment?pagesize=2',
+                            callback:function(pdata){
+                                if(parseInt(pdata.code) === 0){
+                                    if(pdata.data.data&&pdata.data.data.length){
+                                        let curData = _this.props.state.data
+                                        let newData = curData.concat(pdata.data.data)
+                                        _this.props.dispatch(getMorePendingPayOrder(newData))
+                                    }
+                                }
+                            }
+                        })
                     }else{
                         alert(data.data.msg)
                     }

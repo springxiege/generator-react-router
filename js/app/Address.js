@@ -125,7 +125,17 @@ class AddressList extends Component {
     }
     // 编辑
     Edit(e,id){
-        window.location.hash = '#/AddressEdit/'+id
+        switch(this.props.params.transfertype){
+            case 'buy':
+                window.location.hash = '#/AddressEdit/buy/'+id
+                break;
+            case 'setting':
+                window.location.hash = '#/AddressEdit/setting/'+id
+                break;
+            default:
+                break;
+        }
+        
     }
     componentDidMount(){
         document.title = '坡地库'
@@ -135,7 +145,7 @@ class AddressList extends Component {
             dataType: 'json',
             data: {},
             beforeSend:()=>{
-                console.log('beforeSend');
+                $.loading.show()
             },
             error:(error)=>{
                 console.error(error)
@@ -144,6 +154,7 @@ class AddressList extends Component {
                 if(parseInt(data.code) == 0){
                     if(data.data.length){
                         this.props.dispatch(Address(data.data))
+                        $.loading.hide()
                     }else{
                         window.location.hash = '#/AddressAdd/'+this.props.params.transfertype
                     }

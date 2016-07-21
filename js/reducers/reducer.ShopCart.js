@@ -1,7 +1,6 @@
 import $ from 'jquery'
 import { 
     SHOP_CART,
-    DELETE_SHOP_GOODS,
     INCREMENT,
     DECREMENT,
     DELETE_CONFIRM,
@@ -10,8 +9,6 @@ import {
 } from '../actions/ActionTypes'
 
 let initialState = {
-    pop:'pop-confirm Unask',
-    delete_id:0,
     amount:{},
     totalAmount:0,
     checkedAll:false,
@@ -19,6 +16,7 @@ let initialState = {
 }
 export default function ShopCart(state=initialState,action){
     let _amount = {},_totalAmount=0,currentAmount=0,_checkedAll=false;
+    // 计算总金额
     let GetTotalAmount = (data)=>{
         let _data = [],total=0;
         for (let i in data){
@@ -34,7 +32,26 @@ export default function ShopCart(state=initialState,action){
         }
         return total.toFixed(2)
     }
+    // 删除购物车商品更新数据
+    let updateSateDate = (id) =>{
+        let oldDate = state.data;
+        let newDate=[];
+        for (var i = 0; i < oldDate.length; i++) {
+            let item = oldDate[i];
+            if(parseInt(item.id) != parseInt(id)){
+                newDate.push(item)
+            }
+        }
+        return newDate;
+    }
+    // 更新删除后的check状态
+    let updateAmount = (id) => {
+        let _Amount = state.amount;
+        delete _Amount[id];
+        return _Amount;
+    }
     switch (action.type) {
+        // 初始化请求数据
         case SHOP_CART:
             if(action.data.data.length){
                 action.data.data.forEach((item,index)=>{
@@ -50,12 +67,7 @@ export default function ShopCart(state=initialState,action){
                 amount:_amount
             })
             break;
-        case DELETE_SHOP_GOODS:
-            return Object.assign({},state,{
-                pop:'pop-confirm ask',
-                delete_id:action.id
-            })
-            break;
+        // 增加单个商品的购买数量
         case INCREMENT:
             currentAmount = state.amount[action.id].count
             currentAmount++;
@@ -67,6 +79,7 @@ export default function ShopCart(state=initialState,action){
                 totalAmount:GetTotalAmount(_amount)
             })
             break;
+        // 减去单个商品的购买数量
         case DECREMENT:
             currentAmount = state.amount[action.id].count;
             currentAmount--
@@ -78,11 +91,15 @@ export default function ShopCart(state=initialState,action){
                 totalAmount:GetTotalAmount(_amount)
             })
             break;
+        // 删除购物车商品
         case DELETE_CONFIRM:
             return Object.assign({},state,{
-                totalAmount:GetTotalAmount(_amount)
+                amount:updateAmount(action.id),
+                data:updateSateDate(action.id),
+                totalAmount:GetTotalAmount(updateAmount(action.id))
             })
             break;
+        // 选中单个购买商品
         case SELECT_SHOP_GOODS_SINGLE:
             _amount = Object.assign({},state.amount);
             _amount[action.id].checked = !_amount[action.id].checked;
@@ -101,6 +118,7 @@ export default function ShopCart(state=initialState,action){
                 checkedAll:_checkedAll
             })
             break;
+        // 购物车购买商品全部选中
         case SELECT_SHOP_GOODS_MULTIPLE:
             _amount = Object.assign({},state.amount);
             for(let i in _amount){

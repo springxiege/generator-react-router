@@ -16,12 +16,16 @@ class AddressEdit extends Component {
             type: 'POST',
             dataType: 'json',
             data: {},
+            beforeSend:()=>{
+                $.loading.show()
+            },
             error:(error)=>{
                 console.error(error)
             },
             success:(data)=>{
                 if(parseInt(data.code)==0){
                     this.props.dispatch(EditAddress(data.data))
+                    $.loading.hide()
                 }
             }
         })
@@ -33,6 +37,7 @@ class AddressEdit extends Component {
     // 编辑完成->确定
     OK(e){
         let id         = this.props.params.AddressId
+        let _type      = this.props.params.type
         let $form      = $(findDOMNode(this.refs.form))
         let _name      = $form.find('[name=name]').val()
         let _tel       = $form.find('[name=tel]').val()
@@ -58,7 +63,19 @@ class AddressEdit extends Component {
             success:(data)=>{
                 console.log(data)
                 if(parseInt(data.code)==0){
-                    window.location.hash = '#/Address'
+                    switch(_type){
+                        case 'buy':
+                            window.location.hash = '#/Address/buy'
+                            break;
+                        case 'setting':
+                            window.location.hash = '#/Address/setting'
+                            break;
+                        default:
+                            window.location.hash = '#/Address/setting'
+                            break;
+                    }
+
+                    
                 }
             }
         })

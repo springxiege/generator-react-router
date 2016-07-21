@@ -4,16 +4,21 @@ import React,{Component} from 'react'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
 import {  
-    getUnfilledOrder
+    getUnfilledOrder,
+    getMoreUnfilledOrder
 } from '../actions/ActionFuncs'
 class UnfilledOrder extends Component{
     componentDidMount() {
-        document.title = '待发货订单'  
+        document.title = '待发货订单' 
+        let _this = this 
         this.serverRequest = $.ajax({
-            url: config.url + '/orders/predelivery',
+            url: config.url + '/orders/predelivery?pagesize=2',
             type: 'GET',
             dataType: 'json',
             data: {},
+            beforeSend:function(){
+                $.loading.show()
+            },
             error:(error)=>{
                 console.error(error)
             },
@@ -21,6 +26,20 @@ class UnfilledOrder extends Component{
                 console.log(data)
                 if(parseInt(data.code) === 0){
                     this.props.dispatch(getUnfilledOrder(data.data.data))
+                    $.loading.hide()
+                    // 加载更多列表
+                    $.loadpage({
+                        url:config.url + '/orders/predelivery?pagesize=2',
+                        callback:function(pdata){
+                            if(parseInt(pdata.code) === 0){
+                                if(pdata.data.data&&pdata.data.data.length){
+                                    let curData = _this.props.state.data
+                                    let newData = curData.concat(pdata.data.data)
+                                    _this.props.dispatch(getMoreUnfilledOrder(newData))
+                                }
+                            }
+                        }
+                    })
                 }
             }
         });

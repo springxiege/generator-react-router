@@ -77,8 +77,8 @@
             }
             var $pop = $('#pop-confirm'),
                 _height = $pop.find('.pop-main').height();
-            if(opts.init && (typeof(opts.init) === 'function')){
-                opts.init($pop)
+            if(defaults.init && (typeof(defaults.init) === 'function')){
+                defaults.init($pop)
             }
             // 居中
             $pop.find('.pop-main').css({
@@ -86,16 +86,16 @@
             });
             // 取消
             $pop.on('click touchend', '.pop-btn-close,.pop-btn-cancle', function(event) {
-                if(opts.CancelBtn && typeof opts.CancelBtn === 'function'){
-                    opts.CancelBtn();
+                if(defaults.CancelBtn && typeof defaults.CancelBtn === 'function'){
+                    defaults.CancelBtn();
                 };
                 $pop.remove();
             });
             // 确定
             $pop.on('click touchend', '.pop-btn-ok', function(event) {
-                if(opts.okBtn && typeof opts.okBtn === 'function'&&!$(this).hasClass('disabled')){
-                    opts.okBtn($pop);
-                    if(opts.remove){$pop.remove();}
+                if(defaults.okBtn && typeof defaults.okBtn === 'function'&&!$(this).hasClass('disabled')){
+                    defaults.okBtn($pop);
+                    if(defaults.remove){$pop.remove();}
                 }else{
                     return false;
                 }
@@ -124,6 +124,7 @@
         loadpage:function(opts){
             var defaults = $.extend(true, {
                 url:'',
+                pagesize:2,
                 page:2,
             }, opts);
             var flag = true,noMore = false;
@@ -161,6 +162,23 @@
                     }
                 }
             });
+        },
+        /**
+         * [loading 页面加载]
+         * @type {Object}
+         */
+        loading:{
+            show:function(){
+                if(!$('#mobi_page_loading').length){
+                    $('body').append('<div id="mobi_page_loading" style="position:fixed;z-index:9999999;top:0;left:0;width:100%;height:100%;background-color:rgba(255,255,255,.98);"><div class="page-loader page-loader-circularSquare"></div></div>')
+                }else{
+                    $('#mobi_page_loading').show();
+                }
+                
+            },
+            hide:function(){
+                $('#mobi_page_loading').remove();
+            }
         }
     });
         

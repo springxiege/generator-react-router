@@ -16,12 +16,16 @@ class ReturnAddressEdit extends Component {
             type: 'POST',
             dataType: 'json',
             data: {},
+            beforeSend:()=>{
+                $.loading.show();
+            },
             error:(error)=>{
                 console.error(error)
             },
             success:(data)=>{
                 if(parseInt(data.code)==0){
-                    this.props.dispatch(ReturnEditAddress(data.data))
+                    this.props.dispatch(ReturnEditAddress(data.data));
+                    $.loading.hide();
                 }
             }
         })

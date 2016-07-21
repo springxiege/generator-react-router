@@ -19,6 +19,9 @@ class AllGoods extends Component {
             type: 'GET',
             dataType: 'json',
             data: {},
+            beforeSend:()=>{
+                $.loading.show()
+            },
             error:(error)=>{
                 console.error(error);
                 alert('网络错误，页面将刷新重试！');
@@ -27,6 +30,7 @@ class AllGoods extends Component {
             success:(data)=>{
                 if(parseInt(data.code) == 0){
                     this.props.dispatch(getGoodsList(data.data))
+                    $.loading.hide()
                 }else{
                     alert('网络错误，页面将刷新重试！');
                     window.location.reload();

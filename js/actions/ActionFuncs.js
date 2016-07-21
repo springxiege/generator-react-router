@@ -164,8 +164,8 @@ export function DeleteCartGoods(id){
 /**
  * 确认删除
  */
-export function DeleteConfirm(){
-    return {type:types.DELETE_CONFIRM}
+export function DeleteConfirm(id){
+    return {type:types.DELETE_CONFIRM,id}
 }
 /**
  * 选择商品（复选框）--> 单个商品
@@ -288,9 +288,17 @@ export function getGoodsList(data){
 export function getPendingPayOrder(data){
     return {type:types.PENDING_PAY_ORDER,data}
 }
+// 获取更多待支付订单
+export function getMorePendingPayOrder(data){
+    return {type:types.LOAD_MORE_PENDING_PAY_ORDER,data}
+}
 // 获取未发货订单
 export function getUnfilledOrder(data){
     return {type:types.UNFILLED_ORDER,data}
+}
+// 获取更多未发货订单
+export function getMoreUnfilledOrder(data){
+    return {type:types.LOAD_MORE_UNFILLED_ORDER,data}
 }
 // 获取确认收货订单
 export function getReceiptOrder(data){

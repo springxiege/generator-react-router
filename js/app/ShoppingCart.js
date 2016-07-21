@@ -5,6 +5,7 @@
 'use strict';
 import '../../css/main-shopcart.css'
 import React from 'react'
+import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { 
@@ -26,12 +27,19 @@ class ShoppingCart extends React.Component {
             type: 'GET',
             dataType: 'json',
             data: {},
+            beforeSend:()=>{
+                $.loading.show();
+            },
             error:(error)=>{
                 alert('网络错误，页面将刷新重试！');
                 window.location.reload();
             },
             success:(data)=>{
-                this.props.dispatch(ShopCart(data))
+                if(parseInt(data.code) === 0){
+                    this.props.dispatch(ShopCart(data));
+                    $.loading.hide()
+                }
+                
             },
         })
     }
@@ -39,19 +47,19 @@ class ShoppingCart extends React.Component {
         this.serverRequest.abort()
     }
     _ChangeSingle(e){
-        let check = $(e.target).is(':checked'),
-            _id = $(e.target).data('id');
+        let check = $(findDOMNode(e.target)).is(':checked'),
+            _id = $(findDOMNode(e.target)).data('id');
         
         this.props.dispatch(SelectShopGoodsSingle(_id))
     }
     _ChangeAll(e){
-        let checked = $(e.target).is(':checked');
+        let checked = $(findDOMNode(e.target)).is(':checked');
         this.props.dispatch(SelectShopGoodsMultiple(checked))
     }
     deleteThis(e){
-        e.preventDefault();
-        e.stopPropagation();
-        let id = $(e.target).data('id');
+        let _this = this;
+        let id = $(findDOMNode(e.target)).data('id');
+        let $parent = $(findDOMNode(e.target)).closest('.main-module')
         $.confirm({
             content:'删除后无法恢复',
             okBtn:function(){
@@ -69,7 +77,7 @@ class ShoppingCart extends React.Component {
                     success:(data)=>{
                         if(parseInt(data.code)==0){
                             $.error('删除成功！')
-                            this.props.dispatch(DeleteConfirm())
+                            _this.props.dispatch(DeleteConfirm(id))
                         }
                     }
                 })
@@ -77,9 +85,9 @@ class ShoppingCart extends React.Component {
         })
     }
     increment(e){
-        let _id = $(e.target).data('id'),
+        let _id = $(findDOMNode(e.target)).data('id'),
             _current = this.props.state.amount[_id].count,
-            _stock = $(e.target).data('stock'),
+            _stock = $(findDOMNode(e.target)).data('stock'),
             $this = this;
         if(parseInt(_current)==parseInt(_stock)){
             return false;
@@ -108,7 +116,7 @@ class ShoppingCart extends React.Component {
         
     }
     decrement(e){
-        let _id = $(e.target).data('id'),
+        let _id = $(findDOMNode(e.target)).data('id'),
             _current = this.props.state.amount[_id].count,
             $this = this;
         if(parseInt(_current)==1){
@@ -141,7 +149,7 @@ class ShoppingCart extends React.Component {
         let html = ''
         if(data.length){
             html = data.map((item,index)=>{
-                let _link = '/ProductDetails/'+item.id
+                let _link = '/ProductDetails/'+item.goods_id
                 return (
                     <div className="main-module" key={index}>
                         <div className="cart-info">
@@ -152,7 +160,7 @@ class ShoppingCart extends React.Component {
                                 <a href="javascript:;" className="fr" data-id={item.id} onClick={e=>this.deleteThis(e)}>删除</a>
                             </div>
                             <div className="cart-info-item clearfix">
-                                <Link to={_link} className="fl"><img src="images/7.jpg" alt="" /></Link>
+                                <Link to={_link} className="fl"><img src={item.goods.goods_images[0]||item.goods.goods_images[1]||item.goods.goods_images[2]||'images/7.jpg'} alt="" /></Link>
                                 <div>
                                     <p><Link to={_link}>{item.goods.title}</Link></p>
                                     <p>{item.goods_addon.parent_addon ? item.goods_addon.parent_addon.feature_main : ""}  {item.goods_addon.feature_sub}</p>
@@ -161,7 +169,7 @@ class ShoppingCart extends React.Component {
                                         <span className="fl" onClick={e=>this.decrement(e)} data-id={item.id}></span>
                                         <input type="number" name="" value={this.props.state.amount[item.id].count} id="" className="fl" readOnly />
                                         <span className="fl" onClick={e=>this.increment(e)} data-id={item.id} data-stock={item.goods_addon.stock}></span>
-                                        <span className="fr">原小计：699.00元</span>
+                                        {/*<span className="fr">原小计：699.00元</span>*/}
                                     </div>
                                 </div>
                             </div>
@@ -185,6 +193,7 @@ class ShoppingCart extends React.Component {
     }
     render(){
         let _html = this._getList();
+        console.log(this.props.state)
         return (
             <div className="ShopCartList">
                 <div className="main">

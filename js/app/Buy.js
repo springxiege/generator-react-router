@@ -18,13 +18,16 @@ class Buy extends Component{
                 type: 'GET',
                 dataType: 'json',
                 data: {},
+                beforeSend:()=>{
+                    $.loading.show();
+                },
                 error:(error)=>{
-                    console.error(error)
+                    console.error(error);
                 },
                 success:(data)=>{
-                    console.log(data)
                     if(parseInt(data.code) == 0){
-                        this.props.dispatch(Address(data.data))
+                        this.props.dispatch(Address(data.data));
+                        $.loading.hide();
                     }
                 }
             })

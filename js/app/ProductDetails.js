@@ -13,8 +13,11 @@ import ProductTabs from '../components/ProductTabs.js';
 // import Recommend from '../components/Recommend.js';
 import ProductSkuSelect from '../components/ProductSkuSelect'
 import ProductDetailFooter from '../components/ProductDetailFooter.js';
-import ProductDate from '../common/ProductDate.js';
-import { GoodsDetail,AddCollect,CancelCollect } from '../actions/ActionFuncs'
+import { 
+    GoodsDetail,
+    AddCollect,
+    CancelCollect 
+} from '../actions/ActionFuncs'
 class ProductDetails extends React.Component {
     componentDidMount(){
         document.title = '商品详情';
@@ -24,6 +27,9 @@ class ProductDetails extends React.Component {
             type: 'GET',
             dataType: 'json',
             data: {},
+            beforeSend:()=>{
+                $.loading.show();
+            },
             error:(error)=>{
                 alert('网络错误，请刷新页面重试！');
                 // window.location.reload();
@@ -31,6 +37,7 @@ class ProductDetails extends React.Component {
             success: (data)=>{
                 if(parseInt(data.code) == 0){
                     this.props.dispatch(GoodsDetail(data.data));
+                    $.loading.hide();
                 }else{
                     alert('请求成功，返回错误,错误code:'+data.code+'，请刷新页面重试！');
                     // window.location.reload();

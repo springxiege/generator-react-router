@@ -56,7 +56,7 @@ export default {
         component: AddressList
     },
     {
-        path: "/AddressEdit/:AddressId",
+        path: "/AddressEdit/:type/:AddressId",
         component: AddressEdit
     },
     {

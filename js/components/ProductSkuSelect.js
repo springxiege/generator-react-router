@@ -34,7 +34,7 @@ class ProductSkuSelect extends React.Component {
         let clsName = e.target.className
         if(clsName=='cur'){return false;}
         if(this.props.state.GoodsSelectSku.selected === null){
-            alert('请先选择规格一')
+            $.error('请先选择规格一')
             return false;
         }
         this.props.dispatch(GoodsSelectSkuSub(index))
@@ -72,12 +72,12 @@ class ProductSkuSelect extends React.Component {
         let addon_id       = null
         let amount         = GoodsSelectSku.count
         if(selected === null && subselected ===null){
-            alert('请选择规格')
+            $.error('请选择规格')
             return false;
         }
         goods_id = state.data.goods_addon[selected].goods_id
         if(subselected===null){
-            addon_id = state.data.goods_addon[selected].id
+            addon_id = state.data.goods_addon[selected].addon[0].id
         }else{
             addon_id = state.data.goods_addon[selected].addon[subselected].id
         }
@@ -91,13 +91,12 @@ class ProductSkuSelect extends React.Component {
                 amount:amount
             },
             error:(error)=>{
-                alert('加入购物车失败')
+                $.error('加入购物车失败')
             },
             success:(data)=>{
                 if(parseInt(data.code) == 0){
-                    alert('加入购物车成功')
+                    $.error('加入购物车成功')
                 }
-                console.log(data)
             }
         })
         

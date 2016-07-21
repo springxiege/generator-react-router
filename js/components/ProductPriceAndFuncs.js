@@ -3,7 +3,11 @@ import '../../css/main-price.css';
 import React,{PropTypes} from 'react';
 import ReactDOM from 'react-dom';
 import {connect} from 'react-redux'
-import {AddCollect,CancelCollect} from '../actions/ActionFuncs'
+import {
+    AddCollect,
+    ShowAndHideSelectSku, 
+    CancelCollect
+} from '../actions/ActionFuncs'
 class ProductPriceAndFuncs extends React.Component {
     _doCollect(e) {
         let _id     = this.props.state.data.id||'1'
@@ -46,7 +50,7 @@ class ProductPriceAndFuncs extends React.Component {
         let addon_id       = null
         let amount         = GoodsSelectSku.count
         if(selected === null && subselected ===null){
-            alert('请选择规格')
+            this.props.dispatch(ShowAndHideSelectSku())
             return false;
         }
         goods_id = state.data.goods_addon[selected].goods_id
@@ -65,13 +69,12 @@ class ProductPriceAndFuncs extends React.Component {
                 amount:amount
             },
             error:(error)=>{
-                alert('加入购物车失败')
+                $.error('加入购物车失败')
             },
             success:(data)=>{
                 if(parseInt(data.code) == 0){
-                    alert('加入购物车成功')
+                    $.error('加入购物车成功')
                 }
-                console.log(data)
             }
         })
     }

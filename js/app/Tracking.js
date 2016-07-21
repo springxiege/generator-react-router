@@ -15,6 +15,9 @@ class Tracking extends Component{
             type: 'GET',
             dataType: 'json',
             data: {},
+            beforeSend:()=>{
+                $.loading.show();
+            },
             error:(error)=>{
                 console.error(error)
             },
@@ -23,6 +26,7 @@ class Tracking extends Component{
                 if(parseInt(data.code) === 0){
                     if(data.data){
                         this.props.dispatch(getTracking(data.data))
+                        $.loading.hide();
                     }
                 }
             }

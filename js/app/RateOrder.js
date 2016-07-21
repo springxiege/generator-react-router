@@ -11,19 +11,24 @@ import {
 class RateOrder extends Component{
     componentDidMount() {
         document.title = '评价'   
+        let _this = this
         this.serverRequest = $.ajax({
             url: config.url + '/orders/comment?pagesize=2',
             type: 'GET',
             dataType: 'json',
             data: {},
+            beforeSend:function(){
+                $.loading.show();
+            },
             error:(error)=>{
-                console.error(error)
+                console.error(error);
             },
             success:(data)=>{
                 console.log(data)
                 if(parseInt(data.code) === 0){
                     if(data.data.data){
-                        this.props.dispatch(getRateOrder(data.data.data))
+                        this.props.dispatch(getRateOrder(data.data.data));
+                        $.loading.hide();
                         // 加载更多列表
                         $.loadpage({
                             url:config.url + '/orders/comment?pagesize=2',
