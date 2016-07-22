@@ -1,4 +1,3 @@
-import $ from 'jquery'
 import { 
     SHOP_CART,
     INCREMENT,

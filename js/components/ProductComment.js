@@ -1,6 +1,5 @@
 'use strict';
 // 详情页评论
-import '../../css/main-comment.css'
 import React from 'react'
 import {findDOMNode} from 'react-dom'
 import {connect} from 'react-redux'

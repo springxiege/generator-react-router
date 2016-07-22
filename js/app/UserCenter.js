@@ -1,5 +1,4 @@
 'use strict';
-import '../../css/main-usercenter.css'
 import React from 'react';
 import {
     Link
@@ -24,7 +23,6 @@ class UserCenter extends React.Component {
                 console.error(error)
             },
             success:(data)=>{
-                console.log(data)
                 if(parseInt(data.code)===0){
                     this.props.dispatch(getUserCenterInfo(data.data));
                     $.loading.hide();
@@ -38,7 +36,6 @@ class UserCenter extends React.Component {
     }
     render(){
         let _data = this.props.state.data
-        console.log(_data)
         return (
             <div className="main">
                 <div className="usercenter">
@@ -166,7 +163,7 @@ class UserCenter extends React.Component {
 
                 <Recommend />
                 */}
-                <BrowseHistory />
+                <BrowseHistory browsehistory={_data.historyGoods} />
                 <div className="no-longer">
                     <h3><p>没有更多了</p></h3>
                 </div>
@@ -176,7 +173,6 @@ class UserCenter extends React.Component {
     }
 };
 function select(state){
-    console.log(state)
     return {state:state.UserCenter};
 }
 export default connect(select)(UserCenter);

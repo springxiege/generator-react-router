@@ -1,4 +1,3 @@
-import '../../css/main-address.css'
 import React,{Component} from 'react'
 import {connect} from 'react-redux'
 import {
@@ -156,6 +155,7 @@ class AddressList extends Component {
                         this.props.dispatch(Address(data.data))
                         $.loading.hide()
                     }else{
+                        $.loading.hide()
                         window.location.hash = '#/AddressAdd/'+this.props.params.transfertype
                     }
                 }

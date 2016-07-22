@@ -1,5 +1,3 @@
-import '../../css/main-buy.css'
-import '../../css/main-rate.css'
 import React,{Component} from 'react'
 import {findDOMNode} from 'react-dom'
 import {Link} from 'react-router'

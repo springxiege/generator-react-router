@@ -8,8 +8,6 @@ import ProductDetailsChild from './ProductDetailsChild.js';
 import ProductForSale from './ProductForSale.js';
 import ProductComment from './ProductComment.js';
 import Swiper from 'swiper';
-import '../../css/main-detailtab.css';
-import '../plugins/swiper/swiper.min.css';
 class ProductTabs extends React.Component {
     componentDidMount() {
         

@@ -1,4 +1,3 @@
-import '../../css/main-address.css'
 import React,{Component,find} from 'react'
 import {findDOMNode} from 'react-dom'
 import {connect} from 'react-redux'

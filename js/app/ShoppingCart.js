@@ -1,9 +1,7 @@
 /**
  * 购物车
  */
-
 'use strict';
-import '../../css/main-shopcart.css'
 import React from 'react'
 import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
@@ -204,8 +202,8 @@ class ShoppingCart extends React.Component {
                 </div>
                 <footer className="cart-footer clearfix">
                     <aside className="fl">
-                        <label className={this.props.state.checkedAll?"checked fl":"fl"}><input type="checkbox" name="" id="" checked={this.props.state.checkedAll?true :false} onChange={e=>this._ChangeAll(e)} /></label>
-                        <span className="fl">全选</span>
+                        <label className={this.props.state.checkedAll?"checked fl":"fl"}><input type="checkbox" name="" id="allgoods" checked={this.props.state.checkedAll?true :false} onChange={e=>this._ChangeAll(e)} /></label>
+                        <label className="fl" htmlFor="allgoods">全选</label>
                         <p className="fr">合计：<span>{this.props.state.totalAmount}</span></p>
                     </aside>
                     <Link to="/Buy/shopcart">去结算</Link>

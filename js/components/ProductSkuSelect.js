@@ -1,6 +1,5 @@
 'use strict';
 // SKU 属性选择
-import '../../css/main-sku.css'
 import React from 'react';
 import {connect} from 'react-redux'
 import { 
@@ -177,7 +176,7 @@ class ProductSkuSelect extends React.Component {
                 <section className="sku-content">
                     <div className="sku-module">
                         <div className="sku-main">
-                            <span className="sku-close" onClick={e=>this._closeSKU(e)}><a href="javascript:;">&times;</a></span>
+                            <span className="sku-close" onClick={e=>this._closeSKU(e)}><a href="javascript:;" title="关闭"></a></span>
                             <div className="sku-item">
                                 <div className="sku-info clearfix">
                                     <span className="sku-prop-name fl">规格一</span>
@@ -192,9 +191,9 @@ class ProductSkuSelect extends React.Component {
                                     <span className="sku-prop-name fl">数&emsp;量</span>
                                     <div className="sku-prop-item">
                                         <div className="sku-number clearfix">
-                                            <span className="number-down fl" onClick={e=>this._Decrement(e)}>-</span>
+                                            <span className="number-down fl" onClick={e=>this._Decrement(e)} title="减"></span>
                                             <input type="number" value={_count} min="1" max="10" ref="input" readOnly className="number-input fl" />
-                                            <span className="number-up fl" onClick={e=>this._Increment(e)}>+</span>
+                                            <span className="number-up fl" onClick={e=>this._Increment(e)} title="加"></span>
                                         </div>
                                     </div>
                                 </div>

@@ -1,5 +1,4 @@
 'use strict';
-import '../../css/main-price.css';
 import React,{PropTypes} from 'react';
 import ReactDOM from 'react-dom';
 import {connect} from 'react-redux'
@@ -24,17 +23,19 @@ class ProductPriceAndFuncs extends React.Component {
             error:function(error){
                 console.error(error)
                 if(_param._method){
-                    alert('取消收藏失败，请重试')
+                    $.error('取消收藏失败，请重试')
                 }else{
-                    alert('收藏失败，请重试')
+                    $.error('收藏失败，请重试')
                 }
             },
             success:(data)=>{
                 if(parseInt(data.code)==0){
                     if(_param._method){
                         this.props.dispatch(CancelCollect());
+                        $.error('取消收藏成功')
                     }else{
                         this.props.dispatch(AddCollect());
+                        $.error('收藏成功')
                     }
                 }
             }

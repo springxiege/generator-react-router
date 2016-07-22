@@ -1,4 +1,3 @@
-import '../../css/main-address.css'
 import React,{Component} from 'react'
 import {connect} from 'react-redux'
 import {

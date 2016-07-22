@@ -371,22 +371,29 @@ footer{
         .pdrpx2rem(20);
         box-sizing: border-box;
         label{
-            display: block;
-            .wpx2rem(32);
-            .hpx2rem(32);
-            .mgtpx2rem(36);
-            border-radius:100%;
-            border:1px solid #b3b3b3;
-            box-sizing: border-box;
-            input{display: none;}
-            &.checked{
-                border:0;
-                position: relative;
-                z-index: 1;
-                background-image: url(../images/icon_ok_cancle.png);
-                background-repeat: no-repeat;
-                background-size: 100% auto;
-                .bgppx2rem(0,0);
+            &:first-of-type{
+                display: block;
+                .wpx2rem(32);
+                .hpx2rem(32);
+                .mgtpx2rem(36);
+                border-radius:100%;
+                border:1px solid #b3b3b3;
+                box-sizing: border-box;
+                input{display: none;}
+                &.checked{
+                    border:0;
+                    position: relative;
+                    z-index: 1;
+                    background-image: url(../images/icon_ok_cancle.png);
+                    background-repeat: no-repeat;
+                    background-size: 100% auto;
+                    .bgppx2rem(0,0);
+                }
+            }
+            &:last-of-type{
+                .ftpx2rem(30);
+                .pdlpx2rem(15);
+                color:#3b3b3b;
             }
         }
         span{
@@ -438,6 +445,15 @@ footer{
     color: #d5d5d5;
 }
 /*page loading*/
+#mobi_page_loading{
+    position:fixed;
+    z-index:9999999;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background-color:rgba(255,255,255,.98);
+}
 .page-loader {
     position: fixed;
     top: 50%;

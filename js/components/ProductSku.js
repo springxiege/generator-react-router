@@ -1,7 +1,6 @@
 /**
  * sku
  */
-import '../../css/main-sku.css'
 import React ,{Component,PropTypes} from 'react'
 import ReactDOM,{findDOMNode} from 'react-dom'
 import {connect} from 'react-redux'
@@ -15,7 +14,7 @@ class SKU extends Component{
             <div className="main-module">
                 <div className="main-sku" onClick={e=>this.selectsku(e)}>
                     <p>{this.props.state.SelectedSku}</p>
-                    <span>&gt;</span>
+                    <span></span>
                 </div>
             </div>
         )

@@ -1,5 +1,3 @@
-import '../../css/main-buy.css'
-import '../../css/main-order.css'
 import React,{Component} from 'react'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'

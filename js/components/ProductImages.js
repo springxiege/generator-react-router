@@ -6,8 +6,6 @@ import React from 'react';
 import ReactDOM,{findDOMNode} from 'react-dom';
 import { Provider, connect } from 'react-redux'
 import Swiper from 'swiper';
-import '../../css/main-images.css';
-import '../plugins/swiper/swiper.min.css';
 
 class ProductImages extends React.Component {
 

@@ -1,4 +1,3 @@
-import '../../css/main-pay.css'
 import React,{Component} from 'react'
 export default class PaySuccess extends Component{
     render(){

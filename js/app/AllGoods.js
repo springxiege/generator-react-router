@@ -1,13 +1,12 @@
 /**
  * 全部宝贝
  */
-import '../../css/main-allgoods.css'
 import React,{Component} from 'react'
 import {
     Link
 } from 'react-router'
 import {connect} from 'react-redux'
-import Recommend from '../components/Recommend'
+// import Recommend from '../components/Recommend'
 import CopyRight from '../components/CopyRight'
 import { getGoodsList } from '../actions/ActionFuncs'
 class AllGoods extends Component {
@@ -77,7 +76,7 @@ class AllGoods extends Component {
                         </ul>
                     </div>
                 </div>
-                <Recommend />
+                {/*<Recommend />*/}
                 <CopyRight />
             </div>
         )

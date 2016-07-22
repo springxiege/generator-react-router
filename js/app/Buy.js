@@ -1,4 +1,3 @@
-import "../../css/main-buy.css";
 import React,{Component} from 'react'
 import {
     Link
