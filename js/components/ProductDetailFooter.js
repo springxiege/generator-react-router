@@ -9,6 +9,21 @@ import {
 } from '../actions/ActionFuncs'
 class ProductDetailFooter extends React.Component {
     gotobuy(){
+        if(!window.config.isWX){
+            if(store.enabled){
+                var tradeStore = store.get('trade');
+                if(!tradeStore){
+                    window.location.hash = '#/Register/ProductDetails/' + this.props.detailId
+                }else{
+                    if(!tradeStore.token){
+                        window.location.hash = '#/Register/ProductDetails/' + this.props.detailId
+                    }
+                }
+            }else{
+                alert('This browser does not supports localStorage')
+                return false;
+            }
+        }
         let _data      = this.props.state.GoodsDetail
         let _selectObj = _data.GoodsSelectSku
         let _select    = _selectObj.selected
@@ -28,15 +43,39 @@ class ProductDetailFooter extends React.Component {
         _temp.subselected = _subselect;
         window.location.hash = '#/BuyList/'+_id
     }
+    handleToLand(e,url){
+        if(!window.config.isWX){
+            if(store.enabled){
+                var tradeStore = store.get('trade');
+                if(!tradeStore){
+                    window.location.hash = '#/Register/' + url
+                }else{
+                    if(!tradeStore.token){
+                        window.location.hash = '#/Register/' + url
+                    }else{
+                        window.location.hash = '#/' + url
+                    }
+                }
+            }else{
+                alert('This browser does not supports localStorage')
+            }
+        }else{
+            window.location.hash = '#/' + url
+        }
+    }
     render() {
-        let _id = this.props.userId || 1
-        let _link = '/AllGoods/'+_id 
         return (
             <footer>
                 <div className="main-product-footer clearfix">
-                    <div className="main-footer-btn main-footer-icon main-usercenter fl"><Link to="/UserCenter">个人中心</Link></div>
-                    <div className="main-footer-btn main-footer-icon main-shoppingcart fl"><Link to="/ShoppingCart">购物车</Link></div>
-                    <div className="main-footer-btn main-footer-icon main-allgoods fl"><Link to={_link}>全部宝贝</Link></div>
+                    <div className="main-footer-btn main-footer-icon main-usercenter fl" onClick={e=>this.handleToLand(e,'UserCenter')}>
+                        <a href="javascript:;">个人中心</a>
+                        {/*<Link to={`/UserCenter`}>个人中心</Link>*/}
+                    </div>
+                    <div className="main-footer-btn main-footer-icon main-shoppingcart fl" onClick={e=>this.handleToLand(e,'ShoppingCart')}>
+                        <a href="javascript:;">购物车</a>
+                        {/*<Link to={`/ShoppingCart`}>购物车</Link>*/}
+                    </div>
+                    <div className="main-footer-btn main-footer-icon main-allgoods fl"><Link to={`/AllGoods/${this.props.userId || 1}`}>全部宝贝</Link></div>
                     <div className="main-footer-btn main-buy-now" onClick={e=>this.gotobuy(e)}><span>立即购买</span></div>
                 </div>
             </footer>

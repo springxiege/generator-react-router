@@ -24,6 +24,9 @@ class ReturnAddressAdd extends Component {
         $.ajax({
             url: config.url + '/user/returns',
             type: 'POST',
+            headers:{
+                token:config.head
+            },
             dataType: 'json',
             data: param,
             error:(error)=>{

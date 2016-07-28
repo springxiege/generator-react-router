@@ -1,29 +1,23 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux'
+import {findDOMNode} from 'react-dom'
 import { Link } from 'react-router';
-import {getCollectList,CancelCollect} from '../actions/ActionFuncs'
+import {
+    getCollectList,
+    CancelCollect
+} from '../actions/ActionFuncs'
 
 class CollectList extends Component {
     componentDidMount(){
-        this.serverRequest = $.ajax({
-            url: config.url + '/goods/collect',
-            type: 'GET',
-            dataType: 'json',
-            data: {},
-            success:(data)=>{
-                console.log(data)
-                if(parseInt(data.code) == 0){
-                    this.props.dispatch(getCollectList(data.data))
-                }
-            }
-        })
+        
         
     }
     componentWillUnmount() {
-        this.serverRequest.abort()
+        
     }
     cancelCollect(e,id){
-        console.log(id)
+        let $target = $(findDOMNode(e.target)).closest('.main-mycollect-list');
+        let $parent = $target.closest('.main-mycollect');
         $.ajax({
             url: config.url + '/goods/collect/'+id,
             type: 'POST',
@@ -31,21 +25,34 @@ class CollectList extends Component {
             data: {
                 _method:'DELETE'
             },
+            beforeSend:(request)=>{
+                if(config.head!=''){
+                    request.setRequestHeader("token", config.head);
+                }
+            },
             error:(error)=>{
                 console.error(error)
             },
             success:(data)=>{
-                console.log(data)
                 if(parseInt(data.code)==0){
-
+                    $target.remove();
+                    let len = $parent.find('.main-mycollect-list').length
+                    if(!len){
+                        $parent.append('<div class="main0module main-mycollect-list no-list">'
+                                            +'<p>收藏夹空空如也</p>'
+                                            +'<p>快去51推荐收藏吧</p>'
+                                        +'</div>');
+                        $parent.siblings('.main-mycollect-header').find('span').html(len)
+                    }else{
+                        $parent.siblings('.main-mycollect-header').find('span').html(len)
+                    }
                 }
             }
         })
         
     }
     render(){
-        console.log(this.props.state)
-        let _data = this.props.state,collectHtml=0;
+        let _data = this.props.data,collectHtml=0;
         if(!_data.data.data.length){
             collectHtml = (
                 <div className="main0module main-mycollect-list no-list">
@@ -81,7 +88,7 @@ class CollectList extends Component {
             })
         }
         return (
-            <div className="main">
+            <div className="main pdb0">
                 <div className="main-module-tree main-mycollect-header">
                     <h3 className="main-collect-title">收藏了<span>{_data.data.total}</span>个宝贝</h3>
                 </div>

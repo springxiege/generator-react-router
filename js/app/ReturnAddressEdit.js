@@ -12,6 +12,9 @@ class ReturnAddressEdit extends Component {
         let id = this.props.params.ReturnAddressId
         this.serverRequest = $.ajax({
             url: config.url + '/user/returns/' + id,
+            headers:{
+                token:config.head
+            },
             type: 'POST',
             dataType: 'json',
             data: {},
@@ -46,6 +49,9 @@ class ReturnAddressEdit extends Component {
         $.ajax({
             url: config.url + '/user/returns/'+id,
             type: 'POST',
+            headers:{
+                token:config.head
+            },
             dataType: 'json',
             data: {
                 _method:'PUT',

@@ -63,6 +63,30 @@ class ProductSkuSelect extends React.Component {
     }
     // 添加至购物车
     addtoCart(e){
+
+        // 检测用户信息获取token
+        if(store.enabled){
+            let trade = store.get('trade')
+            alert('trade')
+            if(!trade){
+                if($.Signin.CheckBrowser()){  // 微信中
+                    alert('wx !!!')
+                    $.Signin.getToken(function(token,data){
+                        alert(token)
+                    })
+                }else{  // 非微信中
+                    window.location.hash = '#/Register/ProductDetails/'+this.props.detailId;
+                }
+                
+            }else{
+                // store.remove('trade');
+                // return false;
+            }
+        }else{
+            alert('This browser does not supports localStorage')
+            return false
+        }
+
         let state          = this.props.state
         let GoodsSelectSku = state.GoodsSelectSku
         let selected       = GoodsSelectSku.selected
@@ -89,6 +113,11 @@ class ProductSkuSelect extends React.Component {
                 addon_id:addon_id,
                 amount:amount
             },
+            beforeSend:(request)=>{
+                if(config.head!=''){
+                    request.setRequestHeader("token", config.head);
+                }
+            },
             error:(error)=>{
                 $.error('加入购物车失败')
             },
@@ -101,6 +130,28 @@ class ProductSkuSelect extends React.Component {
         
     }
     gotoBuy(e){
+        // 检测用户信息获取token
+        if(store.enabled){
+            let trade = store.get('trade')
+            if(!trade){
+                if($.Signin.CheckBrowser()){  // 微信中
+                    $.Signin.getToken(function(token,data){
+                        alert(token)
+                    })
+                }else{  // 非微信中
+                    window.location.hash = '#/Register/ProductDetails/'+this.props.detailId;
+                }
+                
+            }else{
+                // store.remove('trade');
+                // return false;
+            }
+        }else{
+            alert('This browser does not supports localStorage')
+            return false
+        }
+
+
         let _data      = this.props.state
         let _selectObj = _data.GoodsSelectSku
         let _select    = _selectObj.selected

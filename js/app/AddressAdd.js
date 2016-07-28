@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 class AddressAdd extends Component {
     componentDidMount(){
         document.title = '添加地址'
+        $.loading.hide();
     }
     componentWillUnmount() {
         
@@ -14,9 +15,26 @@ class AddressAdd extends Component {
         let _tel       = $form.find('[name=tel]').val()
         let _address   = $form.find('[name=address]').val()
         let is_default = $form.find('[name=is_default]').is(':checked')?1:0
-        if(_name == ''){alert('姓名不能为空');return false;}
-        if(_tel == ''){alert('电话号码不能为空');return false};
-        if(_address == ''){alert('地址不能为空');return false};
+        if(_name == ''){
+            $.error('姓名不能为空');
+            $form.find('[name=name]').focus();
+            return false;
+        }
+        if(_tel == ''){
+            $.error('电话号码不能为空');
+            $form.find('[name=tel]').focus();
+            return false
+        };
+        if(_address == ''){
+            $.error('地址不能为空');
+            $form.find('[name=address]').focus();
+            return false
+        };
+        if(!(/^1[3|4|5|7|8]\d{9}$/.test(_tel))){
+            $.error('请输入正确的手机号');
+            $form.find('input[name=tel]').focus();
+            return false;
+        }
         let param = {
             name:_name,
             tel:_tel,
@@ -28,12 +46,16 @@ class AddressAdd extends Component {
             type: 'POST',
             dataType: 'json',
             data: param,
+            beforeSend:(request)=>{
+                if(config.head!=''){
+                    request.setRequestHeader("token", config.head);
+                }
+            },
             error:(error)=>{
                 console.error(error)
             },
             success:(data)=>{
                 if(parseInt(data.code) == 0){
-                    console.log(this.props.params.transfertype)
                     window.location.hash = '#/Address/'+this.props.params.transfertype
                 }
             }

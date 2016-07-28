@@ -18,25 +18,28 @@ class AllGoods extends Component {
             type: 'GET',
             dataType: 'json',
             data: {},
-            beforeSend:()=>{
-                $.loading.show()
+            beforeSend:(request)=>{
+                $.loading.show();
+                if(config.head!=''){
+                    request.setRequestHeader("token", config.head);
+                }
             },
             error:(error)=>{
                 console.error(error);
-                alert('网络错误，页面将刷新重试！');
-                window.location.reload();
+                alert('请求网络错误');
+                // window.location.reload();
             },
             success:(data)=>{
                 if(parseInt(data.code) == 0){
                     this.props.dispatch(getGoodsList(data.data))
                     $.loading.hide()
                 }else{
-                    alert('网络错误，页面将刷新重试！');
-                    window.location.reload();
+                    alert('网络错误');
+                    // window.location.reload();
                 }
             }
         });
-        
+
     }
     componentWillUnmount() {
         this.serverRequest.abort();
@@ -50,7 +53,7 @@ class AllGoods extends Component {
                 return (
                     <li key={index}>
                         <Link className="gllgoods-item" to={_link}>
-                            <img src={item.goods_images[0]} alt="" />
+                            <img src={item.goods_images[0]||item.goods_images[1]||item.goods_images[2]} alt="" />
                             <p>{item.title}</p>
                             <p>&yen;{item.min_price}~{item.max_price}</p>
                         </Link>

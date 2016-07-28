@@ -58,8 +58,14 @@ export default function ShopCart(state=initialState,action){
                     _amount[item.id].checked = false;
                     _amount[item.id].fare = item.goods.fare;
                     _amount[item.id].count = item.amount;
-                    _amount[item.id].price = item.goods_addon.goods_price;
-                    _amount[item.id].totalPrice = item.goods_addon.goods_price*item.amount + (_amount[item.id].fare-0)
+                    if(item.goods_addon){
+                        _amount[item.id].price = item.goods_addon.goods_price;
+                        _amount[item.id].totalPrice = item.goods_addon.goods_price*item.amount + (_amount[item.id].fare-0)
+                    }else{
+                        _amount[item.id].price = 0
+                        _amount[item.id].totalPrice = 0
+                    }
+                    
                 })
             }
             return Object.assign({},state,action.data,{

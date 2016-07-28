@@ -24,8 +24,11 @@ class BuyList extends Component{
                 type: 'GET',
                 dataType: 'json',
                 data: {},
-                beforeSend:()=>{
+                beforeSend:(request)=>{
                     $.loading.show();
+                    if(config.head!=''){
+                        request.setRequestHeader("token", config.head);
+                    }
                 },
                 error:(error)=>{
                     console.error(error)
@@ -41,6 +44,7 @@ class BuyList extends Component{
             })
         }else{
             this.props.dispatch(updateBuyList(store.get('BuyList')))
+            $.loading.hide();
         }
     }
     componentWillUnmount() {
@@ -200,7 +204,6 @@ class BuyList extends Component{
     }
 }
 function select(state){
-    console.log(state)
     return {state:state.GoodsDetail};
 }
 export default connect(select)(BuyList);

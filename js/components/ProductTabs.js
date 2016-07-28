@@ -48,6 +48,9 @@ class ProductTabs extends React.Component {
                     $.ajax({
                         url: config.url + '/goods/comment/'+_id,
                         type: 'GET',
+                        headers:{
+                            token:config.head
+                        },
                         dataType: 'json',
                         data: {},
                         error:(error)=>{
@@ -75,11 +78,7 @@ class ProductTabs extends React.Component {
             <div className="main-module">
                 <div className="main-detailtab">
                     <div className="main-tab">
-                        <ul className="main-tab-page clearfix" ref="productTabsPage">
-                            <li className="tab">商品详情</li>
-                            <li className="tab">产品售后</li>
-                            <li className="tab">评价<span>222</span></li>
-                        </ul>
+                        <ul className="main-tab-page clearfix" ref="productTabsPage"></ul>
                     </div>
                     <div className="main-product-content swiper-container" ref="productTabs">
                         <div className="main-product-wrapper swiper-wrapper">

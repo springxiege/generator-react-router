@@ -24,6 +24,10 @@ class SelectPay extends Component{
 
         }
     }
+    componentDidMount(){
+        document.title = '选择支付方式';
+        $.loading.hide();
+    }
     render(){
         return (
             <div className="main" ref="paymethod" >

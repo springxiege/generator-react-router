@@ -141,6 +141,8 @@
  export const LOAD_MORE_RATE_ORDER         = 'LOAD_MORE_RATE_ORDER'
  // 退换货信息
  export const TRACKING                     = 'TRACKING'
+ // 订单详情
+ export const ORDER_DETAIL                 = 'ORDER_DETAIL'
  
  
  

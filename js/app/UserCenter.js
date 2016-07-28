@@ -16,20 +16,28 @@ class UserCenter extends React.Component {
             type: 'GET',
             dataType: 'json',
             data: {},
-            beforeSend:()=>{
+            beforeSend:(request)=>{
                 $.loading.show();
+                if(config.head!=''){
+                    request.setRequestHeader("Token", config.head);
+                }
             },
             error:(error)=>{
                 console.error(error)
+                if(error.status === 401 && error.responseJSON.code === 1){
+                    window.location.hash = '#/Register/UserCenter'
+                }
             },
             success:(data)=>{
                 if(parseInt(data.code)===0){
                     this.props.dispatch(getUserCenterInfo(data.data));
                     $.loading.hide();
+                }else{
+                    alert('网络请求错误')
                 }
             }
         })
-        
+
     }
     componentWillUnmount() {
         this.serverRequest.abort()
@@ -37,7 +45,7 @@ class UserCenter extends React.Component {
     render(){
         let _data = this.props.state.data
         return (
-            <div className="main">
+            <div className="main pdb0">
                 <div className="usercenter">
                     <div className="user-header clearfix">
                         <div>
@@ -69,11 +77,11 @@ class UserCenter extends React.Component {
                                     ) : (
                                         <span>{_data.userDetail.country}·{_data.userDetail.content}·{_data.userDetail.city}</span>
                                     )
-                                    
+
                                 )
-                            )} 
+                            )}
                         </h1>
-                         
+
                     ) : (
                         <h1>阿琪尔汤<span>广东·佛山</span></h1>
                     )}
@@ -92,7 +100,7 @@ class UserCenter extends React.Component {
                                         <span>{_data.orderNumeric.pendingPayment}</span>
                                     )
                                 ) : ''}
-                                
+
                             </Link>
                         </li>
                         <li>

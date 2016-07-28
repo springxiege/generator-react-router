@@ -17,8 +17,11 @@ class Buy extends Component{
                 type: 'GET',
                 dataType: 'json',
                 data: {},
-                beforeSend:()=>{
+                beforeSend:(request)=>{
                     $.loading.show();
+                    if(config.head!=''){
+                        request.setRequestHeader("token", config.head);
+                    }
                 },
                 error:(error)=>{
                     console.error(error);
@@ -142,6 +145,11 @@ class Buy extends Component{
                 addressId:addressId,
                 data:_params
             },
+            beforeSend:(request)=>{
+                if(config.head!=''){
+                    request.setRequestHeader("token", config.head);
+                }
+            },
             error:(error)=>{
                 console.error(error)
             },
@@ -204,9 +212,8 @@ class Buy extends Component{
                     })
                     _link = '/Address/buy'
                     break;
-                case 'shopcart': // 从购物车页面进入
+                case 'shopcart': //  
                     _HTML = _mapDate.map((item,index)=>{
-                        let _totalprice = 0
                         return (
                             <div className="part-item" key={index}>
                                 <h3><img src={item.logo} alt="" />{item.userName}</h3>

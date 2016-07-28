@@ -1,6 +1,39 @@
 ;(function($){
     $.extend({
         /**
+         * @ 非微信中存储token
+         * @ author xiege
+         */
+        setTokenForPC:function(token,userInfo){
+            if(store.enabled){
+                var tradeStore = store.get('trade');
+                var dt = new Date();
+                dt.setMinutes(dt.getMinutes() - dt.getTimezoneOffset()); // 修正时区偏移
+                var date = dt.toISOString().slice(0, -5).replace(/[T]/g, ' ');
+                if(!tradeStore){
+                    config.setStorage('trade','token',token);
+                    config.setStorage('trade','userinfo',userInfo);
+                    config.setStorage('trade','time',date);
+                }else{
+                    config.setStorage('trade','token',token)
+                    var _oldTime = store.get('trade').time,
+                        _oldSeconds = new Date(_oldTime).getTime()/1000,
+                        _newSeconds = new Date(date).getTime()/1000,
+                        _seconds = (((_newSeconds - _oldSeconds)/3600*60*60)),
+                        _Provision = 6*60;
+                    if(_Provision - _seconds < 0){
+                        
+                    }
+                    console.log(_seconds)
+                    setInterval(function(){
+
+                    },1000)
+                }
+            }else {
+                console.error('This browser does not supports localStorage')
+            }
+        },
+        /**
          * [error 提示消息框]
          * @param  {[type]} data [显示内容]
          * @param  {[type]} time [显示时间后立即隐藏]
@@ -43,7 +76,7 @@
                 time:0, // 默认为0，不传值则不开启确认键计时
                 CancelBtn:null, // 取消键的回调函数
                 okBtn:null // 确认键的回调函数
-            },opts); 
+            },opts);
             var _HTML = '<div class="pop-confirm ask" id="pop-confirm">'
                         +'<div class="pop-container">'
                             +'<div class="pop-main">'
@@ -123,13 +156,14 @@
          */
         loadpage:function(opts){
             var defaults = $.extend(true, {
+                obj:this,
                 url:'',
                 pagesize:2,
                 page:2,
             }, opts);
             var flag = true,noMore = false;
             var _winHeight = $(window).height();
-            $(window).scroll(function(event) {
+            defaults.obj.scroll = $(window).scroll(function(event) {
                 var _scolltop = $(this).scrollTop(),
                     _bodyHeight = $('body').height();
                 if(_scolltop >= _bodyHeight-_winHeight){
@@ -156,7 +190,7 @@
                                 }else{
                                     noMore = true
                                 }
-                                
+
                             }
                         })
                     }
@@ -174,12 +208,12 @@
                 }else{
                     $('#mobi_page_loading').show();
                 }
-                
+
             },
             hide:function(){
                 $('#mobi_page_loading').remove();
             }
         }
     });
-        
+
 })(jQuery)

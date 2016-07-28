@@ -25,12 +25,18 @@ export default class RateOrder extends Component{
                 abandon_reason:abandon_reason,
                 content:content
             },
+            beforeSend:(request)=>{
+                if(config.head!=''){
+                    request.setRequestHeader("token", config.head);
+                }
+            },
             error:(error)=>{
                 console.error(error)
             },
             success:(data)=>{
                 console.log(data)
                 if(parseInt(data.code) === 0){
+                    $.loading.hide();
                     window.location.hash = '#/ReturnOrder'
                 }else{
                     $.error(data.data.msg,1000)

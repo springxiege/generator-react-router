@@ -10,20 +10,25 @@ import {
 } from '../actions/ActionFuncs'
 class Settings extends Component{
     componentDidMount() {
-        document.title = '设置'     
+        document.title = '设置'
         this.serverRequest = $.ajax({
             url: config.url + '/user/info',
             type: 'GET',
             dataType: 'json',
             data: {},
-            beforeSend:()=>{
-                $.loading.show()
+            beforeSend:(request)=>{
+                $.loading.show();
+                if(config.head!=''){
+                    request.setRequestHeader("token", config.head);
+                }
             },
             error:(error)=>{
                 console.error(error)
+                if(error.status === 401 && error.responseJSON.code === 1){
+                    window.location.hash = '#/Register/Settings'
+                }
             },
             success:(data)=>{
-                console.log(data)
                 if(parseInt(data.code) === 0){
                     if(data.data.data){
                         this.props.dispatch(getUserInfo(data.data.data))
@@ -32,7 +37,7 @@ class Settings extends Component{
                 }
             }
         })
-        
+
     }
     componentWillUnmount() {
         this.serverRequest.abort()
@@ -67,6 +72,11 @@ class Settings extends Component{
                         _method:'put',
                         name:_new_nickname
                     },
+                    beforeSend:(request)=>{
+                        if(config.head!=''){
+                            request.setRequestHeader("token", config.head);
+                        }
+                    },
                     error:(error)=>{
                         console.error(error)
                     },
@@ -77,7 +87,7 @@ class Settings extends Component{
                         }
                     }
                 })
-                
+
             }
         })
     }
@@ -93,7 +103,7 @@ class Settings extends Component{
             // console.log(e.target.result);
             var base64 = e.target.result;
             base64 = base64.substr( base64.indexOf(',') + 1 );
-            
+
             $.ajax({
                 url: 'http://s.51lianying.com/upload/?c=image&m=process_for_form&type=trade&item=avator&base64=1&field=photo',
                 type: 'POST',
@@ -127,7 +137,7 @@ class Settings extends Component{
                             }
                         }
                     })
-                    
+
                 }
             })
         }

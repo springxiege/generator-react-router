@@ -21,7 +21,7 @@ class ProductComment extends React.Component {
             dataType: 'json',
             data: {},
             error:(error)=>{
-
+                console.error(error)
             },
             success:(data)=>{
                 if(parseInt(data.code)==0){
@@ -43,7 +43,7 @@ class ProductComment extends React.Component {
             dataType: 'json',
             data: {},
             error:(error)=>{
-
+                console.error(error)
             },
             success:(data)=>{
                 if(parseInt(data.code)==0){

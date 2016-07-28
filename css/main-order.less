@@ -25,6 +25,11 @@
             color:#F15353;
             text-decoration: none;
         }
+        &.tracking{
+            a{
+                color:#686868;
+            }
+        }
     }
 }
 .order-status{
@@ -399,5 +404,53 @@
     color:#fa462e;
     h3{
         .ftpx2rem(30);
+    }
+}
+.orderheader{
+    .hpx2rem(80);
+    .lhpx2rem(70);
+    .pdpx2rem(50,30,50,30);
+    .ftpx2rem(48);
+    font-weight: bold;
+    background-color: #FA462F;
+    color:#fff;
+    &::before{
+        display: inline-block;
+        content:'';
+        .wpx2rem(80);
+        .hpx2rem(80);
+        .vpx2rem(-25);
+        .mgrpx2rem(20);
+        border-radius:50%;
+        background-color: #fff;
+        background-repeat: no-repeat;
+        background-position: 0 0;
+        background-size: 100% auto;
+        background-image: url(../images/icon_wating.png);
+    }
+    &.finished::before{
+        background-image: url(../images/icon_finished.png);
+    }
+}
+.ordernumber{
+    .ftpx2rem(24);
+    .pdpx2rem(20,20,20,20);
+    color:#afafaf;
+    background-color: #F2F3F5;
+    span{
+        color:#898989;
+    }
+    p{
+        background-color: #fff;
+        .mgpx2rem(0,-20,0,-20);
+        .pdpx2rem(0,20,0,20);
+        &:first-of-type{
+            .pdtpx2rem(20);
+            border-top: 1px solid #E7E7E7;
+        }
+        &:last-of-type{
+            .pdbpx2rem(20);
+            border-bottom: 1px solid #E7E7E7;
+        }
     }
 }

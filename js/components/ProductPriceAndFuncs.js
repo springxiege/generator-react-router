@@ -20,6 +20,11 @@ class ProductPriceAndFuncs extends React.Component {
             type: 'POST',
             dataType: 'json',
             data: _param,
+            beforeSend:(request)=>{
+                if(config.head!=''){
+                    request.setRequestHeader("token", config.head);
+                }
+            },
             error:function(error){
                 console.error(error)
                 if(_param._method){

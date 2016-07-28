@@ -3,20 +3,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
 import { Provider, connect } from 'react-redux'
-import ProductImages from '../components/ProductImages.js';
-import ProductTitle from '../components/ProductTitle.js';
-import ProductDescription from '../components/ProductDescription.js';
-import ProductPriceAndFuncs from '../components/ProductPriceAndFuncs.js';
-import ProductOriginalPriceAndFee from '../components/ProductOriginalPriceAndFee.js';
-import ProductSku from '../components/ProductSku.js';
-import ProductTabs from '../components/ProductTabs.js';
-// import Recommend from '../components/Recommend.js';
+import ProductImages from '../components/ProductImages';
+import ProductTitle from '../components/ProductTitle';
+import ProductDescription from '../components/ProductDescription';
+import ProductPriceAndFuncs from '../components/ProductPriceAndFuncs';
+import ProductOriginalPriceAndFee from '../components/ProductOriginalPriceAndFee';
+import ProductSku from '../components/ProductSku';
+import ProductTabs from '../components/ProductTabs';
+// import Recommend from '../components/Recommend';
 import ProductSkuSelect from '../components/ProductSkuSelect'
-import ProductDetailFooter from '../components/ProductDetailFooter.js';
-import { 
+import ProductDetailFooter from '../components/ProductDetailFooter';
+import ReturnTop from '../components/ReturnTop'
+import {
     GoodsDetail,
     AddCollect,
-    CancelCollect 
+    CancelCollect
 } from '../actions/ActionFuncs'
 class ProductDetails extends React.Component {
     componentDidMount(){
@@ -42,17 +43,16 @@ class ProductDetails extends React.Component {
                     alert('请求成功，返回错误,错误code:'+data.code+'，请刷新页面重试！');
                     // window.location.reload();
                 }
-                
+
             }
         })
-        
+
     }
     componentWillUnmount() {
         this.serverRequest.abort()
     }
     render() {
         // var _Children = React.Children.map(this.props.children, function(data) {});
-        var price=66666888;
         return (
             <div>
                 <div className="main">
@@ -67,8 +67,9 @@ class ProductDetails extends React.Component {
                     <ProductTabs data={this.props.state.data} />
                     {/*<Recommend />*/}
                 </div>
-                <ProductDetailFooter userId={this.props.state.userId} />
-                <ProductSkuSelect />
+                <ProductDetailFooter userId={this.props.state.userId} detailId={this.props.params.DetailId}/>
+                <ProductSkuSelect detailId={this.props.params.DetailId} />
+                <ReturnTop />
             </div>
         )
     }

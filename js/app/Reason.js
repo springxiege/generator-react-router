@@ -24,13 +24,18 @@ export default class RateOrder extends Component{
                 type:2,
                 abandon_reason:abandon_reason
             },
+            beforeSend:(request)=>{
+                if(config.head!=''){
+                    request.setRequestHeader("token", config.head);
+                }
+            },
             error:(error)=>{
                 console.error(error)
             },
             success:(data)=>{
-                console.log(data)
+                $.loading.hide();
                 if(parseInt(data.code) === 0){
-                    window.location.hash = '#/Tracking'
+                    window.location.hash = '#/Tracking/'+orderid
                 }else{
                     $.error(data.data.msg,1000)
                 }

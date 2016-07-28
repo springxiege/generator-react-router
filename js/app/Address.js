@@ -69,6 +69,11 @@ class AddressList extends Component {
             type: 'POST',
             dataType: 'json',
             data: obj,
+            beforeSend:(request)=>{
+                if(config.head!=''){
+                    request.setRequestHeader("token", config.head);
+                }
+            },
             error:(error)=>{
                 console.error(error)
             },
@@ -93,6 +98,9 @@ class AddressList extends Component {
         $.ajax({
             url: config.url + '/user/address/' + id,
             type: 'POST',
+            headers:{
+                token:config.head
+            },
             dataType: 'json',
             data: {
                 _method:'DELETE'
@@ -137,25 +145,27 @@ class AddressList extends Component {
         
     }
     componentDidMount(){
-        document.title = '坡地库'
+        document.title = '地址库'
         this.serverRequest = $.ajax({
             url: config.url + '/user/address',   
             type: 'GET',
             dataType: 'json',
             data: {},
-            beforeSend:()=>{
+            beforeSend:(request)=>{
                 $.loading.show()
+                if(config.head!=''){
+                    request.setRequestHeader("token", config.head);
+                }
             },
             error:(error)=>{
                 console.error(error)
             },
             success:(data)=>{
                 if(parseInt(data.code) == 0){
+                    $.loading.hide()
                     if(data.data.length){
                         this.props.dispatch(Address(data.data))
-                        $.loading.hide()
                     }else{
-                        $.loading.hide()
                         window.location.hash = '#/AddressAdd/'+this.props.params.transfertype
                     }
                 }

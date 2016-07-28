@@ -13,8 +13,11 @@ class Tracking extends Component{
             type: 'GET',
             dataType: 'json',
             data: {},
-            beforeSend:()=>{
+            beforeSend:(request)=>{
                 $.loading.show();
+                if(config.head!=''){
+                    request.setRequestHeader("token", config.head);
+                }
             },
             error:(error)=>{
                 console.error(error)
@@ -46,6 +49,9 @@ class Tracking extends Component{
         $.ajax({
             url: config.url + '/orders/abandon/returns/' + this.props.params.orderId,
             type: 'POST',
+            headers:{
+                token:config.head
+            },
             dataType: 'json',
             data: {
                 _method:'put',

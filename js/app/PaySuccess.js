@@ -1,5 +1,27 @@
 import React,{Component} from 'react'
 export default class PaySuccess extends Component{
+
+    componentDidMount(){
+        if(this.props.params.payStatus == 1){
+            document.title = '支付成功'
+        }else{
+            document.title = '支付失败'
+        }
+        $.loading.hide();
+        var c = 10;
+        var timer = setInterval(()=>{
+            if(c <= 0){
+                clearInterval(timer)
+                timer = null;
+                window.location.hash = '#/UserCenter'
+            }else{
+                c--;
+            }
+        },1000)
+    }
+    componentWillUnmount() {
+        
+    }
     render(){
         let status = this.props.params.payStatus || 0
         return (

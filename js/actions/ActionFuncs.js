@@ -332,3 +332,7 @@ export function getOrderComment(data){
 export function getTracking(data){
     return {type:types.TRACKING,data}
 }
+// 获取订单详情数据
+export function getOrderDetail(data){
+    return {type:types.ORDER_DETAIL,data}
+}

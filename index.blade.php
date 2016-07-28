@@ -35,15 +35,23 @@
     </div>
     <div id="app"></div>
     <div id="sku"></div>
+    <script src="/js/plugins/jquery/jquery-1.12.4.min.js"></script>
+    <script src="/js/plugins/store-localstorage/store.min.js"></script>
     <script>
         window.config = {};
+        window.config.wxData = <?php echo isset($wxCode) ? json_encode($wxCode) : '{}';  ?>;
+        window.config.UserAgent = window.navigator.userAgent.toLowerCase();
+        window.config.isWX = window.config.UserAgent.indexOf('micromessenger') >= 0;
         @if (config('app.env') == 'local')
         window.config.url = 'http://xds.51lianying.local';
-        // window.config.url = 'http://test.api.51lianying.com';
+        window.config.hosts = 'http://trade.51lianying.local';
+        window.config.api = 'http://api.51lianying.local';
+        
         @else (config('app.env') == 'test')
         window.config.url = 'http://test.api.51lianying.com';
+        window.config.hosts = 'http://trade.51lianying.mobi';
         @endif
-
+        
         // 扩展store.min.js实现本地储存对象字符串
         config.setStorage = function(objName,key,val){
             var _data = {};
@@ -58,39 +66,36 @@
                 b = JSON.stringify(b);
             return a===b
         };
+        if(store.get('trade') && store.get('trade').token){
+            window.config.head = store.get('trade').token
+        }else{
+            window.config.head = ''
+        }
     </script>
-    <script src="/js/plugins/jquery/jquery-1.12.4.min.js"></script>
-    <script src="/js/plugins/store-localstorage/store.min.js"></script>
     <script src="/js/common/jquery.common.js"></script>
     <script src="/js/common/LoginAuthorization.js"></script>
     <script src="/dist/js/app/bundle.js"></script>
 
-    <!--<script src="/dist/js/app/bundle.js"></script>
-    <script src="/js/plugins/react/react.min.js"></script>
-    <script src="/dist/js/app/bundle.js"></script>
-    <script src="/js/plugins/react/react.min.js"></script>
-    <script src="/js/plugins/react/react-dom.min.js"></script>
-    <script src="/js/plugins/react/react-router.min.js"></script>
-    <script src="/js/plugins/react/browser.min.js"></script>
-    <script src="/js/plugins/jquery/jquery-1.12.4.min.js"></script>
-    <script src="/js/plugins/store-localstorage/store.min.js"></script>
-    <script src="/js/plugins/swiper/swiper.min.js"></script>
-    <script src="/js/common/LoginAuthorization.js"></script>
-    <script src="/js/app/Product.js" type="text/babel"></script> -->
-
-    <!-- <script src="/js/analysis.js"></script>
+    <script src="/js/analysis.js"></script>
      <script>
         $(function(){
+            var goods_id = window.location.pathname.replace('\/','').replace('.html','');
+            var tradeStore = store.get('trade'),user;
+            if(tradeStore && !$.isEmptyObject(tradeStore.userinfo)){
+                user = tradeStore.userinfo
+            }else{
+                user = 0
+            }
             LYA({
                 action: ['user_visit', 'common'],
-                debug: true,
+                debug: false,
                 param: {
-                    buy_id: 1,
-                    goods_id: 1,
+                    buy_id: user.id,
+                    goods_id: goods_id,
                     come_from: 'xds'
                 }
             });
         })
-    </script> -->
+    </script>
 </body>
 </html>

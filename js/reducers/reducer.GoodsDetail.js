@@ -113,6 +113,7 @@ export default function GoodsDetail(state = initialState, action) {
     let _sku           = ''
     let _tempObj       = {}
     let _Array         = []
+    let temArray       = []
     switch (action.type) {
         case GOODS_DETAIL:
             _tempObj = Object.assign({}, state.GoodsSelectSku, {
@@ -315,7 +316,9 @@ export default function GoodsDetail(state = initialState, action) {
             break;
         case ADD_BUY: // 增加同商品购买
             _Array = state.BuyList
-            _Array.splice(action.index,0,_Array[action.index])
+            _tempObj = Object.assign({},_Array[action.index])
+            _tempObj.count=1
+            _Array.splice((action.index-0+1),0,_tempObj)
             return Object.assign({},state,{
                 BuyList:_Array
             })

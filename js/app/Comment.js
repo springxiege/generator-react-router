@@ -4,6 +4,7 @@ import {Link} from 'react-router'
 export default class Comment extends Component{
     componentDidMount(){
         document.title = '评价'
+        $.loading.hide();
     }
     componentWillUnmount() {
           
@@ -33,6 +34,11 @@ export default class Comment extends Component{
                 satisfaction_star:_stars,
                 satisfaction_summary:_complex,
                 content:_content
+            },
+            beforeSend:(request)=>{
+                if(config.head!=''){
+                    request.setRequestHeader("token", config.head);
+                }
             },
             error:(error)=>{
                 console.error(error)

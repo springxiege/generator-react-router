@@ -25,8 +25,11 @@ class ShoppingCart extends React.Component {
             type: 'GET',
             dataType: 'json',
             data: {},
-            beforeSend:()=>{
+            beforeSend:(request)=>{
                 $.loading.show();
+                if(config.head!=''){
+                    request.setRequestHeader("token", config.head);
+                }
             },
             error:(error)=>{
                 alert('网络错误，页面将刷新重试！');
@@ -64,6 +67,9 @@ class ShoppingCart extends React.Component {
                 $.ajax({
                     url: config.url + '/goods/cart/'+id,
                     type: 'POST',
+                    headers:{
+                        token:config.head
+                    },
                     dataType: 'json',
                     data: {_method: 'delete'},
                     beforeSend:function(){
@@ -93,6 +99,9 @@ class ShoppingCart extends React.Component {
             $.ajax({
                 url: config.url + '/goods/cart/' + _id,
                 type: 'POST',
+                headers:{
+                    token:config.head
+                },
                 dataType: 'json',
                 data: {
                     _method:'PUT',
@@ -123,6 +132,9 @@ class ShoppingCart extends React.Component {
             $.ajax({
                 url: config.url + '/goods/cart/' + _id,
                 type: 'POST',
+                headers:{
+                    token:config.head
+                },
                 dataType: 'json',
                 data: {
                     _method:'PUT',
@@ -161,12 +173,17 @@ class ShoppingCart extends React.Component {
                                 <Link to={_link} className="fl"><img src={item.goods.goods_images[0]||item.goods.goods_images[1]||item.goods.goods_images[2]||'images/7.jpg'} alt="" /></Link>
                                 <div>
                                     <p><Link to={_link}>{item.goods.title}</Link></p>
-                                    <p>{item.goods_addon.parent_addon ? item.goods_addon.parent_addon.feature_main : ""}  {item.goods_addon.feature_sub}</p>
-                                    <p>&yen;{item.goods_addon.goods_price}<span>快递：{item.goods.fare}元</span></p>
+                                    {item.goods_addon?(
+                                        <p>{item.goods_addon.parent_addon ? item.goods_addon.parent_addon.feature_main : ""}  {item.goods_addon.feature_sub}</p>
+                                    ):(
+                                        <p>暂无</p>
+                                    )}
+                                    
+                                    <p>&yen;{item.goods_addon?item.goods_addon.goods_price:0}<span>快递：{item.goods.fare}元</span></p>
                                     <div className="cart-setcount">
                                         <span className="fl" onClick={e=>this.decrement(e)} data-id={item.id}></span>
                                         <input type="number" name="" value={this.props.state.amount[item.id].count} id="" className="fl" readOnly />
-                                        <span className="fl" onClick={e=>this.increment(e)} data-id={item.id} data-stock={item.goods_addon.stock}></span>
+                                        <span className="fl" onClick={e=>this.increment(e)} data-id={item.id} data-stock={item.goods_addon?item.goods_addon.stock:0}></span>
                                         {/*<span className="fr">原小计：699.00元</span>*/}
                                     </div>
                                 </div>

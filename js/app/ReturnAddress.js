@@ -62,6 +62,9 @@ class ReturnAddressList extends Component {
         $.ajax({
             url: config.url + '/user/returns/' + id,
             type: 'POST',
+            headers:{
+                token:config.head
+            },
             dataType: 'json',
             data: {
                 _method:'DELETE'
@@ -90,6 +93,9 @@ class ReturnAddressList extends Component {
         this.serverRequest = $.ajax({
             url: config.url + '/user/returns',   
             type: 'GET',
+            headers:{
+                token:config.head
+            },
             dataType: 'json',
             data: {},
             beforeSend:()=>{
