@@ -40,42 +40,19 @@
     <script>
         window.config = {};
         window.config.wxData = <?php echo isset($wxCode) ? json_encode($wxCode) : '{}';  ?>;
-        window.config.UserAgent = window.navigator.userAgent.toLowerCase();
-        window.config.isWX = window.config.UserAgent.indexOf('micromessenger') >= 0;
         @if (config('app.env') == 'local')
-        window.config.url = 'http://xds.51lianying.local';
-        window.config.hosts = 'http://trade.51lianying.local';
-        window.config.api = 'http://api.51lianying.local';
-        
+            window.config.url = 'http://xds.51lianying.local';
+            window.config.hosts = 'http://trade.51lianying.local';
+            window.config.api = 'http://api.51lianying.local';
         @else (config('app.env') == 'test')
-        window.config.url = 'http://test.api.51lianying.com';
-        window.config.hosts = 'http://trade.51lianying.mobi';
+            window.config.url = 'http://test.api.51lianying.com';
+            window.config.hosts = 'http://trade.51lianying.mobi';
         @endif
-        
-        // 扩展store.min.js实现本地储存对象字符串
-        config.setStorage = function(objName,key,val){
-            var _data = {};
-            _data[objName] = {};
-            _data[objName].data = store.get(objName)||{};
-            _data[objName].data[key] = val;
-            store.set(objName,_data[objName].data);
-        };
-        // 比较两个对象是否相同
-        config.isObjectValueEqual = function(a,b){
-            var a = JSON.stringify(a),
-                b = JSON.stringify(b);
-            return a===b
-        };
-        if(store.get('trade') && store.get('trade').token){
-            window.config.head = store.get('trade').token
-        }else{
-            window.config.head = ''
-        }
     </script>
+    <script src="/js/common/config.js"></script>
     <script src="/js/common/jquery.common.js"></script>
     <script src="/js/common/LoginAuthorization.js"></script>
     <script src="/dist/js/app/bundle.js"></script>
-
     <script src="/js/analysis.js"></script>
      <script>
         $(function(){
