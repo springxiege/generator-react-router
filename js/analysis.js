@@ -353,7 +353,7 @@
 
     var Analysis = {
         data: {
-            domain: 'http://api.51lianying.local',
+            domain: window.config.url,
             module: 'analysis',
             route: 'collect',
             action: [],

@@ -26,7 +26,7 @@ export default class RateOrder extends Component{
             },
             beforeSend:(request)=>{
                 if(config.head!=''){
-                    request.setRequestHeader("token", config.head);
+                    request.setRequestHeader("Authorization", "Bearer " + config.head);
                 }
             },
             error:(error)=>{

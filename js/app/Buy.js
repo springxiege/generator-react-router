@@ -20,7 +20,7 @@ class Buy extends Component{
                 beforeSend:(request)=>{
                     $.loading.show();
                     if(config.head!=''){
-                        request.setRequestHeader("token", config.head);
+                        request.setRequestHeader("Authorization", "Bearer " + config.head);
                     }
                 },
                 error:(error)=>{
@@ -47,8 +47,8 @@ class Buy extends Component{
                 case 'buylist':
                     _Array              = _data.GoodsDetail.BuyList
                     _tempObj.userId     = _user.user_id
-                    _tempObj.userName   = _user.realname
-                    _tempObj.logo       = _user.logo
+                    _tempObj.userName   = _user.shop_name
+                    _tempObj.logo       = _user.shop_logo||'/images/shop_logo.gif'
                     _tempObj.is_activity = 0
                     _tempObj.list       = _Array
                     _mapDate.push(_tempObj)
@@ -56,12 +56,12 @@ class Buy extends Component{
                 case 'shopcart':
                     _Array = _data.ShopCart.data
                     $.each(_Array,function(index,item) {
-                        if(_trade[item.goods.get_users.user_id] === undefined){
-                            _trade[item.goods.get_users.user_id]          = {};
-                            _trade[item.goods.get_users.user_id].list     = [];
-                            _trade[item.goods.get_users.user_id].user_id  = item.goods.get_users.user_id;
-                            _trade[item.goods.get_users.user_id].logo     = item.goods.get_users.logo;
-                            _trade[item.goods.get_users.user_id].userName = item.goods.get_users.realname;
+                        if(_trade[item.goods.get_user_profile.user_id] === undefined){
+                            _trade[item.goods.get_user_profile.user_id]          = {};
+                            _trade[item.goods.get_user_profile.user_id].list     = [];
+                            _trade[item.goods.get_user_profile.user_id].user_id  = item.goods.get_user_profile.user_id;
+                            _trade[item.goods.get_user_profile.user_id].logo     = item.goods.get_user_profile.logo;
+                            _trade[item.goods.get_user_profile.user_id].userName = item.goods.get_user_profile.realname;
                         }
                         if(_data.ShopCart.amount[item.id].checked){
                             let _Obj           = {};
@@ -73,7 +73,7 @@ class Buy extends Component{
                             _Obj.originalprice = item.goods.max_price;
                             _Obj.fare          = item.goods.fare;
                             _Obj.is_activity   = 0;
-                            _trade[item.goods.get_users.user_id].list.push(_Obj) 
+                            _trade[item.goods.get_user_profile.user_id].list.push(_Obj) 
                         }
                     });
                     $.each(_trade, function(index, val) {
@@ -147,7 +147,7 @@ class Buy extends Component{
             },
             beforeSend:(request)=>{
                 if(config.head!=''){
-                    request.setRequestHeader("token", config.head);
+                    request.setRequestHeader("Authorization", "Bearer " + config.head);
                 }
             },
             error:(error)=>{
@@ -197,15 +197,6 @@ class Buy extends Component{
                                         )
                                     })}
                                 </div>
-                                {item.is_activity==0? '' : (
-                                    <div className="part-activities">
-                                        <span className="fl">商家活动：</span>
-                                        <div className="clearfix">
-                                            <p>满500包邮<span className="fr">-20.00元</span></p>
-                                            <p>满500包邮<span className="fr">-20.00元</span></p>
-                                        </div>
-                                    </div>
-                                )}
                                 <div className="part-subtotal">小计：<span>{_totalprice}</span>元</div>
                             </div>
                         )
@@ -233,15 +224,6 @@ class Buy extends Component{
                                         )
                                     })}
                                 </div>
-                                {item.is_activity==0? '' : (
-                                    <div className="part-activities">
-                                        <span className="fl">商家活动：</span>
-                                        <div className="clearfix">
-                                            <p>满500包邮<span className="fr">-20.00元</span></p>
-                                            <p>满500包邮<span className="fr">-20.00元</span></p>
-                                        </div>
-                                    </div>
-                                )}
                                 <div className="part-subtotal">小计：<span>{_totalprice}</span>元</div>
                             </div>
                         )

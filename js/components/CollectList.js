@@ -18,37 +18,43 @@ class CollectList extends Component {
     cancelCollect(e,id){
         let $target = $(findDOMNode(e.target)).closest('.main-mycollect-list');
         let $parent = $target.closest('.main-mycollect');
-        $.ajax({
-            url: config.url + '/goods/collect/'+id,
-            type: 'POST',
-            dataType: 'json',
-            data: {
-                _method:'DELETE'
-            },
-            beforeSend:(request)=>{
-                if(config.head!=''){
-                    request.setRequestHeader("token", config.head);
-                }
-            },
-            error:(error)=>{
-                console.error(error)
-            },
-            success:(data)=>{
-                if(parseInt(data.code)==0){
-                    $target.remove();
-                    let len = $parent.find('.main-mycollect-list').length
-                    if(!len){
-                        $parent.append('<div class="main0module main-mycollect-list no-list">'
-                                            +'<p>收藏夹空空如也</p>'
-                                            +'<p>快去51推荐收藏吧</p>'
-                                        +'</div>');
-                        $parent.siblings('.main-mycollect-header').find('span').html(len)
-                    }else{
-                        $parent.siblings('.main-mycollect-header').find('span').html(len)
+        $.confirm({
+            content:'取消关注后该内容将不在此显示',
+            okBtn:function(){
+                $.ajax({
+                    url: config.url + '/goods/collect/'+id,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        _method:'DELETE'
+                    },
+                    beforeSend:(request)=>{
+                        if(config.head!=''){
+                            request.setRequestHeader("Authorization", "Bearer " + config.head);
+                        }
+                    },
+                    error:(error)=>{
+                        console.error(error)
+                    },
+                    success:(data)=>{
+                        if(parseInt(data.code)==0){
+                            $target.remove();
+                            let len = $parent.find('.main-mycollect-list').length
+                            if(!len){
+                                $parent.append('<div class="main0module main-mycollect-list no-list">'
+                                                    +'<p>收藏夹空空如也</p>'
+                                                    +'<p>快去51推荐收藏吧</p>'
+                                                +'</div>');
+                                $parent.siblings('.main-mycollect-header').find('span').html(len)
+                            }else{
+                                $parent.siblings('.main-mycollect-header').find('span').html(len)
+                            }
+                        }
                     }
-                }
+                })
             }
         })
+        
         
     }
     render(){
@@ -66,13 +72,13 @@ class CollectList extends Component {
                 return (
                     <div className="main-module main-mycollect-list" key={index}>
                         <div className="main-mycollect-funcs clearfix">
-                            <img src="images/3.jpg" alt="" className="fl" />
-                            <h4 className="fl">王小二时尚卖手</h4>
+                            <img src={item.goods.get_user_profile.shop_logo||"/images/shop_logo.gif"} alt="" className="fl" />
+                            <h4 className="fl">{item.goods.get_user_profile.shop_name}</h4>
                             <span className="fr" onClick={e=>this.cancelCollect(e,item.id)}>取消收藏</span>
                         </div>
                         <div className="main-mycollect-item">
                             <Link to={_link} className="clearfix">
-                                <img src="images/7.jpg" alt="" className="fl"/>
+                                <img src={item.goods.goods_images[0]||item.goods.goods_images[1]||item.goods.goods_images[2]} alt="" className="fl"/>
                                 <div className="main-mycollect-info">
                                     <h5>{item.goods.title}</h5>
                                     <p>&yen;{item.price} <span>&yen;{item.price}</span></p>

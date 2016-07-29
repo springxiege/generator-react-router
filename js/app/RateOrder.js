@@ -55,7 +55,7 @@ class RateOrder extends Component{
             beforeSend:(request)=>{
                 $.loading.show();
                 if(config.head!=''){
-                    request.setRequestHeader("token", config.head);
+                    request.setRequestHeader("Authorization", "Bearer " + config.head);
                 }
             },
             error:(error)=>{
@@ -99,7 +99,7 @@ class RateOrder extends Component{
                             flag:false
                         })
                         if(config.head!=''){
-                            request.setRequestHeader("token", config.head);
+                            request.setRequestHeader("Authorization", "Bearer " + config.head);
                         }
                     },
                     error:(error)=>{
@@ -140,7 +140,7 @@ class RateOrder extends Component{
                 data: {},
                 beforeSend:(request)=>{
                     if(config.head!=''){
-                        request.setRequestHeader("token", config.head);
+                        request.setRequestHeader("Authorization", "Bearer " + config.head);
                     }
                 },
                 error:(error)=>{
@@ -188,7 +188,7 @@ class RateOrder extends Component{
                 return (
                     <div className="main-module" key={index}>
                         <div className="part-item">
-                            <h3><img src={item.shop.user_info.logo !="" ? item.shop.user_info.logo :"images/3.jpg"} alt="" />&ensp;&ensp;{item.shop.shop_name!=""?(item.shop.shop_name):(item.shop.user_info.realname)} <span className="order-status fr">交易成功</span></h3>
+                            <h3><img src={item.shop.shop_logo||'/images/shop_logo.gif'} alt="" />&ensp;&ensp;{item.shop.shop_name||''} <span className="order-status fr">交易成功</span></h3>
                             <div className="part-list">
                                 <div className="part-info ">
                                     <Link to={`/ProductDetails/${item.goods_id}`} className="clearfix">

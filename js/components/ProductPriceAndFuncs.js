@@ -22,7 +22,7 @@ class ProductPriceAndFuncs extends React.Component {
             data: _param,
             beforeSend:(request)=>{
                 if(config.head!=''){
-                    request.setRequestHeader("token", config.head);
+                    request.setRequestHeader("Authorization", "Bearer " + config.head);
                 }
             },
             error:function(error){

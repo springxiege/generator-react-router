@@ -26,7 +26,7 @@ export default class ReturnTop extends Component{
     GotoTop(e){
         $('body').animate({
             scrollTop:0
-        }, 800)
+        }, 600)
     }
     render(){
         return (

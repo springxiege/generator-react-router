@@ -63,28 +63,20 @@ class ProductSkuSelect extends React.Component {
     }
     // 添加至购物车
     addtoCart(e){
-
-        // 检测用户信息获取token
-        if(store.enabled){
-            let trade = store.get('trade')
-            alert('trade')
-            if(!trade){
-                if($.Signin.CheckBrowser()){  // 微信中
-                    alert('wx !!!')
-                    $.Signin.getToken(function(token,data){
-                        alert(token)
-                    })
-                }else{  // 非微信中
-                    window.location.hash = '#/Register/ProductDetails/'+this.props.detailId;
+        if(!window.config.isWX){
+            if(store.enabled){
+                var tradeStore = store.get('trade');
+                if(!tradeStore){
+                    window.location.hash = '#/Register/ProductDetails/' + this.props.detailId
+                }else{
+                    if(!tradeStore.token){
+                        window.location.hash = '#/Register/ProductDetails/' + this.props.detailId
+                    }
                 }
-                
             }else{
-                // store.remove('trade');
-                // return false;
+                alert('This browser does not supports localStorage')
+                return false;
             }
-        }else{
-            alert('This browser does not supports localStorage')
-            return false
         }
 
         let state          = this.props.state
@@ -115,7 +107,7 @@ class ProductSkuSelect extends React.Component {
             },
             beforeSend:(request)=>{
                 if(config.head!=''){
-                    request.setRequestHeader("token", config.head);
+                    request.setRequestHeader("Authorization", "Bearer " + config.head);
                 }
             },
             error:(error)=>{
@@ -130,25 +122,20 @@ class ProductSkuSelect extends React.Component {
         
     }
     gotoBuy(e){
-        // 检测用户信息获取token
-        if(store.enabled){
-            let trade = store.get('trade')
-            if(!trade){
-                if($.Signin.CheckBrowser()){  // 微信中
-                    $.Signin.getToken(function(token,data){
-                        alert(token)
-                    })
-                }else{  // 非微信中
-                    window.location.hash = '#/Register/ProductDetails/'+this.props.detailId;
+        if(!window.config.isWX){
+            if(store.enabled){
+                var tradeStore = store.get('trade');
+                if(!tradeStore){
+                    window.location.hash = '#/Register/ProductDetails/' + this.props.detailId
+                }else{
+                    if(!tradeStore.token){
+                        window.location.hash = '#/Register/ProductDetails/' + this.props.detailId
+                    }
                 }
-                
             }else{
-                // store.remove('trade');
-                // return false;
+                alert('This browser does not supports localStorage')
+                return false;
             }
-        }else{
-            alert('This browser does not supports localStorage')
-            return false
         }
 
 
@@ -161,18 +148,18 @@ class ProductSkuSelect extends React.Component {
         let _title     = _data.data.title
         let _temp      = {}
         if(_select === null && _subselect === null){
-            alert('请选择规格')
+            $.error('请选择规格')
             return false;
         }
         let _addon = _data.data.goods_addon[_select].addon
         if(_addon.length === 1 && _addon[0].feature_sub === ''){
             if(parseInt(_addon[0].stock) === 0){
-                alert('库存为0，不可购买');
+                $.error('库存为0，不可购买');
                 return false;
             }
         }else{
             if(parseInt(_addon[_subselect].stock) === 0){
-                alert('库存为0，不可购买');
+                $.error('库存为0，不可购买');
                 return false;
             }
         }

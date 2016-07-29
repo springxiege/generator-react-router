@@ -48,7 +48,7 @@ class AddressAdd extends Component {
             data: param,
             beforeSend:(request)=>{
                 if(config.head!=''){
-                    request.setRequestHeader("token", config.head);
+                    request.setRequestHeader("Authorization", "Bearer " + config.head);
                 }
             },
             error:(error)=>{

@@ -1,6 +1,7 @@
 import React,{Component} from 'react'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
+import ButtonCenter from '../components/ButtonCenter'
 // import {  } from '../actions/ActionFuncs'
 class Order extends Component{
     render(){
@@ -16,6 +17,7 @@ class Order extends Component{
                     </ul>
                 </div>
                 {this.props.children}
+                <ButtonCenter />
             </div>
         )
     }

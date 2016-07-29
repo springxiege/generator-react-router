@@ -54,7 +54,7 @@ class ReceiptOrder extends Component{
             beforeSend:(request)=>{
                 $.loading.show();
                 if(config.head!=''){
-                    request.setRequestHeader("token", config.head);
+                    request.setRequestHeader("Authorization", "Bearer " + config.head);
                 }
             },
             error:(error)=>{
@@ -105,7 +105,7 @@ class ReceiptOrder extends Component{
                             flag:false
                         })
                         if(config.head!=''){
-                            request.setRequestHeader("token", config.head);
+                            request.setRequestHeader("Authorization", "Bearer " + config.head);
                         }
                     },
                     error:(error)=>{
@@ -148,13 +148,15 @@ class ReceiptOrder extends Component{
                 $.ajax({
                     url: config.url + '/orders/parcel',
                     type: 'POST',
-                    headers:{
-                        token:config.head
-                    },
                     dataType: 'json',
                     data: {
                         _method:'put',
                         ids:_ids
+                    },
+                    beforeSend:(request)=>{
+                        if(config.head!=''){
+                            request.setRequestHeader("Authorization", "Bearer " + config.head);
+                        }
                     },
                     error:(error)=>{
                         console.error(error)
@@ -184,10 +186,14 @@ class ReceiptOrder extends Component{
                 return (
                     <div className="main-module" key={index}>
                         <div className="part-item">
-                            <h3><img src={item.shop.user_info.logo !="" ? item.shop.user_info.logo :"images/3.jpg"} alt="" />&ensp;&ensp;{item.shop.shop_name!=""?(item.shop.shop_name):(item.shop.user_info.realname)} <span className="order-status fr">卖家已发货</span></h3>
+                            <h3>
+                                <img src={item.shop.shop_logo||'/images/shop_logo.gif'} alt="" />
+                                &ensp;&ensp;{item.shop.shop_name||''} 
+                                <span className="order-status fr">卖家已发货</span>
+                            </h3>
                             <div className="part-list" data-id={item.id}>
                                 <div className="part-info ">
-                                    <Link to={'/ProductDetails/'+item.goods_id} className="clearfix">
+                                    <Link to={`/ProductDetails/${item.goods_id}`} className="clearfix">
                                         <img src={item.goods.goods_images[0]||item.goods.goods_images[1]||item.goods.goods_images[2]} alt="" className="fl" />
                                         <div className="part-detail">
                                             <h4>{item.goods.title}</h4>

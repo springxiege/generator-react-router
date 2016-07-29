@@ -50,13 +50,16 @@
             url: config.url + '/auth/refresh',
             type: 'GET',
             dataType: 'json',
-            data: {
-                token: token
+            data: {},
+            error:function(error){
+                console.error(error);
             },
-            error: (error)=>{
-                console.error(error)
+            beforeSend:function(request){
+                if(config.head!=''){
+                    request.setRequestHeader("Authorization", "Bearer " + config.head);
+                }
             },
-            success: (data)=>{
+            success:function(data){
                 if(parseInt(data.code) === 0){
                     var dt = new Date();
                         dt.setMinutes(dt.getMinutes() - dt.getTimezoneOffset());
@@ -77,7 +80,7 @@
     // 如果存在trade值，则判断是否存在token或者token为空
     if(store.enabled){
         var tradeStore = store.get('trade');
-        var Minutes = 6;
+        var Minutes = 5;
         if(tradeStore){
             if(!tradeStore.token){
                 LoginAndGrantAuthorization()
@@ -89,18 +92,18 @@
                     _oldSeconds = new Date(_oldTime).getTime()/1000,
                     _newSeconds = new Date(date).getTime()/1000,
                     _seconds = (((_newSeconds - _oldSeconds)/3600*60*60)),
-                    _Provision = Minutes*60-10;
+                    _Provision = Minutes*60;
                 var _now = _Provision - _seconds
                 if(_now <= 0){
                     refreshToken(tradeStore.token,function(data){
-                            _now = (Minutes*60-10)
+                            _now = (Minutes*60)
                     });
                 }else{
                     setInterval(function(){
                         if(_now <= 0){
                             var _tradeStore = store.get('trade')
                             refreshToken(_tradeStore.token);
-                            _now = (Minutes*60-10)
+                            _now = (Minutes*60)
                         }else{
                             _now--
                         }

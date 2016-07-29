@@ -19,7 +19,7 @@ class UserCenter extends React.Component {
             beforeSend:(request)=>{
                 $.loading.show();
                 if(config.head!=''){
-                    request.setRequestHeader("Token", config.head);
+                    request.setRequestHeader("Authorization", "Bearer " + config.head);
                 }
             },
             error:(error)=>{

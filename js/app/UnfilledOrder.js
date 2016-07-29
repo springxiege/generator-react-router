@@ -54,7 +54,7 @@ class UnfilledOrder extends Component{
             beforeSend:(request)=>{
                 $.loading.show();
                 if(config.head!=''){
-                    request.setRequestHeader("token", config.head);
+                    request.setRequestHeader("Authorization", "Bearer " + config.head);
                 }
             },
             error:(error)=>{
@@ -101,7 +101,7 @@ class UnfilledOrder extends Component{
                             flag:false
                         })
                         if(config.head!=''){
-                            request.setRequestHeader("token", config.head);
+                            request.setRequestHeader("Authorization", "Bearer " + config.head);
                         }
                     },
                     error:(error)=>{
@@ -151,15 +151,17 @@ class UnfilledOrder extends Component{
                 $.ajax({
                     url: config.url + '/orders/abandon',
                     type: 'POST',
-                    headers:{
-                        token:config.head
-                    },
                     dataType: 'json',
                     data: {
                         _method:'PUT',
                         type:1,
                         abandon_reason:_reason,
                         ids:_ids
+                    },
+                    beforeSend:(request)=>{
+                        if(config.head!=''){
+                            request.setRequestHeader("Authorization", "Bearer " + config.head);
+                        }
                     },
                     error:(error)=>{
                         console.error(error)

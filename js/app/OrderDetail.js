@@ -14,7 +14,7 @@ class OrderDetail extends Component{
             beforeSend:(request)=>{
                 $.loading.show();
                 if(config.head!=''){
-                    request.setRequestHeader("token", config.head);
+                    request.setRequestHeader("Authorization", "Bearer " + config.head);
                 }
             },
             error:(error)=>{
@@ -89,16 +89,33 @@ class OrderDetail extends Component{
                 <div className="main-module">
                     <div className="part-item">
                         <h3>
-                            <img src="images/3.jpg" alt="" />
-                            &ensp;&ensp;王小二的时尚卖手 
-                            <span className="order-status fr">买家待付款</span>
+                            <img src={_data.shop.shop_logo||'/images/shop_logo.gif'} alt="" />
+                            &ensp;&ensp;{_data.shop.shop_name} 
+                            {_data.is_abandon == 0 ? (
+                                _data.status == 1 ? (
+                                    <span className="order-status fr">买家待付款</span>
+                                ) : (
+                                    _data.status == 2 ? (
+                                        <span className="order-status fr">订单已付款</span>
+                                    ) : (
+                                        <span className="order-status fr">订单已取消</span>
+                                    )
+                                )
+                            ): (
+                                _data.is_auto_confirm == 0 ? (
+                                    <span className="order-status fr">订单待确认</span>
+                                ) : (
+                                    <span className="order-status fr">订单已确认</span>
+                                )
+                            ) }
+                            
                         </h3>
                         <div className="part-list">
                             <div className="part-info clearfix">
                                 <Link to={`/ProductDetails/${_data.goods_id}`}>
-                                    <img src={"images/7.jpg"} alt="" className="fl" />
+                                    <img src={_data.goods.goods_images[0]||_data.goods.goods_images[1]||_data.goods.goods_images[2]} alt="" className="fl" />
                                     <div className="part-detail">
-                                        <h4>{_data.title}</h4>
+                                        <h4>{_data.goods.title}</h4>
                                         <p>{_data.feature_main} {_data.feature_sub}</p>
                                         <p>&yen;{_data.goods_price} {/*<s>&yen;999.00</s>*/} <span className="fr">快递：{_data.goods_postage}元</span></p>
                                         <span>&times;{_data.total_number}</span>
@@ -108,9 +125,11 @@ class OrderDetail extends Component{
                         </div>
                         <div className="part-subtotal">实付：<span>{_data.preferential}</span>元</div>
                         <div className="ordernumber">
-                            <p>订单编号：<span>20160726160211111</span></p>
+                            <p>订单编号：<span>{_data.common_out_trade_no}</span></p>
                             <p>创建时间：<span>{_data.created_at}</span></p>
-                            {/*<p>物流编号：<span>W1124154515415212</span></p>*/}
+                            {_data.parcel_num ? (
+                                <p>物流编号：<span>_data.parcel_num</span></p>
+                            ) : ''}
                         </div>
                         <div className="part-funcs">
                             {parseInt(_data.status) === 1 ? (

@@ -71,7 +71,7 @@ class AddressList extends Component {
             data: obj,
             beforeSend:(request)=>{
                 if(config.head!=''){
-                    request.setRequestHeader("token", config.head);
+                    request.setRequestHeader("Authorization", "Bearer " + config.head);
                 }
             },
             error:(error)=>{
@@ -154,7 +154,7 @@ class AddressList extends Component {
             beforeSend:(request)=>{
                 $.loading.show()
                 if(config.head!=''){
-                    request.setRequestHeader("token", config.head);
+                    request.setRequestHeader("Authorization", "Bearer " + config.head);
                 }
             },
             error:(error)=>{

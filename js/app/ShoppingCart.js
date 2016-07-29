@@ -28,12 +28,12 @@ class ShoppingCart extends React.Component {
             beforeSend:(request)=>{
                 $.loading.show();
                 if(config.head!=''){
-                    request.setRequestHeader("token", config.head);
+                    request.setRequestHeader("Authorization", "Bearer " + config.head);
                 }
             },
             error:(error)=>{
                 alert('网络错误，页面将刷新重试！');
-                window.location.reload();
+                // window.location.reload();
             },
             success:(data)=>{
                 if(parseInt(data.code) === 0){
@@ -165,8 +165,8 @@ class ShoppingCart extends React.Component {
                         <div className="cart-info">
                             <div className="cart-info-header clearfix">
                                 <label className={this.props.state.amount[item.id].checked?"checked fl":"fl"}><input type="checkbox" name="product" onChange={e=>this._ChangeSingle(e)} data-id={item.id} checked={this.props.state.amount[item.id].checked?true:false} /></label>
-                                <img src="images/3.jpg" alt="" className="fl" />
-                                <p className="fl">王小二时尚卖手</p>
+                                <img src={item.goods.get_user_profile.shop_logo||"/images/shop_logo.gif"} alt="" className="fl" />
+                                <p className="fl">{item.goods.get_user_profile.shop_name}</p>
                                 <a href="javascript:;" className="fr" data-id={item.id} onClick={e=>this.deleteThis(e)}>删除</a>
                             </div>
                             <div className="cart-info-item clearfix">

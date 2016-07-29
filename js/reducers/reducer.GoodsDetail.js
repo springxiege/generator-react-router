@@ -39,22 +39,7 @@ const GoodsSelectSku = {
     price: 0,
     originalprice: 0
 }
-const BuyList = [
-    // {
-    //     count:1,
-    //     goods_id:0,
-    //     addon_id:0,
-    //     selected:null,
-    //     subselected:null,
-    //     price:0,
-    //     fare:0,
-    //     originalprice:0,
-    //     totalprice:0,
-    //     title:'占位标题',
-    //     images:'images/7.jpg',
-    //     data:[]
-    // }
-]
+const BuyList = []
 const initialState = {
     userId:1,
     Collect: 0,

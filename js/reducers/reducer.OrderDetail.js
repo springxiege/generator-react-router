@@ -35,7 +35,9 @@ const initialState = {
         "abandon_at": null,
         "created_at": "2016-07-11 16:31:09",
         "updated_at": "2016-07-19 14:29:47",
-        "deleted_at": null
+        "deleted_at": null,
+        "goods":{goods_images:[]},
+        "shop":{}
     }
 }
 export default function OrderDetail(state=initialState,action){
