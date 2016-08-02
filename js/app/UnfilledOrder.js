@@ -61,7 +61,7 @@ class UnfilledOrder extends Component{
                 console.error(error)
             },
             success:(data)=>{
-                console.log(data)
+                // console.log(data)
                 if(parseInt(data.code) === 0){
                     this.props.dispatch(getUnfilledOrder(data.data.data))
                     $.loading.hide()
@@ -167,7 +167,7 @@ class UnfilledOrder extends Component{
                         console.error(error)
                     },
                     success:(data)=>{
-                        console.log(data)
+                        // console.log(data)
                         if(parseInt(data.code) === 0){
                             $.error(data.data.msg,800,function(){
                                 window.location.hash = '#/ReturnOrder'
@@ -194,7 +194,7 @@ class UnfilledOrder extends Component{
                                 return (
                                     <div className="part-list" key={subindex} data-id={subitem.id}>
                                         <div className="part-info ">
-                                            <Link to={`/ProductDetails/${subitem.goods_id}`} className="clearfix">
+                                            <Link to={`/OrderDetail/${subitem.id}`} className="clearfix">
                                                 <img src={subitem.goods.goods_images[0]||subitem.goods.goods_images[1]||subitem.goods.goods_images[2]} alt="" className="fl" />
                                                 <div className="part-detail">
                                                     <h4>{subitem.goods.title}</h4>

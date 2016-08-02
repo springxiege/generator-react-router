@@ -37,69 +37,18 @@ class Buy extends Component{
         let _mapDate = []
         let _data   = this.props.state
         let _type   = this.props.params.buyType
-        function getTransferDate(){
-            let _mapDate = []
-            let _trade = {}
-            let _tempObj = {}
-            let _Array  = []
-            let _user   = _data.GoodsDetail.data.get_users
+        if(store.enabled){
             switch (_type){
                 case 'buylist':
-                    _Array              = _data.GoodsDetail.BuyList
-                    _tempObj.userId     = _user.user_id
-                    _tempObj.userName   = _user.shop_name
-                    _tempObj.logo       = _user.shop_logo||'/images/shop_logo.gif'
-                    _tempObj.is_activity = 0
-                    _tempObj.list       = _Array
-                    _mapDate.push(_tempObj)
+                    _mapDate = [{user:store.get('BuyUser'),list:store.get('BuyOrderList').data}]
                     break;
                 case 'shopcart':
-                    _Array = _data.ShopCart.data
-                    $.each(_Array,function(index,item) {
-                        if(_trade[item.goods.get_user_profile.user_id] === undefined){
-                            _trade[item.goods.get_user_profile.user_id]          = {};
-                            _trade[item.goods.get_user_profile.user_id].list     = [];
-                            _trade[item.goods.get_user_profile.user_id].user_id  = item.goods.get_user_profile.user_id;
-                            _trade[item.goods.get_user_profile.user_id].logo     = item.goods.get_user_profile.logo;
-                            _trade[item.goods.get_user_profile.user_id].userName = item.goods.get_user_profile.realname;
-                        }
-                        if(_data.ShopCart.amount[item.id].checked){
-                            let _Obj           = {};
-                            _Obj.count         = item.amount;
-                            _Obj.goods_addon   = item.goods_addon;
-                            _Obj.title          = item.goods.title;
-                            _Obj.images         = item.goods.goods_images[0];
-                            _Obj.price         = item.goods_addon.goods_price;
-                            _Obj.originalprice = item.goods.max_price;
-                            _Obj.fare          = item.goods.fare;
-                            _Obj.is_activity   = 0;
-                            _trade[item.goods.get_user_profile.user_id].list.push(_Obj) 
-                        }
-                    });
-                    $.each(_trade, function(index, val) {
-                        _mapDate.push(val)
-                    });
-                    break;
-                default:
+                    _mapDate = store.get('ShopCartList').data
                     break;
             }
-            return _mapDate;
-        }
-        if(store.get('BuyTempOrder') === undefined){  // 不存在缓存，则获取传递数据
-            _mapDate = getTransferDate();
-            store.set('BuyTempOrder',_mapDate);
         }else{
-            let _temp = store.get('BuyTempOrder')
-            let _data = getTransferDate()
-            if(config.isObjectValueEqual(_temp,_data)){
-                _mapDate = store.get('BuyTempOrder') || [];
-            }else{
-                store.set('BuyTempOrder',_data);
-                _mapDate = _data;
-            }
-            
+            alert('This browser does not supports localStorage')
         }
-        console.log(_mapDate)
         this.props.dispatch(GenerateTempOrders(_mapDate))
     }
     componentWillUnmount() {
@@ -165,7 +114,7 @@ class Buy extends Component{
         
     }
     render(){
-        console.log(this.props.state)
+        // console.log(this.props.state)
         let _data   = this.props.state
         let _address = _data.Address.data
         let defaultAddress = {}
@@ -177,10 +126,11 @@ class Buy extends Component{
         if(_mapDate.length){
             switch (_type){
                 case 'buylist': // 从购买页面进入 
+
                     _HTML = _mapDate.map((item,index)=>{
                         return (
                             <div className="part-item" key={index}>
-                                <h3><img src={item.logo} alt="" />{item.userName}</h3>
+                                <h3><img src={item.user.logo||'/images/shop_logo.gif'} alt="" />{item.user.realname||''}</h3>
                                 <div className="part-list">
                                     {item.list.map((subitem,subindex)=>{
                                         _totalprice += ((subitem.price - 0)*(subitem.count - 0) + (subitem.fare-0))
@@ -207,7 +157,7 @@ class Buy extends Component{
                     _HTML = _mapDate.map((item,index)=>{
                         return (
                             <div className="part-item" key={index}>
-                                <h3><img src={item.logo} alt="" />{item.userName}</h3>
+                                <h3><img src={item.user.logo} alt="" />{item.user.userName}</h3>
                                 <div className="part-list">
                                     {item.list.map((subitem,subindex)=>{
                                         _totalprice += ((subitem.price - 0)*(subitem.count - 0) + (subitem.fare-0))
@@ -286,7 +236,7 @@ class Buy extends Component{
                 </div>
                 <footer className="cart-footer buy-footer clearfix">
                     <aside className="fl">
-                        <p className="fr">合计：<span>{_totalprice}元</span></p>
+                        <p className="fr">合计：<span>{`${_totalprice.toFixed(2)}`}元</span></p>
                     </aside>
                     <a href="javascript:;" onClick={e=>this.getOrder(e)}>立即支付</a>
                 </footer>

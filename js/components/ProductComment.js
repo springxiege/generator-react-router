@@ -74,7 +74,7 @@ class ProductComment extends React.Component {
             return (
                 <div className="coment-list" key={index}>
                     <div className="coment-header clearfix">
-                        <img src={buy.headimgurl} alt={buy.id} className="fl" />
+                        <img src={buy.headimgurl||'/images/shop_logo.gif'} alt={buy.id} className="fl" />
                         <span className="coment-user fl">{buy.name}</span>
                         <span className="coment-time fr">{item.created_at}</span>
                     </div>

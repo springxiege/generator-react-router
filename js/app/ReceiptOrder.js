@@ -61,7 +61,7 @@ class ReceiptOrder extends Component{
                 console.error(error)
             },
             success:(data)=>{
-                console.log(data)
+                // console.log(data)
                 if(parseInt(data.code) === 0){
                     if(data.data.data){
                         this.props.dispatch(getReceiptOrder(data.data.data));
@@ -143,14 +143,13 @@ class ReceiptOrder extends Component{
             contentclsName:'lynote',
             title:'<p>我要联赢提示</p>',
             content:'<p>1.确认收货后将无法通过系统发起退换货;</p><p>2.请您再三确认收到的宝贝是否满意再确认收货</p>',
-            time:10,
+            time:5,
             okBtn:function(){
                 $.ajax({
                     url: config.url + '/orders/parcel',
-                    type: 'POST',
+                    type: 'put',
                     dataType: 'json',
                     data: {
-                        _method:'put',
                         ids:_ids
                     },
                     beforeSend:(request)=>{
@@ -162,7 +161,7 @@ class ReceiptOrder extends Component{
                         console.error(error)
                     },
                     success:(data)=>{
-                        console.log(data)
+                        // console.log(data)
                         if(parseInt(data.code) === 0){
                             $.error(data.data.msg)
                             window.location.hash = '#//RateOrder'
@@ -193,7 +192,7 @@ class ReceiptOrder extends Component{
                             </h3>
                             <div className="part-list" data-id={item.id}>
                                 <div className="part-info ">
-                                    <Link to={`/ProductDetails/${item.goods_id}`} className="clearfix">
+                                    <Link to={`/OrderDetail/${item.id}`} className="clearfix">
                                         <img src={item.goods.goods_images[0]||item.goods.goods_images[1]||item.goods.goods_images[2]} alt="" className="fl" />
                                         <div className="part-detail">
                                             <h4>{item.goods.title}</h4>
@@ -210,8 +209,8 @@ class ReceiptOrder extends Component{
                             <div className="part-funcs">
                                 {/*<span className="fr"><Link to="">查看物流</Link></span>*/}
                                 <span className="fr" onClick={e=>this.ConfirmOrder(e)}>确认收货</span>
-                                <span className="fr"><Link to={`/Reason/${item.id}`}>换货</Link></span>
-                                <span className="fr"><Link to={`/Back/${item.id}`}>退货</Link></span>
+                                <span className="change fr"><Link to={`/Reason/${item.id}`}>换货</Link></span>
+                                <span className="return fr"><Link to={`/Back/${item.id}`}>退货</Link></span>
                             </div>
                         </div>
                     </div>

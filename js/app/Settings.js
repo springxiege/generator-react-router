@@ -66,10 +66,9 @@ class Settings extends Component{
                 }
                 $.ajax({
                     url: config.url + '/user/info',
-                    type: 'POST',
+                    type: 'put',
                     dataType: 'json',
                     data: {
-                        _method:'put',
                         name:_new_nickname
                     },
                     beforeSend:(request)=>{
@@ -115,20 +114,24 @@ class Settings extends Component{
                     console.error(error)
                 },
                 success:(datas)=>{
-                    console.log(datas)
+                    // console.log(datas)
                     $.ajax({
                         url: config.url + '/user/info',
-                        type: 'POST',
+                        type: 'put',
                         dataType: 'json',
                         data: {
-                            _method:'put',
                             headimgurl:datas.data.url
                         },
                         error:(error)=>{
                             console.error(error)
                         },
+                        beforeSend:(request)=>{
+                            if(config.head!=''){
+                                request.setRequestHeader("Authorization", "Bearer " + config.head);
+                            }
+                        },
                         success:(idata)=>{
-                            console.log(idata)
+                            // console.log(idata)
                             if(parseInt(idata.code) === 0){
                                 $.error('上传成功');
                                 $('#logo').prop('src', datas.data.url)
@@ -144,7 +147,7 @@ class Settings extends Component{
     }
     render(){
         let _data = this.props.state
-        console.log(_data)
+        // console.log(_data)
         return (
             <div className="main">
                 <div className="settings-header">

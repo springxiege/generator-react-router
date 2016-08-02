@@ -114,15 +114,17 @@ footer{
     height: 2.5rem;
     line-height: 2.5rem;
     font-size:.45rem;
-    // position: fixed;
-    // z-index: 99;
-    // left:50%;
-    // bottom:0;
-    // margin-left: -8rem;
     background-color: #fff;
     border-top: 1px solid #E7E7E7;
     text-align: center;
-    color:#8d8d8d
+    color:#8d8d8d;
+    &.fixed{
+        position: fixed;
+        z-index: 99;
+        left:50%;
+        bottom:0;
+        margin-left: -8rem;
+    }
 }
 .returntop{
     display: none;
@@ -133,7 +135,7 @@ footer{
     background-position: 0 0;
     background-size: 100% auto;
     position: fixed;
-    z-index: 9999;
+    z-index: 9997;
     right:50%;
     bottom:3.5rem;
     margin-right: -7.5rem;
@@ -319,6 +321,9 @@ footer{
     color:#fff;
     text-align: center;
     overflow: hidden;
+    &.disabled{
+        background-color: #b7b7b7;
+    }
 }
 @keyframes fadeinout {
   form {

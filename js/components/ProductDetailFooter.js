@@ -32,15 +32,26 @@ class ProductDetailFooter extends React.Component {
         let _id        = _data.data.id
         let _title     = _data.data.title
         let _temp      = {}
-        if(_select === null || _subselect === null){
+        if(_select === null && _subselect === null){
             this.props.dispatch(ShowAndHideSelectSku())
             return false;
         }
-        _temp.id          = _id;
-        _temp.count       = _count;
-        _temp.title       = _title;
-        _temp.selected    = _select;
-        _temp.subselected = _subselect;
+        let _addon = _data.data.goods_addon[_select].addon
+        if(_addon.length === 1 && _addon[0].feature_sub === ''){
+            if(parseInt(_addon[0].stock) === 0){
+                $.error('库存为0，不可购买');
+                return false;
+            }
+        }else{
+            if(_subselect === null){
+                $.error('请选择子规格');
+                return false;
+            }
+            if(parseInt(_addon[_subselect].stock) === 0){
+                $.error('库存为0，不可购买');
+                return false;
+            }
+        }
         window.location.hash = '#/BuyList/'+_id
     }
     handleToLand(e,url){

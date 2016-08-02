@@ -15,6 +15,7 @@ config.isObjectValueEqual = function(a,b){
         b = JSON.stringify(b);
     return a===b
 };
+// 开启关闭传递token
 if(store.get('trade') && store.get('trade').token){
     window.config.head = store.get('trade').token
 }else{

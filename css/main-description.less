@@ -1,0 +1,21 @@
+@import url('./px2rem.less');
+.main-description{
+    background-color: #fff;
+    padding: 0 0.5rem 0.2rem;
+}
+.main-description p{
+    font-size:0.55rem;
+    color:#898989;
+    line-height: 0.8rem;
+}
+.main-images{
+    li{
+        .wpx2rem(640);
+        .hpx2rem(640);
+        overflow: hidden;
+        img{
+            display: block;
+            width: 100%;
+        }
+    }
+}

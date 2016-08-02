@@ -25,7 +25,7 @@ class UserCenter extends React.Component {
             error:(error)=>{
                 console.error(error)
                 if(error.status === 401 && error.responseJSON.code === 1){
-                    window.location.hash = '#/Register/UserCenter'
+                    alert('header头报错')
                 }
             },
             success:(data)=>{
@@ -63,7 +63,7 @@ class UserCenter extends React.Component {
                         {/*<Link to="/Msg" title="消息"><span className="msg"></span></Link>*/}
                     </div>
                     {_data.userDetail != undefined ? (
-                        <h1>{_data.userDetail.name == '' ? '阿琪尔汤' : _data.userDetail.name}
+                        <h1>{_data.userDetail.name || '未获取到信息'}
                             {_data.userDetail.country=='' ? '':(
                                 _data.userDetail.content == '' ? (
                                     _data.userDetail.city == '' ? (
@@ -83,7 +83,7 @@ class UserCenter extends React.Component {
                         </h1>
 
                     ) : (
-                        <h1>阿琪尔汤<span>广东·佛山</span></h1>
+                        <h1>未获取到信息</h1>
                     )}
                 </div>
                 <div className="main-module">

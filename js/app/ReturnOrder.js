@@ -1,5 +1,6 @@
 import React,{Component} from 'react'
 import {Link} from 'react-router'
+import {findDOMNode} from 'react-dom'
 import {connect} from 'react-redux'
 import {
     getReturnOrder,
@@ -129,6 +130,14 @@ class ReturnOrder extends Component{
         }
 
     }
+    handleShowDetails(e){
+        let $target = $(findDOMNode(e.target)).closest('.part-funcs');
+        if($target.hasClass('show')){
+            $target.removeClass('show').siblings('.return-detail').slideUp()
+        }else{
+            $target.addClass('show').siblings('.return-detail').slideDown()
+        }
+    }
     render(){
         let _HTML = (<p className="nolist">暂无退换货订单</p>)
         let _data = this.props.state.data
@@ -142,7 +151,7 @@ class ReturnOrder extends Component{
                             <h3><img src={item.shop.user_info.logo !="" ? item.shop.user_info.logo :"images/3.jpg"} alt="" />&ensp;&ensp;{item.shop.shop_name!=""?(item.shop.shop_name):(item.shop.user_info.realname)} <span className="order-status fr">{(item.abandon_type == 1) ? (item.is_confirm==1?"已退款":"退款中") : (item.is_confirm==1 ? "已换货" : "换货中")}</span></h3>
                             <div className="part-list">
                                 <div className="part-info">
-                                    <Link to={`/ProductDetails/${item.goods_id}`} className="clearfix">
+                                    <Link to={`/OrderDetail/${item.id}`} className="clearfix">
                                         <img src={item.goods.goods_images[0]||item.goods.goods_images[1]||item.goods.goods_images[2]} alt="" className="fl" />
                                         <div className="part-detail">
                                             <h4>{item.goods.title}</h4>
@@ -155,7 +164,19 @@ class ReturnOrder extends Component{
                             </div>
                             <div className="part-subtotal">小计：<span>{_totalPrice}</span>元</div>
                             <div className="part-funcs return-order">
-                                <span className="fr">{(item.abandon_type == 1) ? (item.is_confirm==1?"已退款":"退款中") : (item.is_confirm==1 ? "已换货" : "换货中")}</span>
+                                {item.abandon_type == 1 ? (
+                                    item.is_confirm == 1 ? (
+                                        <span className="returned-money fr" onClick={e=>this.handleShowDetails(e)}>已退款</span>
+                                    ):(
+                                        <span className="returning-money fr" onClick={e=>this.handleShowDetails(e)}>退款中</span>
+                                    )
+                                ):(
+                                    item.is_confirm == 1 ? (
+                                        <span className="returned-order fr" onClick={e=>this.handleShowDetails(e)}>已换货</span>
+                                    ) : (
+                                        <span className="returning fr" onClick={e=>this.handleShowDetails(e)}>换货中</span>
+                                    )
+                                )}
                                 <span className="tracking fr"><Link to={`/Tracking/${item.order_id}`}>售后跟踪</Link></span>
                             </div>
                             <div className="return-detail clearfix">

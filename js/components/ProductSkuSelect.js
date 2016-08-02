@@ -63,6 +63,7 @@ class ProductSkuSelect extends React.Component {
     }
     // 添加至购物车
     addtoCart(e){
+        let _this = this
         if(!window.config.isWX){
             if(store.enabled){
                 var tradeStore = store.get('trade');
@@ -115,7 +116,9 @@ class ProductSkuSelect extends React.Component {
             },
             success:(data)=>{
                 if(parseInt(data.code) == 0){
-                    $.error('加入购物车成功')
+                    $.error('加入购物车成功',1200,function(){
+                        _this.props.dispatch(ShowAndHideSelectSku())
+                    })
                 }
             }
         })
@@ -158,6 +161,10 @@ class ProductSkuSelect extends React.Component {
                 return false;
             }
         }else{
+            if(_subselect === null){
+                $.error('请选择子规格');
+                return false;
+            }
             if(parseInt(_addon[_subselect].stock) === 0){
                 $.error('库存为0，不可购买');
                 return false;
@@ -179,8 +186,9 @@ class ProductSkuSelect extends React.Component {
         let _selected       = _GoodsSelectSku.selected
         let _subselected    = _GoodsSelectSku.subselected
         let subskudata      = _data.goods_addon?_data.goods_addon[(_selected||0)].addon:[]
+        let _fare           = parseFloat(_data.fare).toFixed(1)
         let _clsName        = !_GoodsSelectSku.isvisible?"sku-pop":"sku-pop selecting"
-        
+        console.log(_state)
         let sku = (_data.goods_addon||[]).map((item,index)=>{
 
             return (
@@ -199,7 +207,7 @@ class ProductSkuSelect extends React.Component {
             })
             subskuwrap = (
                 <div className="sku-info clearfix">
-                    <span className="sku-prop-name fl">规格二</span>
+                    <span className="sku-prop-name fl">规格</span>
                     <div className="sku-prop-item">
                         <ul className="clearfix">
                             {subsku}
@@ -217,7 +225,7 @@ class ProductSkuSelect extends React.Component {
                             <span className="sku-close" onClick={e=>this._closeSKU(e)}><a href="javascript:;" title="关闭"></a></span>
                             <div className="sku-item">
                                 <div className="sku-info clearfix">
-                                    <span className="sku-prop-name fl">规格一</span>
+                                    <span className="sku-prop-name fl">规格</span>
                                     <div className="sku-prop-item">
                                         <ul className="clearfix">
                                             {sku}
@@ -236,7 +244,7 @@ class ProductSkuSelect extends React.Component {
                                     </div>
                                 </div>
                                 <div className="main-price clearfix">
-                                    <div className="main-price-module fl">合计：<span className="main-money">{_GoodsSelectSku.price}元</span><span>(含快递费{_data.fare}元)</span></div>
+                                    <div className="main-price-module fl">合计：<span className="main-money">{_GoodsSelectSku.price}元</span><span>(含快递费{_fare}元)</span></div>
                                 </div>
                             </div>
                             <div className="sku-count clearfix">

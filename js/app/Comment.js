@@ -44,9 +44,14 @@ export default class Comment extends Component{
                 console.error(error)
             },
             success:(data)=>{
-                console.log(data)
+                // console.log(data)
                 if(parseInt(data.code) === 0){
                     $.error(data.data.msg,1500,function(){
+                        window.location.hash = '#/RateOrder'
+                    })
+                }
+                if(parseInt(data.code) === 1){
+                    $.error(data.data.msg,1200,function(){
                         window.location.hash = '#/RateOrder'
                     })
                 }

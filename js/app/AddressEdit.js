@@ -15,8 +15,11 @@ class AddressEdit extends Component {
             type: 'POST',
             dataType: 'json',
             data: {},
-            beforeSend:()=>{
+            beforeSend:(request)=>{
                 $.loading.show()
+                if(config.head!=''){
+                    request.setRequestHeader("Authorization", "Bearer " + config.head);
+                }
             },
             error:(error)=>{
                 console.error(error)
@@ -39,6 +42,7 @@ class AddressEdit extends Component {
         let id         = this.props.params.AddressId
         let _type      = this.props.params.type
         let $form      = $(findDOMNode(this.refs.form))
+        let $btn       = $(findDOMNode(e.target))
         let _name      = $form.find('[name=name]').val()
         let _tel       = $form.find('[name=tel]').val()
         let _address   = $form.find('[name=address]').val()
@@ -53,54 +57,59 @@ class AddressEdit extends Component {
             $form.find('[name=tel]').focus();
             return false
         };
+        if(!(/^1[3|4|5|7|8]\d{9}$/.test(_tel))){
+            $.error('请输入正确的手机号');
+            $form.find('input[name=tel]').focus();
+            return false;
+        };
         if(_address == ''){
             $.error('地址不能为空');
             $form.find('[name=address]').focus();
             return false
         };
-        if(!(/^1[3|4|5|7|8]\d{9}$/.test(_tel))){
-            $.error('请输入正确的手机号');
-            $form.find('input[name=tel]').focus();
-            return false;
-        }
-        $.ajax({
-            url: config.url + '/user/address/'+id,
-            type: 'POST',
-            dataType: 'json',
-            data: {
-                _method:'PUT',
-                name:_name,
-                tel:_tel,
-                address:_address,
-                is_default:is_default
-            },
-            beforeSend:(request)=>{
-                if(config.head!=''){
-                    request.setRequestHeader("Authorization", "Bearer " + config.head);
-                }
-            },
-            error:(error)=>{
-                console.error(error)
-            },
-            success:(data)=>{
-                console.log(data)
-                if(parseInt(data.code)==0){
-                    switch(_type){
-                        case 'buy':
-                            window.location.hash = '#/Address/buy'
-                            break;
-                        case 'setting':
-                            window.location.hash = '#/Address/setting'
-                            break;
-                        default:
-                            window.location.hash = '#/Address/setting'
-                            break;
-                    }
+        if(!$btn.hasClass('disabled')){
+            $.ajax({
+                url: config.url + '/user/address/'+id,
+                type: 'PUT',
+                dataType: 'json',
+                data: {
+                    name:_name,
+                    tel:_tel,
+                    address:_address,
+                    is_default:is_default
+                },
+                beforeSend:(request)=>{
+                    if(config.head!=''){
+                        request.setRequestHeader("Authorization", "Bearer " + config.head);
+                    };
+                    $btn.addClass('disabled').html('提交中')
+                },
+                error:(error)=>{
+                    console.error(error)
+                },
+                success:(data)=>{
+                    $btn.removeClass('disabled').html('确认')
+                    if(parseInt(data.code)==0){
+                        switch(_type){
+                            case 'buy':
+                                window.location.hash = '#/Address/buy'
+                                break;
+                            case 'setting':
+                                window.location.hash = '#/Address/setting'
+                                break;
+                            case 'shopcart':
+                                window.location.hash = '#/Address/shopcart'
+                            default:
+                                window.location.hash = '#/Address/setting'
+                                break;
+                        }
 
-                    
+                        
+                    }
                 }
-            }
-        })
+            })
+        }
+        
         
     }
     SetDefault(e){

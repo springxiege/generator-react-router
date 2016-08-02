@@ -66,14 +66,13 @@ class ShoppingCart extends React.Component {
             okBtn:function(){
                 $.ajax({
                     url: config.url + '/goods/cart/'+id,
-                    type: 'POST',
-                    headers:{
-                        token:config.head
-                    },
+                    type: 'delete',
                     dataType: 'json',
-                    data: {_method: 'delete'},
-                    beforeSend:function(){
-
+                    data: {},
+                    beforeSend:function(request){
+                        if(config.head!=''){
+                            request.setRequestHeader("Authorization", "Bearer " + config.head);
+                        }
                     },
                     error:function(error){
                         console.error(error)
@@ -82,6 +81,8 @@ class ShoppingCart extends React.Component {
                         if(parseInt(data.code)==0){
                             $.error('删除成功！')
                             _this.props.dispatch(DeleteConfirm(id))
+                        }else{
+                            $.error(data.data.msg)
                         }
                     }
                 })
@@ -111,7 +112,7 @@ class ShoppingCart extends React.Component {
                     console.error(error)
                 },
                 success:(data)=>{
-                    console.log(data)
+                    // console.log(data)
                     if(parseInt(data.code) == 0){
                         $this.props.dispatch(Increment(_id))
                     }
@@ -144,7 +145,7 @@ class ShoppingCart extends React.Component {
                     console.error(error)
                 },
                 success:(data)=>{
-                    console.log(data)
+                    // console.log(data)
                     if(parseInt(data.code) == 0){
                         $this.props.dispatch(Decrement(_id))
                     }
@@ -206,9 +207,52 @@ class ShoppingCart extends React.Component {
         }
         return html;
     }
+    // 结算，跳转前将已选数据存入localstorage
+    handleBilling(e){
+        let _state = this.props.state
+        let _Array = _state.data;
+        let _mapDate = [];
+        let _trade = {};
+        $.each(_Array,function(index,item) {
+            if(_trade[item.goods.get_user_profile.user_id] === undefined){
+                _trade[item.goods.get_user_profile.user_id]          = {};
+                _trade[item.goods.get_user_profile.user_id].list     = [];
+                _trade[item.goods.get_user_profile.user_id].user     = {};
+                _trade[item.goods.get_user_profile.user_id].user.user_id  = item.goods.get_user_profile.user_id;
+                _trade[item.goods.get_user_profile.user_id].user.logo     = item.goods.get_user_profile.logo||'/images/shop_logo.gif';
+                _trade[item.goods.get_user_profile.user_id].user.userName = item.goods.get_user_profile.shop_name;
+            }
+            if(_state.amount[item.id].checked){
+                let _Obj           = {};
+                _Obj.count         = item.amount;
+                _Obj.goods_addon   = item.goods_addon;
+                _Obj.title          = item.goods.title;
+                _Obj.images         = item.goods.goods_images[0];
+                _Obj.price         = item.goods_addon.goods_price;
+                _Obj.originalprice = item.goods.max_price;
+                _Obj.fare          = item.goods.fare;
+                _Obj.is_activity   = 0;
+                _trade[item.goods.get_user_profile.user_id].list.push(_Obj) 
+            }
+        });
+        $.each(_trade, function(index, val) {
+            _mapDate.push(val)
+        });
+        if(_mapDate.length && !_mapDate[0].list.length){
+            $.error('请选择商品后再购买');
+            return false;
+        }
+        // 存入数据供合并付款页面使用，当生成订单时清除缓存数据
+        if(store.enabled){
+            config.setStorage('ShopCartList','data',_mapDate);
+            window.location.hash = '#/Buy/shopcart'
+        }else{
+            alert('This browser does not supports localStorage')
+        }
+    }
     render(){
         let _html = this._getList();
-        console.log(this.props.state)
+        // console.log(this.props.state)
         return (
             <div className="ShopCartList">
                 <div className="main">
@@ -223,7 +267,8 @@ class ShoppingCart extends React.Component {
                         <label className="fl" htmlFor="allgoods">全选</label>
                         <p className="fr">合计：<span>{this.props.state.totalAmount}</span></p>
                     </aside>
-                    <Link to="/Buy/shopcart">去结算</Link>
+                    <a href="javascript:;" onClick={e=>this.handleBilling(e)}>去结算</a>
+                    {/*<Link to="/Buy/shopcart">去结算</Link>*/}
                 </footer>
             </div>
         )

@@ -1,5 +1,6 @@
 import React,{Component} from 'react'
 import {Link} from 'react-router'
+import {findDOMNode} from 'react-dom'
 import {connect} from 'react-redux'
 import { 
     getOrderDetail
@@ -47,22 +48,22 @@ class OrderDetail extends Component{
                 var _reason = $('#reason').val();
                 $.ajax({
                     url: config.url + '/orders/abandon',
-                    type: 'POST',
-                    headers:{
-                        token:config.head
-                    },
+                    type: 'PUT',
                     dataType: 'json',
                     data: {
-                        _method:'PUT',
                         type:1,
                         abandon_reason:_reason,
                         ids:_ids
+                    },
+                    beforeSend:(request)=>{
+                        if(config.head!=''){
+                            request.setRequestHeader("Authorization", "Bearer " + config.head);
+                        }
                     },
                     error:(error)=>{
                         console.error(error)
                     },
                     success:(data)=>{
-                        console.log(data)
                         if(parseInt(data.code) === 0){
                             $.error(data.data.msg,800,function(){
                                 window.location.hash = '#/ReturnOrder'
@@ -71,6 +72,42 @@ class OrderDetail extends Component{
                     }
                 })
                 
+            }
+        })
+    }
+    ConfirmOrder(e){
+        let _id = $(findDOMNode(e.target)).data('id')
+        let _ids = [_id]
+        $.confirm({
+            titleclsName:'lytitle',
+            contentclsName:'lynote',
+            title:'<p>我要联赢提示</p>',
+            content:'<p>1.确认收货后将无法通过系统发起退换货;</p><p>2.请您再三确认收到的宝贝是否满意再确认收货</p>',
+            time:5,
+            okBtn:function(){
+                $.ajax({
+                    url: config.url + '/orders/parcel',
+                    type: 'put',
+                    dataType: 'json',
+                    data: {
+                        ids:_ids
+                    },
+                    beforeSend:(request)=>{
+                        if(config.head!=''){
+                            request.setRequestHeader("Authorization", "Bearer " + config.head);
+                        }
+                    },
+                    error:(error)=>{
+                        console.error(error)
+                    },
+                    success:(data)=>{
+                        // console.log(data)
+                        if(parseInt(data.code) === 0){
+                            $.error(data.data.msg)
+                            window.location.hash = '#//RateOrder'
+                        }
+                    }
+                })
             }
         })
     }
@@ -140,7 +177,7 @@ class OrderDetail extends Component{
                                     <span className="fr" onClick={e=>this.doReturnOrder(e)}>退款</span>
                                 ) : (
                                     parseInt(_data.parcel_status) === 1 ? (
-                                        <span className="fr" onClick={e=>this.ConfirmOrder(e)}>确认收货</span>
+                                        <span className="fr" data-id={`${_data.id}`} onClick={e=>this.ConfirmOrder(e)}>确认收货</span>
                                     ) : (
                                         <span className="fr"><Link to={`/Comment/${_data.id}`}>评价</Link></span>
                                     )

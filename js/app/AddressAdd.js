@@ -11,6 +11,7 @@ class AddressAdd extends Component {
     }
     formSubmit(e){
         let $form      = $(findDOMNode(this.refs.form))
+        let $btn       = $(findDOMNode(e.target))
         let _name      = $form.find('[name=name]').val()
         let _tel       = $form.find('[name=tel]').val()
         let _address   = $form.find('[name=address]').val()
@@ -25,41 +26,46 @@ class AddressAdd extends Component {
             $form.find('[name=tel]').focus();
             return false
         };
+        if(!(/^1[3|4|5|7|8]\d{9}$/.test(_tel))){
+            $.error('请输入正确的手机号');
+            $form.find('input[name=tel]').focus();
+            return false;
+        };
         if(_address == ''){
             $.error('地址不能为空');
             $form.find('[name=address]').focus();
             return false
         };
-        if(!(/^1[3|4|5|7|8]\d{9}$/.test(_tel))){
-            $.error('请输入正确的手机号');
-            $form.find('input[name=tel]').focus();
-            return false;
-        }
         let param = {
             name:_name,
             tel:_tel,
             address:_address,
             is_default:is_default
         }
-        $.ajax({
-            url: config.url + '/user/address',
-            type: 'POST',
-            dataType: 'json',
-            data: param,
-            beforeSend:(request)=>{
-                if(config.head!=''){
-                    request.setRequestHeader("Authorization", "Bearer " + config.head);
+        if(!$btn.hasClass('disabled')){
+            $.ajax({
+                url: config.url + '/user/address',
+                type: 'POST',
+                dataType: 'json',
+                data: param,
+                beforeSend:(request)=>{
+                    if(config.head!=''){
+                        request.setRequestHeader("Authorization", "Bearer " + config.head);
+                    };
+                    $btn.addClass('disabled').html('提交中')
+                },
+                error:(error)=>{
+                    console.error(error)
+                },
+                success:(data)=>{
+                    $btn.removeClass('disabled').html('确认')
+                    if(parseInt(data.code) == 0){
+                        window.location.hash = '#/Address/'+this.props.params.transfertype
+                    }
                 }
-            },
-            error:(error)=>{
-                console.error(error)
-            },
-            success:(data)=>{
-                if(parseInt(data.code) == 0){
-                    window.location.hash = '#/Address/'+this.props.params.transfertype
-                }
-            }
-        })
+            })
+        }
+        
     }
     ChangeDefault(e){
         $(e.target).closest('label').toggleClass('checked');

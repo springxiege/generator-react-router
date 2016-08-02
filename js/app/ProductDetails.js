@@ -37,8 +37,19 @@ class ProductDetails extends React.Component {
             },
             success: (data)=>{
                 if(parseInt(data.code) == 0){
+                    document.title = '商品详情-' + data.data.title
                     this.props.dispatch(GoodsDetail(data.data));
                     $.loading.hide();
+                    // 详情页统计数据
+                    LYA({
+                        action: ['user_visit', 'common'],
+                        debug: false,
+                        param: {
+                            buy_id: data.user_id,
+                            goods_id: data.id,
+                            come_from: 'xds'
+                        }
+                    });
                 }else{
                     alert('请求成功，返回错误,错误code:'+data.code+'，请刷新页面重试！');
                     // window.location.reload();

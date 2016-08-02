@@ -179,12 +179,12 @@ class PendingPayOrder extends Component{
                         <div className="part-item">
                             <h3><img src="images/3.jpg" alt="" />&ensp;&ensp;{item.shop_name} <span className="order-status fr">买家待付款</span></h3>
                             {item.items.map((subitem,subindex)=>{
-                                let _link = '/OrderDetail/'+subitem.id
-                                _totalPrice += (subitem.preferential-0)
+                                let _link = '/OrderDetail/'+subitem.id;
+                                _totalPrice += (subitem.preferential - 0);
                                 return (
                                     <div className="part-list" key={subindex} data-id={subitem.id}>
                                         <div className="part-info">
-                                            <Link to={_link} className="clearfix">
+                                            <Link to={`/OrderDetail/${subitem.id}`} className="clearfix">
                                                 <img src={subitem.goods.goods_images[0]||subitem.goods.goods_images[1]||subitem.goods.goods_images[2]} alt="" className="fl" />
                                                 <div className="part-detail">
                                                     <h4>{subitem.goods.title}</h4>
@@ -199,7 +199,7 @@ class PendingPayOrder extends Component{
                             })}
 
                             <div className="part-subtotal">
-                                小计：<span>{_totalPrice}</span>元
+                                小计：<span>{`${_totalPrice.toFixed(2)}`}</span>元
                             </div>
                             <div className="part-funcs">
                                 <span className="fr" ><Link to={`/SelectPay/${item.items[0].out_trade_no}`}>付款</Link></span>

@@ -34,7 +34,7 @@ export default class RateOrder extends Component{
                 console.error(error)
             },
             success:(data)=>{
-                console.log(data)
+                // console.log(data)
                 if(parseInt(data.code) === 0){
                     $.loading.hide();
                     window.location.hash = '#/ReturnOrder'

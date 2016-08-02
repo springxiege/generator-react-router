@@ -7,27 +7,13 @@
         setTokenForPC:function(token,userInfo){
             if(store.enabled){
                 var tradeStore = store.get('trade');
-                var dt = new Date();
-                dt.setMinutes(dt.getMinutes() - dt.getTimezoneOffset()); // 修正时区偏移
-                var date = dt.toISOString().slice(0, -5).replace(/[T]/g, ' ');
                 if(!tradeStore){
                     config.setStorage('trade','token',token);
                     config.setStorage('trade','userinfo',userInfo);
-                    config.setStorage('trade','time',date);
+                    config.setStorage('trade','time',new Date().getTime());
                 }else{
                     config.setStorage('trade','token',token)
-                    var _oldTime = store.get('trade').time,
-                        _oldSeconds = new Date(_oldTime).getTime()/1000,
-                        _newSeconds = new Date(date).getTime()/1000,
-                        _seconds = (((_newSeconds - _oldSeconds)/3600*60*60)),
-                        _Provision = 6*60;
-                    if(_Provision - _seconds < 0){
-                        
-                    }
-                    console.log(_seconds)
-                    setInterval(function(){
-
-                    },1000)
+                    config.setStorage('trade','time',new Date().getTime());
                 }
             }else {
                 console.error('This browser does not supports localStorage')
@@ -123,15 +109,15 @@
                     defaults.CancelBtn();
                 };
                 $pop.remove();
+                return false;
             });
             // 确定
             $pop.on('click touchend', '.pop-btn-ok', function(event) {
                 if(defaults.okBtn && typeof defaults.okBtn === 'function'&&!$(this).hasClass('disabled')){
                     defaults.okBtn($pop);
                     if(defaults.remove){$pop.remove();}
-                }else{
-                    return false;
-                }
+                };
+                return false;
             });
             // 计时
             if(defaults.time){

@@ -1,5 +1,6 @@
 import {
-    GOODSLIST
+    GOODSLIST,
+    GET_MORE_GOODSLIST
 } from '../actions/ActionTypes'
 const initialState = {
     total:0,
@@ -15,6 +16,11 @@ export default function GoodsList(state=initialState,action){
                 total:action.data.total,
                 current_page:action.data.current_page,
                 next_page_url:action.data.next_page_url
+            })
+            break;
+        case GET_MORE_GOODSLIST:
+            return Object.assign({},state,{
+                data:action.data.data
             })
             break;
         default:

@@ -9,7 +9,9 @@ export default class BrowseHistory extends Component{
                 return (
                     <li key={index}>
                         <Link to={`/ProductDetails/${item.id}`}>
-                            <img src={item.goods_images[0]||item.goods_images[1]||item.goods_images[2]} alt="" />
+                            <div className="his-imgs">
+                                <img src={item.goods_images[0]||item.goods_images[1]||item.goods_images[2]} alt="" />
+                            </div>
                             <p>{item.title}</p>
                             <p>&yen;{item.min_price}</p>
                         </Link>

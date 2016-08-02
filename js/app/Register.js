@@ -48,7 +48,7 @@ export default class Register extends Component{
                     console.error(error)
                 },
                 success:(data)=>{
-                    console.log(data)
+                    // console.log(data)
                     if(parseInt(data.code) === 0){
                         $form.find('input[name=verify]').val(data.data.msg);
                     }
@@ -85,7 +85,7 @@ export default class Register extends Component{
                 console.error(error)
             },
             success:(data)=>{
-                console.log(data)
+                // console.log(data)
                 if(parseInt(data.code) === 0){
                     if(store.enabled){
                         $.setTokenForPC(data.data.token,data.data.data);

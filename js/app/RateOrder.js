@@ -62,7 +62,7 @@ class RateOrder extends Component{
                 console.error(error);
             },
             success:(data)=>{
-                console.log(data)
+                // console.log(data)
                 if(parseInt(data.code) === 0){
                     if(data.data.data){
                         this.props.dispatch(getRateOrder(data.data.data));
@@ -147,7 +147,7 @@ class RateOrder extends Component{
                     console.error(error)
                 },
                 success:(data)=>{
-                    console.log(data)
+                    // console.log(data)
                     if(parseInt(data.code) === 0){
                         if(data.data.data.length){
                             let _HTML = ''
@@ -191,7 +191,7 @@ class RateOrder extends Component{
                             <h3><img src={item.shop.shop_logo||'/images/shop_logo.gif'} alt="" />&ensp;&ensp;{item.shop.shop_name||''} <span className="order-status fr">交易成功</span></h3>
                             <div className="part-list">
                                 <div className="part-info ">
-                                    <Link to={`/ProductDetails/${item.goods_id}`} className="clearfix">
+                                    <Link to={`/OrderDetail/${item.id}`} className="clearfix">
                                         <img src={item.goods.goods_images[0]||item.goods.goods_images[1]||item.goods.goods_images[2]} alt="" className="fl" />
                                         <div className="part-detail">
                                             <h4>{item.goods.title}</h4>
@@ -206,10 +206,10 @@ class RateOrder extends Component{
                                 小计：<span>{_totalPrice}</span>元
                             </div>
                             <div className="part-funcs">
-                                {item.comment_stats==0 ? (
+                                {item.comment_stats == 0 ? (
                                     <span className="fr"><Link to={`/Comment/${item.id}`}>评价</Link></span>
                                 ) : (
-                                    item.comment_stats==1 ? (
+                                    item.comment_stats == 1 ? (
                                         <span className="fr">待商家回复</span>
                                     ) : (
                                         <span className="fr"><Link to={`/Comment/${item.id}`}>追评</Link></span>

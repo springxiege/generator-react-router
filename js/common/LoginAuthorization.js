@@ -27,6 +27,7 @@
             }else{
                 window.config.head = window.config.wxData.token;
                 config.setStorage('trade','token',window.config.wxData.token);
+                config.setStorage('trade','time',new Date().getTime());
             }
         }else{
             var _url = window.location.hash.replace('#','').replace(/\?.{0,}/gi,'').toLowerCase(),
@@ -61,15 +62,10 @@
             },
             success:function(data){
                 if(parseInt(data.code) === 0){
-                    var dt = new Date();
-                        dt.setMinutes(dt.getMinutes() - dt.getTimezoneOffset());
-                        var date = dt.toISOString().slice(0, -5).replace(/[T]/g, ' ');
-                    config.setStorage('trade','time',date);
+                    config.setStorage('trade','time',new Date().getTime());
                     config.setStorage('trade','token',data.data.token);
                     config.setStorage('trade','userinfo',data.data.user);
-
                     config.head = data.data.token;
-
                     callback && callback(data.data)
                 }
             }
@@ -80,24 +76,19 @@
     // 如果存在trade值，则判断是否存在token或者token为空
     if(store.enabled){
         var tradeStore = store.get('trade');
-        var Minutes = 5;
+        var Minutes = 55;
+
         if(tradeStore){
             if(!tradeStore.token){
                 LoginAndGrantAuthorization()
             }else{
-                var dt = new Date();
-                dt.setMinutes(dt.getMinutes() - dt.getTimezoneOffset()); // 修正时区偏移
-                var date = dt.toISOString().slice(0, -5).replace(/[T]/g, ' ');
+                var dt = new Date().getTime();
                 var _oldTime = store.get('trade').time,
-                    _oldSeconds = new Date(_oldTime).getTime()/1000,
-                    _newSeconds = new Date(date).getTime()/1000,
-                    _seconds = (((_newSeconds - _oldSeconds)/3600*60*60)),
                     _Provision = Minutes*60;
-                var _now = _Provision - _seconds
+                var _now = parseInt(_Provision - ((dt-_oldTime)/1000))
                 if(_now <= 0){
-                    refreshToken(tradeStore.token,function(data){
-                            _now = (Minutes*60)
-                    });
+                    refreshToken(tradeStore.token);
+                    _now = (Minutes*60)
                 }else{
                     setInterval(function(){
                         if(_now <= 0){

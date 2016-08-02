@@ -1,9 +1,1 @@
-.main-description{
-    background-color: #fff;
-    padding: 0 0.5rem 0.2rem;
-}
-.main-description p{
-    font-size:0.55rem;
-    color:#898989;
-    line-height: 0.8rem;
-}
+.bsb{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;-ms-box-sizing:border-box;-o-box-sizing:border-box;box-sizing:border-box}.bsc{-webkit-box-sizing:content-box;-moz-box-sizing:content-box;-ms-box-sizing:content-box;-o-box-sizing:content-box;box-sizing:content-box}.main-description{background-color:#fff;padding:0 .5rem .2rem}.main-description p{font-size:.55rem;color:#898989;line-height:.8rem}.main-images li{width:16rem;height:16rem;overflow:hidden}.main-images li img{display:block;width:100%}

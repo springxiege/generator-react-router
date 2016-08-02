@@ -139,6 +139,8 @@ class AddressList extends Component {
             case 'setting':
                 window.location.hash = '#/AddressEdit/setting/'+id
                 break;
+            case 'shopcart':
+                window.location.hash = '#/AddressEdit/shopcart/'+id
             default:
                 break;
         }

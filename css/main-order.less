@@ -9,7 +9,7 @@
         display: inline-block;
         .wpx2rem(147);
         .hpx2rem(60);
-        .lhpx2rem(58);
+        .lhpx2rem(56);
         .bdrapx2rem(10);
         text-align: center;
         border:1px solid #F15353;
@@ -29,6 +29,10 @@
             a{
                 color:#686868;
             }
+        }
+        &.change a,
+        &.return a{
+            color:#696969;
         }
     }
 }
@@ -89,9 +93,17 @@
             border-left-color: #e8832a;
             .mglpx2rem(10);
         }
+        &.returned-money,
+        &.returning-money,
+        &.returned-order,
+        &.returning{
+            color:#e8832a;
+            border: 1px solid #e8832a;
+        }
     }
 }
 .return-detail{
+    display: none;
     .minhpx2rem(250);
     .pdpx2rem(50,50,50,50);
     background-color: #E7E7E7;
@@ -104,8 +116,8 @@
         top:0;
         display: block;
         content:'';
-        border:.6rem solid transparent;
-        border-top: .75rem solid #fff;
+        border:.4rem solid transparent;
+        border-top: .5rem solid #fff;
         width:0;
         height: 0;
         border-top-color: #fff;
@@ -201,10 +213,23 @@
 .returned{
     .return-order{
         span:first-of-type{
-            color:#A0A0A0;
-            border-color:#D9D9D9;
+            color:#e8832a;
+            border-color:#e8832a;
             &::after{
-                border-left-color:#A0A0A0;
+                border-left-color:#e8832a;
+            }
+        }
+        &.show{
+            span:first-of-type::after{
+                display: inline-block;
+                content:'';
+                border: .175rem solid transparent;
+                border-top: .225rem solid #e8832a;
+                width: 0;
+                height: 0;
+                border-top-color: #e8832a;
+                border-left-color:transparent;
+                .mglpx2rem(10); 
             }
         }
     }

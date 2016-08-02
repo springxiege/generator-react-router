@@ -13,11 +13,8 @@ import {
     updateBuyList
 } from '../actions/ActionFuncs'
 class BuyList extends Component{
-    componentWillMount() {
-            
-    }
     componentDidMount() {
-        document.title = '购买页面'
+        document.title = '确认购买'
         if(store.get('BuyList') === undefined){
             this.serverRequest = $.ajax({
                 url: config.url + '/goods/addon/' + (this.props.params.buyId||'1'),
@@ -38,11 +35,14 @@ class BuyList extends Component{
                         this.props.dispatch(gotoBuy(data.data));
                         $.loading.hide();
                         let _data = this.props.state.BuyList;
+                        let _user = this.props.state.data.get_users
                         store.set('BuyList',_data);
+                        store.set('BuyUser',_user);
                     }
                 }
             })
         }else{
+            // console.log(store.get('BuyList'))
             this.props.dispatch(updateBuyList(store.get('BuyList')))
             $.loading.hide();
         }
@@ -50,7 +50,7 @@ class BuyList extends Component{
     componentWillUnmount() {
         // alert('确定要离开吗？')
         this.serverRequest && this.serverRequest.abort();
-        store.remove('BuyList');
+        // store.remove('BuyList');
     }
     // 商品数量增加
     BuyCountAdd(e){
@@ -107,17 +107,20 @@ class BuyList extends Component{
     Change(e){
         
     }
+    // 进入确认付款页面
+    handleBilling(e){
+        config.setStorage('BuyOrderList','data',this.props.state.BuyList)
+        window.location.hash = '#/Buy/buylist'
+    }
     render(){
+        // console.log(this.props.state)
         let _data = this.props.state.BuyList
         let _link = '/ProductDetails/'+this.props.params.buyId
-        let _trade = store.get('trade')
         let curObject = {}
         let cur_date = []
         let _totalprice = 0
         // 计算价格
-        
         // 购买商品列表
-        
         let _goods = _data.map((item,index)=>{
             _totalprice += ((item.price-0)*item.count+(item.fare-0))
             // 规格一列表
@@ -197,7 +200,8 @@ class BuyList extends Component{
                     <aside className="fl">
                         <p className="fr">合计：<span>{_totalprice}元</span></p>
                     </aside>
-                    <Link to="/Buy/buylist">确认</Link>
+                    <a href="javascript:;" onClick={e=>this.handleBilling(e)}>确认</a>
+                    {/*<Link to="/Buy/buylist">确认</Link>*/}
                 </footer>
             </div>
         )

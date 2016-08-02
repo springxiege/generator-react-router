@@ -23,7 +23,7 @@ class Tracking extends Component{
                 console.error(error)
             },
             success:(data)=>{
-                console.log(data)
+                // console.log(data)
                 if(parseInt(data.code) === 0){
                     if(data.data){
                         this.props.dispatch(getTracking(data.data))

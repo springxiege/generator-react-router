@@ -46,7 +46,7 @@ class MyCollect extends React.Component {
         return (
             <div>
                 <CollectList data={this.props.state} />
-                <CopyRight />
+                <CopyRight clsName={"fixed"} />
                 <ReturnTop />
             </div>
         )
