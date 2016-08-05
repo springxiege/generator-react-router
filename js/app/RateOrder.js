@@ -168,7 +168,7 @@ class RateOrder extends Component{
                             })
                             $origin.empty().append(_HTML).addClass('show').slideDown()
                         }else{
-                            $.error(data.data.msg,1000)
+                            $.error('暂无评论')
                         }
 
                     }

@@ -23,9 +23,12 @@ class UserCenter extends React.Component {
                 }
             },
             error:(error)=>{
-                console.error(error)
+                // console.error(error)
                 if(error.status === 401 && error.responseJSON.code === 1){
-                    alert('header头报错')
+                    $.error('header请求错误，将重新请求');
+                    $.refreshToken(function(){
+                        window.location.reload();
+                    })
                 }
             },
             success:(data)=>{

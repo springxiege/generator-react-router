@@ -79,6 +79,9 @@
                         .ftpx2rem(40);
                         color:#f15353;
                     }
+                    p{
+                        .pdlpx2rem(90);
+                    }
 
                 }
             }
@@ -112,6 +115,10 @@
                     &.cur{
                         border:1px solid #F15353;
                     }
+                    &.disabled{
+                        background: #eee;
+                        color: #aeaeae;
+                    }
                 }
             }
         }
@@ -135,9 +142,17 @@
                 .vpx2rem(-4);
                 &:first-of-type{
                     background-image: url(../images/icon_minus.png);
+                    &.btn-disabled{
+                        background-image: url(../images/icon_minus_disabled.png);
+                        background-color: #eee;
+                    }
                 }
                 &:last-of-type{
                     background-image: url(../images/icon_add.png);
+                    &.btn-disabled{
+                        background-image: url(../images/icon_add_disabled.png);
+                        background-color: #eee;
+                    }
                 }
             }
             input{
@@ -151,6 +166,24 @@
                 border-right: 2px solid #848689;
                 box-sizing: border-box;
                 overflow: hidden;
+            }
+            &.disabled{
+                border-color:#eee;
+                input{
+                    border-left-color: #eee;
+                    border-right-color: #eee;
+                    color: #c6c6c6;
+                }
+                span{
+                    &:first-of-type{
+                        background-image: url(../images/icon_minus_disabled.png);
+                        background-color: #eee;
+                    }
+                    &:last-of-type{
+                        background-image: url(../images/icon_add_disabled.png);
+                        background-color: #eee;
+                    }
+                }
             }
         }
         .sku-count{

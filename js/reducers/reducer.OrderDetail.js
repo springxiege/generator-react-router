@@ -2,7 +2,7 @@ import {
     ORDER_DETAIL
 } from '../actions/ActionTypes'
 const initialState = {
-    data:{
+    data:[{
         "id": 28,
         "goods_id": 1,
         "user_id": 441,
@@ -38,7 +38,7 @@ const initialState = {
         "deleted_at": null,
         "goods":{goods_images:[]},
         "shop":{}
-    }
+    }]
 }
 export default function OrderDetail(state=initialState,action){
     switch (action.type){

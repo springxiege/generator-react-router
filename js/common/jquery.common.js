@@ -20,6 +20,34 @@
             }
         },
         /**
+         * 
+         */
+        refreshToken:function(callback){
+            $.ajax({
+                url: config.url + '/auth/refresh',
+                type: 'GET',
+                dataType: 'json',
+                data: {},
+                error:function(error){
+                    console.error(error);
+                },
+                beforeSend:function(request){
+                    if(config.head!=''){
+                        request.setRequestHeader("Authorization", "Bearer " + config.head);
+                    }
+                },
+                success:function(data){
+                    if(parseInt(data.code) === 0){
+                        config.setStorage('trade','time',new Date().getTime());
+                        config.setStorage('trade','token',data.data.token);
+                        config.setStorage('trade','userinfo',data.data.user);
+                        config.head = data.data.token;
+                        callback && callback(data.data)
+                    }
+                }
+            })
+        },
+        /**
          * [error 提示消息框]
          * @param  {[type]} data [显示内容]
          * @param  {[type]} time [显示时间后立即隐藏]

@@ -118,7 +118,7 @@ export default {
 
         ]
     }, {
-        path: "/OrderDetail(/:orderId)",
+        path: "/OrderDetail(/:orderId(/:ordertype))",
         component:OrderDetail
     }, {
         path: "/Register(/:page(/:id(/:type)))",

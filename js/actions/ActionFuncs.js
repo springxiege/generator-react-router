@@ -136,17 +136,26 @@ export function GenerateTempBuyList(data){
 export function GetComment(data){
     return {type:types.GET_COMMENT,data}
 }
+export function GetMoreComment(data){
+    return {type:types.GET_MORE_COMMENT,data}
+}
 /**
  * 获取好评
  */
 export function GetGoodComment(data){
     return {type:types.GET_GOOD_COMMENT,data}
 }
+export function GetMoreGoodComment(data){
+    return {type:types.GET_MORE_GOOD_COMMENT,data}
+}
 /**
  * 获取差评
  */
 export function GetBadComment(data){
     return {type:types.GET_BAD_COMMENT,data}
+}
+export function GetMoreBadComment(data){
+    return {type:types.GET_MORE_BAD_COMMENT,data}
 }
 
 /**

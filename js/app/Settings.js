@@ -23,9 +23,11 @@ class Settings extends Component{
                 }
             },
             error:(error)=>{
-                console.error(error)
                 if(error.status === 401 && error.responseJSON.code === 1){
-                    window.location.hash = '#/Register/Settings'
+                    $.error('header请求错误，将重新请求');
+                    $.refreshToken(function(){
+                        window.location.reload();
+                    })
                 }
             },
             success:(data)=>{

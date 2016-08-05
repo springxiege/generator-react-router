@@ -105,8 +105,18 @@ class AddressList extends Component {
             data: {
                 _method:'DELETE'
             },
+            beforeSend:(request)=>{
+                if(config.head!=''){
+                    request.setRequestHeader("Authorization", "Bearer " + config.head);
+                }
+            },
             error:(error)=>{
-                console.error(error)
+                if(error.status === 401 && error.responseJSON.code === 1){
+                    $.error('header请求错误，将重新请求');
+                    $.refreshToken(function(){
+                        window.location.reload();
+                    })
+                }
             },
             success:(data)=>{
                 if(parseInt(data.code)==0){

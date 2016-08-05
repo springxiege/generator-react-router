@@ -136,6 +136,7 @@ class AllGoods extends Component {
     render(){
         let _data = this.props.state
         let _HTML = ''
+        let user = _data.userProfile
         if(_data.data.length){
             _HTML = _data.data.map((item,index)=>{
                 let _link = '/ProductDetails/'+item.id
@@ -157,8 +158,8 @@ class AllGoods extends Component {
         return (
             <div className="main">
                 <div className="allgoods-header clearfix">
-                    <img src="images/3.jpg" alt="" className="fl" />
-                    <p className="fl">王小二的时尚卖手</p>
+                    <img src={user.shop_logo||'/images/shop_logo.gif'} alt="" className="fl" />
+                    <p className="fl">{user.shop_name}</p>
                     <div className="goods-count fr">本家有<span>{_data.data.length}</span>个宝贝</div>
                 </div>
                 <div className="allgoods-container">

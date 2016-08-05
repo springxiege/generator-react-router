@@ -3,13 +3,36 @@
 import React from 'react'
 import {findDOMNode} from 'react-dom'
 import {connect} from 'react-redux'
-import {GetComment,GetGoodComment,GetBadComment} from '../actions/ActionFuncs'
+import {
+    GetComment,
+    GetGoodComment,
+    GetBadComment,
+    GetMoreComment,
+    GetMoreGoodComment,
+    GetMoreBadComment
+} from '../actions/ActionFuncs'
 class ProductComment extends React.Component {
+    // constructor(){
+    //     super();
+    //     this.state = {
+    //         summary:0,
+    //         pagesize:10,
+    //         comment:{
+    //             page:2,
+    //         },
+    //         good:{
+    //             page:2,
+    //         },
+    //         bad:{
+    //             page:2,
+    //         }
+    //     }
+    // }
     componentDidMount(){
         
     }
     componentWillUnmount() {
-          
+        // window.removeEventListener('scroll',this.loadMorePage);
     }
     _Get_Good_Comment(e){
         if(e.target.className == 'cur'){return false;}

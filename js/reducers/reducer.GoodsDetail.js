@@ -94,16 +94,21 @@ export default function GoodsDetail(state = initialState, action) {
     let _originalprice = 0
     let _count         = 1
     let _price         = 0
+    let min_price      = 0
+    let max_price      = 0
     let _skuObj        = {}
     let _sku           = ''
     let _tempObj       = {}
     let _Array         = []
     let temArray       = []
+    let _stock         = 0
     switch (action.type) {
         case GOODS_DETAIL:
+            min_price = parseFloat(action.data.min_price).toFixed(2);
+            max_price = parseFloat(action.data.max_price).toFixed(2);
             _tempObj = Object.assign({}, state.GoodsSelectSku, {
-                price: action.data.min_price+'~'+action.data.max_price,
-                originalprice:action.data.max_price
+                price: min_price + '~' + max_price,
+                originalprice:max_price
             })
             return Object.assign({}, state, {
                 userId:action.data.user_id,
@@ -119,24 +124,26 @@ export default function GoodsDetail(state = initialState, action) {
             })
             break;
         case GOODS_SELECT_SKU: //选择规格一
-            _price = state.data.goods_addon[action.index].addon.length ? state.data.goods_addon[action.index].addon[0].goods_price : state.data.goods_addon[action.index].goods_price
+            _price = state.data.goods_addon[action.index].addon.length ? state.data.goods_addon[action.index].addon[0].market_price : state.data.goods_addon[action.index].market_price;
+            _originalprice = state.data.goods_addon[action.index].addon.length ? state.data.goods_addon[action.index].addon[0].goods_price : state.data.goods_addon[action.index].goods_price;
             _tempObj = Object.assign({}, state.GoodsSelectSku, {
                 selected: action.index,
                 subselected: null,
                 count:1,
                 price:_price,
-                originalprice:_price
+                originalprice:_originalprice
             })
             return Object.assign({}, state, {
                 GoodsSelectSku: _tempObj
             })
             break;
         case GOODS_SELECT_SKU_SUB: // 选择规格二
-            _price = state.data.goods_addon[state.GoodsSelectSku.selected].addon.length?state.data.goods_addon[state.GoodsSelectSku.selected].addon[action.index].goods_price:state.data.goods_addon[state.GoodsSelectSku.selected].goods_price
+            _price = state.data.goods_addon[state.GoodsSelectSku.selected].addon.length?state.data.goods_addon[state.GoodsSelectSku.selected].addon[action.index].market_price:state.data.goods_addon[state.GoodsSelectSku.selected].market_price;
+            _originalprice = state.data.goods_addon[state.GoodsSelectSku.selected].addon.length?state.data.goods_addon[state.GoodsSelectSku.selected].addon[action.index].goods_price:state.data.goods_addon[state.GoodsSelectSku.selected].goods_price;
             _tempObj = Object.assign({}, state.GoodsSelectSku, {
                 subselected: action.index,
                 price:_price,
-                originalprice:_price,
+                originalprice:_originalprice,
                 count:1
             })
             return Object.assign({}, state, {
@@ -174,18 +181,20 @@ export default function GoodsDetail(state = initialState, action) {
             })
             break;
         case COUNT_INCREMENT: // 添加商品数量
+            _price = parseFloat(state.GoodsSelectSku.price).toFixed(2);
             _tempObj = Object.assign({},state.GoodsSelectSku,{
                 count:++state.GoodsSelectSku.count,
-                price: (state.GoodsSelectSku.originalprice*state.GoodsSelectSku.count).toFixed(2)
+                price: _price
             })
             return Object.assign({}, state, {
                 GoodsSelectSku:_tempObj
             })
             break;
         case COUNT_DECREMENT: // 减少商品数量
+            _price = parseFloat(state.GoodsSelectSku.price).toFixed(2);
             _tempObj = Object.assign({},state.GoodsSelectSku,{
                 count:--state.GoodsSelectSku.count,
-                price: (state.GoodsSelectSku.originalprice*state.GoodsSelectSku.count).toFixed(2)
+                price: _price
             })
             return Object.assign({}, state, {
                 GoodsSelectSku:_tempObj
@@ -223,24 +232,27 @@ export default function GoodsDetail(state = initialState, action) {
             })
             break;
         case GO_TO_BUY: // 立即购买
-            _price = action.data[state.GoodsSelectSku.selected||0].addon.length ? action.data[state.GoodsSelectSku.selected||0].addon[state.GoodsSelectSku.subselected||0].goods_price : action.data[state.GoodsSelectSku.selected||0].goods_price
-            _count = action.data[state.GoodsSelectSku.selected||0].addon.length ? action.data[state.GoodsSelectSku.selected||0].addon[state.GoodsSelectSku.subselected||0].market_price : action.data[state.GoodsSelectSku.selected||0].market_price
+            // 首先获取传递的数据
+            _tempObj = action.data;
+            _price = _tempObj.goods_addon[_tempObj.select].addon[_tempObj.subselect||0].market_price;
+            _originalprice = _tempObj.goods_addon[_tempObj.select].addon[_tempObj.subselect||0].goods_price;
+            _stock = _tempObj.goods_addon[_tempObj.select].addon[_tempObj.subselect||0].stock;
+            _sku = _tempObj.goods_addon[_tempObj.select].feature_main + ' ' + _tempObj.goods_addon[_tempObj.select].addon[_tempObj.subselect||0].feature_sub;
             _tempObj = Object.assign({},state.BuyList[0],{
-                title:state.data.title,
-                fare:state.data.fare,
-                count:state.GoodsSelectSku.count,
-                goods_id:state.data.id,
-                addon_id:state.data.goods_addon[state.GoodsSelectSku.selected].addon[state.GoodsSelectSku.subselected||0].id,
-                selected:state.GoodsSelectSku.selected,
-                subselected:state.GoodsSelectSku.subselected,
+                title:_tempObj.title,
+                fare:_tempObj.fare,
+                count:_tempObj.count,
+                goods_id:_tempObj.id,
+                addon_id:_tempObj.goods_addon[_tempObj.select].addon[_tempObj.subselect||0].id,
+                goods_addon:_tempObj.goods_addon,
+                selected:_tempObj.select,
+                subselected:_tempObj.subselect,
                 price:_price,
-                originalprice:_count,
-                marketprice:_count,
-                images:state.data.goods_images[0],
-                sku:state.SelectedSku,
-                stock:action.data[state.GoodsSelectSku.selected||0].addon.length ? action.data[state.GoodsSelectSku.selected||0].addon[state.GoodsSelectSku.subselected||0].stock : action.data[state.GoodsSelectSku.selected||0].stock,
-                images:state.data.goods_images[0],
-                data:action.data
+                originalprice:_originalprice,
+                marketprice:_price,
+                images:_tempObj.goods_images,
+                sku:_sku,
+                stock:_stock
             })
             _Array[0] = _tempObj
             return Object.assign({},state,{
@@ -278,9 +290,10 @@ export default function GoodsDetail(state = initialState, action) {
                 selected:action.data.selected,
                 subselected:null,
                 goods_id:state.BuyList[action.data.index].goods_id,
-                addon_id:state.BuyList[action.data.index].data[action.data.selected||0].addon[0].id,
-                sku:state.BuyList[action.data.index].data[action.data.selected].feature_main,
-                price:state.BuyList[action.data.index].data[action.data.selected].addon[0].goods_price
+                addon_id:state.BuyList[action.data.index].goods_addon[action.data.selected||0].addon[0].id,
+                sku:state.BuyList[action.data.index].goods_addon[action.data.selected].feature_main,
+                price:state.BuyList[action.data.index].goods_addon[action.data.selected].addon[0].market_price,
+                stock:state.BuyList[action.data.index].goods_addon[action.data.selected].addon[0].stock
             })
             return Object.assign({},state,{
                 BuyList:_Array
@@ -291,9 +304,10 @@ export default function GoodsDetail(state = initialState, action) {
             _Array[action.data.index] = Object.assign({},state.BuyList[action.data.index],{
                 subselected:action.data.subselected,
                 goods_id:state.BuyList[action.data.index].goods_id,
-                addon_id:state.BuyList[action.data.index].data[state.BuyList[action.data.index].selected].addon[action.data.subselected].id,
-                sku:state.BuyList[action.data.index].data[state.BuyList[action.data.index].selected].feature_main + ' ' +state.BuyList[action.data.index].data[state.BuyList[action.data.index].selected].addon[action.data.subselected].feature_sub,
-                price:state.BuyList[action.data.index].data[state.BuyList[action.data.index].selected].addon[action.data.subselected].goods_price
+                addon_id:state.BuyList[action.data.index].goods_addon[state.BuyList[action.data.index].selected].addon[action.data.subselected].id,
+                sku:state.BuyList[action.data.index].goods_addon[state.BuyList[action.data.index].selected].feature_main + ' ' +state.BuyList[action.data.index].goods_addon[state.BuyList[action.data.index].selected].addon[action.data.subselected].feature_sub,
+                price:state.BuyList[action.data.index].goods_addon[state.BuyList[action.data.index].selected].addon[action.data.subselected].market_price,
+                stock:state.BuyList[action.data.index].goods_addon[state.BuyList[action.data.index].selected].addon[action.data.subselected].stock
             })
             return Object.assign({},state,{
                 BuyList:_Array

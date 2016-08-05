@@ -31,7 +31,6 @@ class ProductDetailFooter extends React.Component {
         let _count     = _selectObj.count
         let _id        = _data.data.id
         let _title     = _data.data.title
-        let _temp      = {}
         if(_select === null && _subselect === null){
             this.props.dispatch(ShowAndHideSelectSku())
             return false;
@@ -51,6 +50,23 @@ class ProductDetailFooter extends React.Component {
                 $.error('库存为0，不可购买');
                 return false;
             }
+        }
+        if(store.enabled){
+            let goods          = {};
+            goods.id           = _id;
+            goods.title        = _title;
+            goods.count        = _count;
+            goods.select       = _select;
+            goods.subselect    = _subselect;
+            goods.fare         = _data.data.fare;
+            goods.get_users    = _data.data.get_users;
+            goods.goods_images = _data.data.goods_images;
+            goods.max_price    = _data.data.max_price;
+            goods.goods_addon  = _data.data.goods_addon;
+            store.set('goods',goods);
+        }else{
+            alert('This browser does not supports localStorage')
+            return false;
         }
         window.location.hash = '#/BuyList/'+_id
     }

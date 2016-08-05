@@ -7,6 +7,7 @@ import {
     Address,
     GenerateTempOrders
 } from '../actions/ActionFuncs'
+import ButtonCenter from '../components/ButtonCenter'
 class Buy extends Component{
     componentDidMount() {
         document.title = '合并付款'
@@ -24,7 +25,12 @@ class Buy extends Component{
                     }
                 },
                 error:(error)=>{
-                    console.error(error);
+                    if(error.status === 401 && error.responseJSON.code === 1){
+                        $.error('header请求错误，将重新请求');
+                        $.refreshToken(function(){
+                            window.location.reload();
+                        })
+                    }
                 },
                 success:(data)=>{
                     if(parseInt(data.code) == 0){
@@ -69,9 +75,10 @@ class Buy extends Component{
                 _temp.push(subitem)
             });
         });
+        // console.log(_temp)
         $.each(_temp, function(index,item) {
             _params[index] = {}
-            _params[index].goods_id = item.goods_id || item.goods_addon.parent_addon.id
+            _params[index].goods_id = item.goods_id
             _params[index].addon_id = item.addon_id || item.goods_addon.id
             _params[index].amount = item.count
         });
@@ -97,24 +104,25 @@ class Buy extends Component{
             beforeSend:(request)=>{
                 if(config.head!=''){
                     request.setRequestHeader("Authorization", "Bearer " + config.head);
-                }
+                };
+                $.loading.show();
             },
             error:(error)=>{
                 console.error(error)
             },
             success:(data)=>{
+                $.loading.hide();
                 if(parseInt(data.code) === 0){
                     store.remove('BuyTempOrder');
                     window.location.hash = '#/SelectPay/'+data.data.data.orderNumber
                 }else{
-                    console.error('错误代码:'+data.code+','+data.data.msg.msg);
+                    $.error('错误代码:'+data.code+','+data.data.msg.msg);
                 }
             }
         });
         
     }
     render(){
-        // console.log(this.props.state)
         let _data   = this.props.state
         let _address = _data.Address.data
         let defaultAddress = {}
@@ -136,7 +144,7 @@ class Buy extends Component{
                                         _totalprice += ((subitem.price - 0)*(subitem.count - 0) + (subitem.fare-0))
                                         return(
                                             <div className="part-info clearfix" key={subindex}>
-                                                <img src={subitem.images} alt="" className="fl" />
+                                                <img src={subitem.images[0]||subitem.images[1]||subitem.images[2]} alt="" className="fl" />
                                                 <div className="part-detail">
                                                     <h4>{subitem.title}</h4>
                                                     <p>{subitem.sku}</p>
@@ -147,7 +155,7 @@ class Buy extends Component{
                                         )
                                     })}
                                 </div>
-                                <div className="part-subtotal">小计：<span>{_totalprice}</span>元</div>
+                                <div className="part-subtotal">小计：<span>{`${_totalprice.toFixed(2)}`}</span>元</div>
                             </div>
                         )
                     })
@@ -160,7 +168,7 @@ class Buy extends Component{
                                 <h3><img src={item.user.logo} alt="" />{item.user.userName}</h3>
                                 <div className="part-list">
                                     {item.list.map((subitem,subindex)=>{
-                                        _totalprice += ((subitem.price - 0)*(subitem.count - 0) + (subitem.fare-0))
+                                        _totalprice += (parseFloat(subitem.price - 0)*(subitem.count - 0) + parseFloat(subitem.fare-0))
                                         return(
                                             <div className="part-info clearfix" key={subindex}>
                                                 <img src={subitem.images} alt="" className="fl" />
@@ -174,7 +182,7 @@ class Buy extends Component{
                                         )
                                     })}
                                 </div>
-                                <div className="part-subtotal">小计：<span>{_totalprice}</span>元</div>
+                                <div className="part-subtotal">小计：<span>{`${_totalprice.toFixed(2)}`}</span>元</div>
                             </div>
                         )
                     })
@@ -240,6 +248,7 @@ class Buy extends Component{
                     </aside>
                     <a href="javascript:;" onClick={e=>this.getOrder(e)}>立即支付</a>
                 </footer>
+                <ButtonCenter />
             </div>
         )
     }

@@ -8,49 +8,31 @@ import {
     BuyIncrement,
     BuyDecrement,
     BuySelectSku,
-    BuySelectSubSku,
-    GENERATE_TEMP_BUYLIST,
-    updateBuyList
+    BuySelectSubSku
 } from '../actions/ActionFuncs'
 class BuyList extends Component{
     componentDidMount() {
-        document.title = '确认购买'
-        if(store.get('BuyList') === undefined){
-            this.serverRequest = $.ajax({
-                url: config.url + '/goods/addon/' + (this.props.params.buyId||'1'),
-                type: 'GET',
-                dataType: 'json',
-                data: {},
-                beforeSend:(request)=>{
-                    $.loading.show();
-                    if(config.head!=''){
-                        request.setRequestHeader("Authorization", "Bearer " + config.head);
-                    }
-                },
-                error:(error)=>{
-                    console.error(error)
-                },
-                success:(data)=>{
-                    if(parseInt(data.code) == 0){
-                        this.props.dispatch(gotoBuy(data.data));
-                        $.loading.hide();
-                        let _data = this.props.state.BuyList;
-                        let _user = this.props.state.data.get_users
-                        store.set('BuyList',_data);
-                        store.set('BuyUser',_user);
-                    }
-                }
-            })
+        document.title = '确认购买';
+        $.loading.show();
+        if(store.enabled){
+            let OriginalBuyOrder = store.get('goods');
+            if(OriginalBuyOrder === undefined){
+                alert('数据错误，请返回重新操作');
+            }else{
+                this.props.dispatch(gotoBuy(OriginalBuyOrder));
+                let _data = this.props.state.BuyList;
+                let _user = OriginalBuyOrder.get_users;
+                store.set('BuyUser',_user);
+                $.loading.hide();
+            }
         }else{
-            // console.log(store.get('BuyList'))
-            this.props.dispatch(updateBuyList(store.get('BuyList')))
-            $.loading.hide();
+            alert('This browser does not supports localStorage');
         }
+        
+        
     }
     componentWillUnmount() {
-        // alert('确定要离开吗？')
-        this.serverRequest && this.serverRequest.abort();
-        // store.remove('BuyList');
+        
     }
     // 商品数量增加
     BuyCountAdd(e){
@@ -81,7 +63,15 @@ class BuyList extends Component{
         let _selected = $parent.index()
         let _checked  = $parent.hasClass('cur')
         let _data     = {index:_index,selected:_selected}
-        if(_checked){ return false }
+        if(_checked) { return false }
+        let _list = this.props.state.BuyList;
+        let _stock = _list[_index].goods_addon[_selected].addon[0].stock;
+        let _addonLen = _list[_index].goods_addon[_selected].addon.length;
+        let _feature_sub = _list[_index].goods_addon[_selected].addon[0].feature_sub;
+        if(_addonLen === 1 && _feature_sub == '' && parseInt(_stock) === 0){
+            $.error('库存为0，不可购买');
+            return false;
+        }
         this.props.dispatch(BuySelectSku(_data))
     }
     // 选择规格二
@@ -92,6 +82,13 @@ class BuyList extends Component{
         let _checked  = $parent.hasClass('cur')
         let _data     = {index:_index,subselected:_selected}
         if(_checked){ return false }
+        let _list = this.props.state.BuyList;
+        let _mainselect = _list[_index].selected;
+        let _stock =  _list[_index].goods_addon[_mainselect].addon[_selected].stock;
+        if(parseInt(_stock) === 0){
+            $.error('库存为0，不可购买');
+            return false;
+        }
         this.props.dispatch(BuySelectSubSku(_data))
     }
     // 同商品购买
@@ -113,7 +110,6 @@ class BuyList extends Component{
         window.location.hash = '#/Buy/buylist'
     }
     render(){
-        // console.log(this.props.state)
         let _data = this.props.state.BuyList
         let _link = '/ProductDetails/'+this.props.params.buyId
         let curObject = {}
@@ -124,20 +120,20 @@ class BuyList extends Component{
         let _goods = _data.map((item,index)=>{
             _totalprice += ((item.price-0)*item.count+(item.fare-0))
             // 规格一列表
-            let sku = item.data.map((subitem,subindex)=>{
+            let sku = item.goods_addon.map((subitem,subindex)=>{
                 return (
                     <li className={subindex == (item.selected||0) ? "cur" : ""} key={subindex} onClick={e=>this.setSelectSku(e)} >{subitem.feature_main}</li>
                 )
             })
             // 规格二列表
-            let subskudata = item.data.length?item.data[item.selected||0].addon:[]
+            let subskudata = item.goods_addon.length?item.goods_addon[item.selected||0].addon:[]
             let subsku = ''
             if(subskudata.length && subskudata.length ===1 && subskudata[0].feature_sub===''){
-                
+                subsku = ''
             }else{
                 subsku = (
                     <div className="buy-sku-item clearfix">
-                        <span className="fl">规格二</span>
+                        <span className="fl">规&emsp;格</span>
                         <ul>
                             {subskudata.map((subskuitem,subskuindex)=>{
                                 return (
@@ -151,7 +147,7 @@ class BuyList extends Component{
             return (
                 <div className="buy-item" key={index}>
                     <Link to={_link}>
-                        <img src={item.images} alt="" className="fl" />
+                        <img src={item.images[0]||item.images[1]||item.images[2]} alt="" className="fl" />
                         <div className="buy-info">
                             <h2>{item.title}</h2>
                             <p className="buy-summary">
@@ -166,8 +162,9 @@ class BuyList extends Component{
                         </div>
                     </Link>
                     <div className="buy-sku">
+
                         <div className="buy-sku-item clearfix">
-                            <span className="fl">规格一</span>
+                            <span className="fl">规&emsp;格</span>
                             <ul>
                                 {sku}
                             </ul>
@@ -198,7 +195,7 @@ class BuyList extends Component{
                 </div>
                 <footer className="cart-footer buy-footer clearfix">
                     <aside className="fl">
-                        <p className="fr">合计：<span>{_totalprice}元</span></p>
+                        <p className="fr">合计：<span>{`${_totalprice.toFixed(2)}`}元</span></p>
                     </aside>
                     <a href="javascript:;" onClick={e=>this.handleBilling(e)}>确认</a>
                     {/*<Link to="/Buy/buylist">确认</Link>*/}

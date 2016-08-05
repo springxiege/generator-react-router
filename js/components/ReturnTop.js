@@ -17,7 +17,7 @@ export default class ReturnTop extends Component{
     }
     handleBack(){
         let scrollTop = $(window).scrollTop();
-        if(scrollTop > 200){
+        if(scrollTop > 320){
             $(findDOMNode(this.refs.Back)).show()
         }else{
             $(findDOMNode(this.refs.Back)).hide()
@@ -26,7 +26,7 @@ export default class ReturnTop extends Component{
     GotoTop(e){
         $('body').animate({
             scrollTop:0
-        }, 600)
+        }, 500)
     }
     render(){
         return (

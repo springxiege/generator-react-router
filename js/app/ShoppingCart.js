@@ -32,8 +32,12 @@ class ShoppingCart extends React.Component {
                 }
             },
             error:(error)=>{
-                alert('网络错误，页面将刷新重试！');
-                // window.location.reload();
+                if(error.status === 401 && error.responseJSON.code === 1){
+                    $.error('header请求错误，将重新请求');
+                    $.refreshToken(function(){
+                        window.location.reload();
+                    })
+                }
             },
             success:(data)=>{
                 if(parseInt(data.code) === 0){
@@ -47,20 +51,16 @@ class ShoppingCart extends React.Component {
     componentWillUnmount() {
         this.serverRequest.abort()
     }
-    _ChangeSingle(e){
-        let check = $(findDOMNode(e.target)).is(':checked'),
-            _id = $(findDOMNode(e.target)).data('id');
+    _ChangeSingle(e,id){
         
-        this.props.dispatch(SelectShopGoodsSingle(_id))
+        this.props.dispatch(SelectShopGoodsSingle(id))
     }
     _ChangeAll(e){
         let checked = $(findDOMNode(e.target)).is(':checked');
         this.props.dispatch(SelectShopGoodsMultiple(checked))
     }
-    deleteThis(e){
+    deleteThis(e,id){
         let _this = this;
-        let id = $(findDOMNode(e.target)).data('id');
-        let $parent = $(findDOMNode(e.target)).closest('.main-module')
         $.confirm({
             content:'删除后无法恢复',
             okBtn:function(){
@@ -98,18 +98,22 @@ class ShoppingCart extends React.Component {
             return false;
         }else{
             $.ajax({
-                url: config.url + '/goods/cart/' + _id,
-                type: 'POST',
-                headers:{
-                    token:config.head
-                },
+                url: config.url + '/goods/cart/addto/' + _id,
+                type: 'PUT',
                 dataType: 'json',
                 data: {
-                    _method:'PUT',
                     amount:++_current
                 },
+                beforeSend:function(request){
+                    if(config.head!=''){
+                        request.setRequestHeader("Authorization", "Bearer " + config.head);
+                    }
+                },
                 error:(error)=>{
-                    console.error(error)
+                    $.error('header请求错误，将重新请求');
+                    // $.refreshToken(function(){
+                    //     window.location.reload();
+                    // })
                 },
                 success:(data)=>{
                     // console.log(data)
@@ -131,18 +135,22 @@ class ShoppingCart extends React.Component {
             return false;
         }else{
             $.ajax({
-                url: config.url + '/goods/cart/' + _id,
-                type: 'POST',
-                headers:{
-                    token:config.head
-                },
+                url: config.url + '/goods/cart/reduce/' + _id,
+                type: 'PUT',
                 dataType: 'json',
                 data: {
-                    _method:'PUT',
                     amount:--_current
                 },
+                beforeSend:function(request){
+                    if(config.head!=''){
+                        request.setRequestHeader("Authorization", "Bearer " + config.head);
+                    }
+                },
                 error:(error)=>{
-                    console.error(error)
+                    $.error('header请求错误，将重新请求');
+                    // $.refreshToken(function(){
+                    //     window.location.reload();
+                    // })
                 },
                 success:(data)=>{
                     // console.log(data)
@@ -165,10 +173,10 @@ class ShoppingCart extends React.Component {
                     <div className="main-module" key={index}>
                         <div className="cart-info">
                             <div className="cart-info-header clearfix">
-                                <label className={this.props.state.amount[item.id].checked?"checked fl":"fl"}><input type="checkbox" name="product" onChange={e=>this._ChangeSingle(e)} data-id={item.id} checked={this.props.state.amount[item.id].checked?true:false} /></label>
+                                <label className={this.props.state.amount[item.id].checked?"checked fl":"fl"}><input type="checkbox" name="product" onChange={e=>this._ChangeSingle(e,item.id)} data-id={item.id} checked={this.props.state.amount[item.id].checked?true:false} /></label>
                                 <img src={item.goods.get_user_profile.shop_logo||"/images/shop_logo.gif"} alt="" className="fl" />
                                 <p className="fl">{item.goods.get_user_profile.shop_name}</p>
-                                <a href="javascript:;" className="fr" data-id={item.id} onClick={e=>this.deleteThis(e)}>删除</a>
+                                <a href="javascript:;" className="fr" data-id={item.id} onClick={e=>this.deleteThis(e,item.id)}>删除</a>
                             </div>
                             <div className="cart-info-item clearfix">
                                 <Link to={_link} className="fl"><img src={item.goods.goods_images[0]||item.goods.goods_images[1]||item.goods.goods_images[2]||'images/7.jpg'} alt="" /></Link>
@@ -180,7 +188,7 @@ class ShoppingCart extends React.Component {
                                         <p>暂无</p>
                                     )}
                                     
-                                    <p>&yen;{item.goods_addon?item.goods_addon.goods_price:0}<span>快递：{item.goods.fare}元</span></p>
+                                    <p>&yen;{`${item.goods_addon ? parseFloat(item.goods_addon.goods_price).toFixed(2) : 0.00}`}<span>快递：{`${parseFloat(item.goods.fare).toFixed(2)}`}元</span></p>
                                     <div className="cart-setcount">
                                         <span className="fl" onClick={e=>this.decrement(e)} data-id={item.id}></span>
                                         <input type="number" name="" value={this.props.state.amount[item.id].count} id="" className="fl" readOnly />
@@ -190,8 +198,8 @@ class ShoppingCart extends React.Component {
                                 </div>
                             </div>
                             <div className="cart-info-footer">
-                                <span className="fl">已加入时间：{item.create_at}</span>
-                                <p className="up fr">现价小计：&yen;{this.props.state.amount[item.id].totalPrice}</p>
+                                <span className="fl">{item.created_at}</span>
+                                <p className="up fr">现价小计：&yen;{`${this.props.state.amount[item.id].totalPrice.toFixed(2)}`}</p>
                             </div>
                         </div>
                     </div>
@@ -227,20 +235,31 @@ class ShoppingCart extends React.Component {
                 _Obj.count         = item.amount;
                 _Obj.goods_addon   = item.goods_addon;
                 _Obj.title          = item.goods.title;
-                _Obj.images         = item.goods.goods_images[0];
+                _Obj.images         = item.goods.goods_images[0]||item.goods.goods_images[1]||item.goods.goods_images[2];
                 _Obj.price         = item.goods_addon.goods_price;
                 _Obj.originalprice = item.goods.max_price;
                 _Obj.fare          = item.goods.fare;
                 _Obj.is_activity   = 0;
+                _Obj.goods_id      = item.goods_id;
                 _trade[item.goods.get_user_profile.user_id].list.push(_Obj) 
             }
         });
-        $.each(_trade, function(index, val) {
-            _mapDate.push(val)
-        });
-        if(_mapDate.length && !_mapDate[0].list.length){
-            $.error('请选择商品后再购买');
+        if(!$.isEmptyObject(_trade)){
+            $.each(_trade, function(index, val) {
+                if(val.list.length){
+                    _mapDate.push(val)
+                }
+            });
+        }
+        // 过滤空数据
+        if(!_mapDate.length){
+            $.error('购物车无商品，不可直接结算');
             return false;
+        }else{
+            if(!_mapDate[0].list.length){
+                $.error('请选择商品后再购买');
+                return false;
+            }
         }
         // 存入数据供合并付款页面使用，当生成订单时清除缓存数据
         if(store.enabled){

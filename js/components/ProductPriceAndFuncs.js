@@ -59,12 +59,8 @@ class ProductPriceAndFuncs extends React.Component {
             this.props.dispatch(ShowAndHideSelectSku())
             return false;
         }
-        goods_id = state.data.goods_addon[selected].goods_id
-        if(subselected===null){
-            addon_id = state.data.goods_addon[selected].id
-        }else{
-            addon_id = state.data.goods_addon[selected].addon[subselected].id
-        }
+        goods_id = state.data.goods_addon[selected].goods_id;
+        addon_id = state.data.goods_addon[selected].addon[subselected||0].id;
         $.ajax({
             url: config.url + '/goods/cart',
             type: 'POST',
@@ -73,6 +69,11 @@ class ProductPriceAndFuncs extends React.Component {
                 goods_id:goods_id,
                 addon_id:addon_id,
                 amount:amount
+            },
+            beforeSend:(request)=>{
+                if(config.head!=''){
+                    request.setRequestHeader("Authorization", "Bearer " + config.head);
+                }
             },
             error:(error)=>{
                 $.error('加入购物车失败')

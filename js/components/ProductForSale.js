@@ -6,14 +6,14 @@ import {connect} from 'react-redux'
 class ProductForSale extends React.Component {
     render() {
         return (
-            <div className="main-product-sale swiper-slide swiper-no-swiping">
+            <div className="main-product-sale swiper-slide">
                 <div className="main-table">
                     <h4>基本参数</h4>
                     <div className="main-table-body">
-                        <div className="main-table-tr clearfix">
+                        {/*<div className="main-table-tr clearfix">
                             <div className="main-table-td fl">商品编码</div>
                             <div className="main-table-td fl">{this.props.snum}</div>
-                        </div>
+                        </div>*/}
                         <div className="main-table-tr clearfix">
                             <div className="main-table-td fl">生产地址</div>
                             <div className="main-table-td fl">{this.props.madeby}</div>

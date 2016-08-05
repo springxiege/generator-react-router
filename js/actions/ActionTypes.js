@@ -47,10 +47,16 @@
  export const BUY_COUNT_DECREMENT          = 'BUY_COUNT_DECREMENT'
  // 获取所有评论
  export const GET_COMMENT                  = 'GET_COMMENT'
+ // 获取更多所有评论
+ export const GET_MORE_COMMENT             = 'GET_MORE_COMMENT'
  // 获取好评
  export const GET_GOOD_COMMENT             = 'GET_GOOD_COMMENT'
+ // 获取更多好评
+ export const GET_MORE_GOOD_COMMENT        = 'GET_MORE_GOOD_COMMENT'
  // 获取差评
  export const GET_BAD_COMMENT              = 'GET_BAD_COMMENT'
+ // 获取更多差评
+ export const GET_MORE_BAD_COMMENT         = 'GET_MORE_BAD_COMMENT'
  // 立即购买
  export const GO_TO_BUY                    = 'GO_TO_BUY'
  // 购买页面添加商品

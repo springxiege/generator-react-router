@@ -42,26 +42,32 @@ class Tracking extends Component{
     }
     // 确认物流单号
     ConfirmReturn(e){
-        let _ParcelNum = $('#ParcelNum').val()
+        let _ParcelNum = $('#ParcelNum').val();
         if(_ParcelNum==''){
             $.error('物流单号不能为空')
+            return false;
         }
         $.ajax({
             url: config.url + '/orders/abandon/returns/' + this.props.params.orderId,
-            type: 'POST',
-            headers:{
-                token:config.head
-            },
+            type: 'put',
             dataType: 'json',
             data: {
-                _method:'put',
-                parcel_num:_ParcelNum
+                purchaser_parcel_num:_ParcelNum
+            },
+            beforeSend:(request)=>{
+                $.loading.show();
+                if(config.head!=''){
+                    request.setRequestHeader("Authorization", "Bearer " + config.head);
+                }
             },
             error:(error)=>{
                 console.error(error)
             },
             success:(data)=>{
-                console.log(data)
+                $.loading.hide();
+                if(parseInt(data.code)===0){
+                    window.location.hash = '#/ReturnOrder'
+                }
             }
         })
     }
@@ -75,7 +81,7 @@ class Tracking extends Component{
         let _HTML = '信息加载中...'
         if(!$.isEmptyObject(_data)){
             _HTML = (
-                <div className="main">
+                <div className="main" ref="Tracking">
                     <div className="ApplicationStatus">
                         提交成功
                     </div>
@@ -86,21 +92,21 @@ class Tracking extends Component{
                     <h2 className="trade-status">{_data.address?"卖家已同意退换货":"请等待卖家同意退换货"}</h2>
                     <div className="ApplicationWating">
                         <h3>退换货收件人地址</h3>
-                        <p>{_data.address?(_data.address.name + ' ' + _data.address.tel + ' ' + _data.address.street):"卖家同意退换货后方可显示"}</p>
+                        <p>{_data.address?(_data.address.name + ' ' + _data.address.tel + ' ' + _data.address.address + ' ' + _data.address.street):"卖家同意退换货后方可显示"}</p>
                     </div>
                     <div className="ApplicationWating">
                         <h3>输入退换物流单号<small>(商家确认后才可填写)</small></h3>
                         <p>
                             {_data.address ? (
-                                _data.parcel_num ? (
-                                    <input type="text" name="ordernumber" id="ParcelNum" placeholder="" value={_data.parcel_num} readOnly onChange={e=>this.setParcelNum(e)} />
+                                _data.purchaser_parcel_num ? (
+                                    <input type="text" name="ordernumber" id="ParcelNum" placeholder="" value={_data.purchaser_parcel_num} readOnly onChange={e=>this.setParcelNum(e)} />
                                 ):(
-                                    <input type="text" name="ordernumber" placeholder="请填写物流单号" onChange={e=>this.setParcelNum(e)} />
+                                    <input type="text" name="ordernumber" id="ParcelNum" placeholder="请填写物流单号" onChange={e=>this.setParcelNum(e)} />
                                 )
                                 
                             ) : (
 
-                                <input type="text" name="ordernumber" id="ParcelNum" placeholder="待商家确认后方可填写物流单号" readOnly  />
+                                <input type="text" name="ordernumber" id="ParcelNum" placeholder="待商家确认后方可填写物流单号" readOnly  onChange={e=>this.setParcelNum(e)} />
                                 
                             )}
                         </p>
