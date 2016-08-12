@@ -6,6 +6,12 @@ import {
     getTracking
 } from '../actions/ActionFuncs'
 class Tracking extends Component{
+    constructor(){
+        super();
+        this.state = {
+            value:''
+        }
+    }
     componentDidMount(){
         document.title = '退换货'
         this.serverRequest = $.ajax({
@@ -15,12 +21,10 @@ class Tracking extends Component{
             data: {},
             beforeSend:(request)=>{
                 $.loading.show();
-                if(config.head!=''){
-                    request.setRequestHeader("Authorization", "Bearer " + config.head);
-                }
+                config.setRequestHeader(request);
             },
             error:(error)=>{
-                console.error(error)
+                config.ProcessError(error);
             },
             success:(data)=>{
                 // console.log(data)
@@ -38,13 +42,18 @@ class Tracking extends Component{
     }
     // 受控input
     setParcelNum(e){
-        
+        let _val = e.target.value;
+        let reg = /[\u4E00-\u9FA5]/g;
+        _val = $.trim(_val.replace(reg,''));
+        this.setState({
+            value:_val
+        })
     }
     // 确认物流单号
     ConfirmReturn(e){
         let _ParcelNum = $('#ParcelNum').val();
         if(_ParcelNum==''){
-            $.error('物流单号不能为空')
+            $.tips('物流单号不能为空')
             return false;
         }
         $.ajax({
@@ -56,12 +65,10 @@ class Tracking extends Component{
             },
             beforeSend:(request)=>{
                 $.loading.show();
-                if(config.head!=''){
-                    request.setRequestHeader("Authorization", "Bearer " + config.head);
-                }
+                config.setRequestHeader(request);
             },
             error:(error)=>{
-                console.error(error)
+                config.ProcessError(error);
             },
             success:(data)=>{
                 $.loading.hide();
@@ -86,8 +93,8 @@ class Tracking extends Component{
                         提交成功
                     </div>
                     <div className="ApplicationTrade">
-                        <p>退换货收件人姓名：<span>{_data.shop.shop_name}</span></p>
-                        <p>退换货收件人电话：<a href={"tel://"+_data.shop.after_market_tel}>{_data.shop.after_market_tel}</a></p>
+                        <p>店铺名称：<span>{_data.shop.shop_name}</span></p>
+                        <p>售后电话：<a href={"tel://"+_data.shop.after_market_tel}>{_data.shop.after_market_tel}</a></p>
                     </div>
                     <h2 className="trade-status">{_data.address?"卖家已同意退换货":"请等待卖家同意退换货"}</h2>
                     <div className="ApplicationWating">
@@ -99,14 +106,14 @@ class Tracking extends Component{
                         <p>
                             {_data.address ? (
                                 _data.purchaser_parcel_num ? (
-                                    <input type="text" name="ordernumber" id="ParcelNum" placeholder="" value={_data.purchaser_parcel_num} readOnly onChange={e=>this.setParcelNum(e)} />
+                                    <input type="text" name="ordernumber" id="ParcelNum" placeholder="" value={_data.purchaser_parcel_num} readOnly style={{imeMode:"disabled"}} onChange={e=>this.setParcelNum(e)} />
                                 ):(
-                                    <input type="text" name="ordernumber" id="ParcelNum" placeholder="请填写物流单号" onChange={e=>this.setParcelNum(e)} />
+                                    <input type="text" name="ordernumber" id="ParcelNum" placeholder="请填写物流单号" onKeyUp={e=>this.setParcelNum(e)} value={this.state.value} onChange={e=>this.setParcelNum(e)} />
                                 )
                                 
                             ) : (
 
-                                <input type="text" name="ordernumber" id="ParcelNum" placeholder="待商家确认后方可填写物流单号" readOnly  onChange={e=>this.setParcelNum(e)} />
+                                <input type="text" name="ordernumber" id="ParcelNum" placeholder="待商家确认后方可填写物流单号" readOnly style={{imeMode:"disabled"}} onChange={e=>this.setParcelNum(e)} />
                                 
                             )}
                         </p>

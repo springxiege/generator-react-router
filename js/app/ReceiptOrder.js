@@ -5,6 +5,9 @@ import {
     getReceiptOrder,
     getMoreReceiptOrder
 } from '../actions/ActionFuncs'
+import CommonImage from '../components/CommonImage'
+import CommonLogo from '../components/CommonLogo'
+import LoadMorePageData from '../event/event.LoadMorePageData'
 class ReceiptOrder extends Component{
     constructor() {
         super();
@@ -20,12 +23,10 @@ class ReceiptOrder extends Component{
          * @type {[type]}
          */
         this.state = {
-            url: config.url + '/orders/posting', 
-            pagesize: 2, 
+            url: config.url + '/orders/posting',
             page: 2,  
             flag: true,
             noMore: false, 
-            winHeight: $(window).height(), 
             callback:function(pdata){                            // 回调函数，请求成功后执行
                 if(parseInt(pdata.code) === 0){
                     if(pdata.data.data && pdata.data.data.length){
@@ -38,7 +39,7 @@ class ReceiptOrder extends Component{
                 }
             },
         };
-        this.loadMorePage = this.loadMorePage.bind(this);
+        this.LoadMorePageData = LoadMorePageData.bind(this);
     }
     componentDidMount() {
         document.title = '已发货';
@@ -48,17 +49,15 @@ class ReceiptOrder extends Component{
             type: 'GET',
             dataType: 'json',
             data: {
-                pagesize: _this.state.pagesize,
+                pagesize: config.pagesize,
                 page:1
             },
             beforeSend:(request)=>{
                 $.loading.show();
-                if(config.head!=''){
-                    request.setRequestHeader("Authorization", "Bearer " + config.head);
-                }
+                config.setRequestHeader(request);
             },
             error:(error)=>{
-                console.error(error)
+                config.ProcessError(error);
             },
             success:(data)=>{
                 // console.log(data)
@@ -67,7 +66,14 @@ class ReceiptOrder extends Component{
                         this.props.dispatch(getReceiptOrder(data.data.data));
                         $.loading.hide();
                         // 加载更多列表
-                        window.addEventListener('scroll',_this.loadMorePage);
+                        if(parseInt(data.data.last_page) <= 1){
+                            $('#loading-more').html('已全部加载')
+                        }else{
+                            window.addEventListener('scroll',_this.LoadMorePageData);
+                        };
+                        if(parseInt(data.data.last_page) === 0){
+                            $('#loading-more').hide();
+                        }
                     }else{
                         alert(data.data.msg)
                     }
@@ -78,59 +84,7 @@ class ReceiptOrder extends Component{
     }
     componentWillUnmount() {
         this.serverRequest.abort();
-        window.removeEventListener('scroll',this.loadMorePage);
-    }
-    // 加载更多
-    // opt为传入的对象
-    // 其中包括请求链接
-    // 每页返回数据条数
-    // 请求第几页参数
-    // 回调参数
-    loadMorePage(){
-        let opt = this.state;
-        let _scrollTop = $(window).scrollTop();
-        let _bodyHeight = $('body').height();
-        if(_scrollTop >= (_bodyHeight - opt.winHeight)){
-            if(opt.flag && !opt.noMore){
-                $.ajax({
-                    url:opt.url,
-                    type:'GET',
-                    dataType:'json',
-                    data:{
-                        pagesize:opt.pagesize,
-                        page:opt.page
-                    },
-                    beforeSend:(request)=>{
-                        this.setState({
-                            flag:false
-                        })
-                        if(config.head!=''){
-                            request.setRequestHeader("Authorization", "Bearer " + config.head);
-                        }
-                    },
-                    error:(error)=>{
-                        console.error(error)
-                    },
-                    success:(data)=>{
-                        opt.callback && opt.callback(data);
-                        this.setState({
-                            flag:true
-                        })
-                        if(data.data.data.length){
-                            let nextpage = (opt.page - 0) + 1
-                            this.setState({
-                                page:nextpage
-                            })
-                        }else{
-                            this.setState({
-                                noMore:true
-                            })
-                        }
-                    }
-                })
-            }
-        }
-
+        window.removeEventListener('scroll',this.LoadMorePageData);
     }
     ConfirmOrder(e){
         let $order = $(e.target).closest('.main-module')
@@ -153,26 +107,21 @@ class ReceiptOrder extends Component{
                         ids:_ids
                     },
                     beforeSend:(request)=>{
-                        if(config.head!=''){
-                            request.setRequestHeader("Authorization", "Bearer " + config.head);
-                        }
+                        config.setRequestHeader(request);
                     },
                     error:(error)=>{
-                        console.error(error)
+                        config.ProcessError(error);
                     },
                     success:(data)=>{
                         // console.log(data)
                         if(parseInt(data.code) === 0){
-                            $.error(data.data.msg)
-                            window.location.hash = '#//RateOrder'
+                            $.tips(data.data.msg)
+                            window.location.hash = '#/RateOrder'
                         }
                     }
                 })
             }
         })
-    }
-    ReturnOrder(e){
-
     }
     render(){
         let _HTML = (<p className="nolist">暂无待确认收货订单</p>)
@@ -186,14 +135,14 @@ class ReceiptOrder extends Component{
                     <div className="main-module" key={index}>
                         <div className="part-item">
                             <h3>
-                                <img src={item.shop.shop_logo||'/images/shop_logo.gif'} alt="" />
+                                <CommonLogo src={item.shop.shop_logo} />
                                 &ensp;&ensp;{item.shop.shop_name||''} 
                                 <span className="order-status fr">卖家已发货</span>
                             </h3>
                             <div className="part-list" data-id={item.id}>
                                 <div className="part-info ">
                                     <Link to={`/OrderDetail/${item.id}`} className="clearfix">
-                                        <img src={item.goods.goods_images[0]||item.goods.goods_images[1]||item.goods.goods_images[2]} alt="" className="fl" />
+                                        <CommonImage src={item.goods.goods_images} className="fl" />
                                         <div className="part-detail">
                                             <h4>{item.goods.title}</h4>
                                             <p>{item.feature_main}&ensp;{item.feature_sub}</p>
@@ -218,7 +167,10 @@ class ReceiptOrder extends Component{
             })
         }
         return (
-            <div>{_HTML}</div>
+            <div>
+                {_HTML}
+                <p id="loading-more">列表加载中···</p>
+            </div>
         )
     }
 }

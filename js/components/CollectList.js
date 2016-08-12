@@ -6,7 +6,8 @@ import {
     getCollectList,
     CancelCollect
 } from '../actions/ActionFuncs'
-
+import CommonImage from './CommonImage'
+import CommonLogo from './CommonLogo'
 class CollectList extends Component {
     componentDidMount(){
         
@@ -29,12 +30,10 @@ class CollectList extends Component {
                         _method:'DELETE'
                     },
                     beforeSend:(request)=>{
-                        if(config.head!=''){
-                            request.setRequestHeader("Authorization", "Bearer " + config.head);
-                        }
+                        config.setRequestHeader(request);
                     },
                     error:(error)=>{
-                        console.error(error)
+                        config.ProcessError(error);
                     },
                     success:(data)=>{
                         if(parseInt(data.code)==0){
@@ -72,13 +71,13 @@ class CollectList extends Component {
                 return (
                     <div className="main-module main-mycollect-list" key={index}>
                         <div className="main-mycollect-funcs clearfix">
-                            <img src={item.goods.get_user_profile.shop_logo||"/images/shop_logo.gif"} alt="" className="fl" />
+                            <CommonLogo src={item.goods.get_user_profile.shop_logo}  className="fl" />
                             <h4 className="fl">{item.goods.get_user_profile.shop_name}</h4>
                             <span className="fr" onClick={e=>this.cancelCollect(e,item.id)}>取消收藏</span>
                         </div>
                         <div className="main-mycollect-item">
-                            <Link to={_link} className="clearfix">
-                                <img src={item.goods.goods_images[0]||item.goods.goods_images[1]||item.goods.goods_images[2]} alt="" className="fl"/>
+                            <Link to={`/ProductDetails/${item.goods.id}`} className="clearfix">
+                                <CommonImage src={item.goods.goods_images} className="fl" />
                                 <div className="main-mycollect-info">
                                     <h5>{item.goods.title}</h5>
                                     <p>&yen;{item.price} <span>&yen;{item.price}</span></p>
@@ -87,14 +86,14 @@ class CollectList extends Component {
                         </div>
                         <div className="main-mycollect-footer clearfix">
                             <span className="fl">收藏时间：{item.created_at}</span>
-                            <Link to={_link} className="fr">去购买</Link>
+                            <Link to={`/ProductDetails/${item.goods.id}`} className="fr">去购买</Link>
                         </div>
                     </div>
                 )
             })
         }
         return (
-            <div className="main pdb0">
+            <div className="main">
                 <div className="main-module-tree main-mycollect-header">
                     <h3 className="main-collect-title">收藏了<span>{_data.data.total}</span>个宝贝</h3>
                 </div>

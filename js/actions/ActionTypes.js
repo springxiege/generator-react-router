@@ -8,6 +8,8 @@
  export const MODIFY_NICKNAME              = 'MODIFY_NICKNAME'
  // 获取个人中心数据
  export const GET_USER_CENTER_INFO         = 'GET_USER_CENTER_INFO'
+ // 获取消息中心数据
+ export const MESSAGES                     = 'MESSAGES'
  /**
  * [GOODS_DETAIL description]
  * @type {String}
@@ -27,6 +29,8 @@
  export const SHOW_HIDE_SELECT_SKU         = 'SHOW_HIDE_SELECT_SKU'
  // 收藏列表
  export const COLLECT_LIST                 = 'COLLECT_LIST'
+ // 获取更多收藏列表
+ export const GET_MORE_COLLECT_LIST        = 'GET_MORE_COLLECT_LIST'
  // 添加收藏
  export const ADD_COLLECT                  = 'ADD_COLLECT'
  // 取消收藏

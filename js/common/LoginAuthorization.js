@@ -45,32 +45,6 @@
             window.location.hash = '#/Register' + _url
         }
     };
-    // 更新PC端token，防止页面报错
-    var refreshToken = function(token,callback){
-        $.ajax({
-            url: config.url + '/auth/refresh',
-            type: 'GET',
-            dataType: 'json',
-            data: {},
-            error:function(error){
-                console.error(error);
-            },
-            beforeSend:function(request){
-                if(config.head!=''){
-                    request.setRequestHeader("Authorization", "Bearer " + config.head);
-                }
-            },
-            success:function(data){
-                if(parseInt(data.code) === 0){
-                    config.setStorage('trade','time',new Date().getTime());
-                    config.setStorage('trade','token',data.data.token);
-                    config.setStorage('trade','userinfo',data.data.user);
-                    config.head = data.data.token;
-                    callback && callback(data.data)
-                }
-            }
-        })
-    };
     // 首先检测是否支持localStorage
     // 检测通过后获取trade存储值
     // 如果存在trade值，则判断是否存在token或者token为空
@@ -87,13 +61,12 @@
                     _Provision = Minutes*60;
                 var _now = parseInt(_Provision - ((dt-_oldTime)/1000))
                 if(_now <= 0){
-                    refreshToken(tradeStore.token);
+                    $.refreshToken();
                     _now = (Minutes*60)
                 }else{
                     setInterval(function(){
                         if(_now <= 0){
-                            var _tradeStore = store.get('trade')
-                            refreshToken(_tradeStore.token);
+                            $.refreshToken();
                             _now = (Minutes*60)
                         }else{
                             _now--
@@ -107,5 +80,13 @@
     }else{
         alert('This browser does not supports localStorage')
     }
+
+    // 错误图片替换
+    $('img').error(function() {
+        /* Act on the event */
+        $(this).prop({
+            src:'/images/logobg.gif'
+        })
+    });
 
 })(window,undefined,jQuery)

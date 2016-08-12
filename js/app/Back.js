@@ -5,6 +5,7 @@ import {connect} from 'react-redux'
 export default class RateOrder extends Component{
     componentDidMount() {
         document.title = '退货原因'
+        $.loading.hide();
     }
     componentWillUnmount() {
           
@@ -23,15 +24,13 @@ export default class RateOrder extends Component{
                 ids:[orderid],
                 type:1,
                 abandon_reason:abandon_reason,
-                content:content
+                leave_message:content
             },
             beforeSend:(request)=>{
-                if(config.head!=''){
-                    request.setRequestHeader("Authorization", "Bearer " + config.head);
-                }
+                config.setRequestHeader(request);
             },
             error:(error)=>{
-                console.error(error)
+                config.ProcessError(error);
             },
             success:(data)=>{
                 // console.log(data)
@@ -39,7 +38,7 @@ export default class RateOrder extends Component{
                     $.loading.hide();
                     window.location.hash = '#/ReturnOrder'
                 }else{
-                    $.error(data.data.msg,1000)
+                    $.tips(data.data.msg,1000)
                 }
             }
         })

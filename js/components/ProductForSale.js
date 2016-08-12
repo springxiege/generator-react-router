@@ -24,7 +24,7 @@ class ProductForSale extends React.Component {
                         </div>
                         <div className="main-table-tr clearfix">
                             <div className="main-table-td fl">售后方式</div>
-                            <div className="main-table-td fl">{this.props.maintain}</div>
+                            <div className="main-table-td fl">{this.props.maintain==0?"全国联保":"商家自保"}</div>
                         </div>
                         <div className="main-table-tr clearfix">
                             <div className="main-table-td fl">发货地</div>

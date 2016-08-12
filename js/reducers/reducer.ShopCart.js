@@ -56,7 +56,7 @@ export default function ShopCart(state=initialState,action){
                 action.data.data.forEach((item,index)=>{
                     _amount[item.id] = {};
                     _amount[item.id].checked = false;
-                    _amount[item.id].fare = item.goods.fare;
+                    _amount[item.id].fare = item.goods?item.goods.fare:0;
                     _amount[item.id].count = item.amount;
                     if(item.goods_addon){
                         _amount[item.id].price = item.goods_addon.goods_price;
@@ -69,7 +69,8 @@ export default function ShopCart(state=initialState,action){
                 })
             }
             return Object.assign({},state,action.data,{
-                amount:_amount
+                amount:_amount,
+                checkedAll:false
             })
             break;
         // 增加单个商品的购买数量

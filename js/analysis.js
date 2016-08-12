@@ -1,3 +1,18 @@
+/*
+
+ LYA({
+ action: ['user_visit', 'common', 'share'],
+ debug: false,
+ param: {
+ buy_id: store.get('trade').userinfo.id,
+ goods_id: _id,
+ come_from: 'xds', // 统计user_visit, common, 填写
+ share_type: 'share_success', //统计分享 [ share_weixin_to_friend, share_weixin_to_qq, share_weixin_to_weibo, share_weixin_to_qqzone, share_weixin_to_timeline, share_weixin_to_renren,
+ share_weixin_to_message] 中的一个
+
+ }
+ });
+ */
 (function (global, factory) {
     (typeof exports === 'object' && typeof module !== 'undefined') ? module.exports = factory() :
         (typeof define === 'function' && define.amd) ? define(factory) :

@@ -5,6 +5,7 @@ import {connect} from 'react-redux'
 export default class RateOrder extends Component{
     componentDidMount() {
         document.title = '换货原因'
+        $.loading.hide();
     }
     componentWillUnmount() {
           
@@ -22,22 +23,21 @@ export default class RateOrder extends Component{
                 _method:'put',
                 ids:[orderid],
                 type:2,
-                abandon_reason:abandon_reason
+                abandon_reason:abandon_reason,
+                leave_message:content
             },
             beforeSend:(request)=>{
-                if(config.head!=''){
-                    request.setRequestHeader("Authorization", "Bearer " + config.head);
-                }
+                config.setRequestHeader(request);
             },
             error:(error)=>{
-                console.error(error)
+                config.ProcessError(error);
             },
             success:(data)=>{
                 $.loading.hide();
                 if(parseInt(data.code) === 0){
                     window.location.hash = '#/Tracking/'+orderid
                 }else{
-                    $.error(data.data.msg,1000)
+                    $.tips(data.data.msg,1000)
                 }
             }
         })
@@ -47,7 +47,7 @@ export default class RateOrder extends Component{
         return (
             <div className="main">
                 <form className="return-money" ref="reason">
-                    <h2 className="address-title">退货退款原因</h2>
+                    <h2 className="address-title">换货原因</h2>
                     <select name="abandon_reason" id="">
                         <option value="七天无理由退货">七天无理由退货</option>
                         <option value="不想要了">不想要了</option>

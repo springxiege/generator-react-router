@@ -18,18 +18,10 @@ class UserCenter extends React.Component {
             data: {},
             beforeSend:(request)=>{
                 $.loading.show();
-                if(config.head!=''){
-                    request.setRequestHeader("Authorization", "Bearer " + config.head);
-                }
+                config.setRequestHeader(request);
             },
             error:(error)=>{
-                // console.error(error)
-                if(error.status === 401 && error.responseJSON.code === 1){
-                    $.error('header请求错误，将重新请求');
-                    $.refreshToken(function(){
-                        window.location.reload();
-                    })
-                }
+                config.ProcessError(error);
             },
             success:(data)=>{
                 if(parseInt(data.code)===0){
@@ -63,7 +55,7 @@ class UserCenter extends React.Component {
                             )}
                         </div>
                         <Link to="/Settings">设置</Link>
-                        {/*<Link to="/Msg" title="消息"><span className="msg"></span></Link>*/}
+                        {<Link to="/Messages" title="消息"><span className="msg"></span></Link>}
                     </div>
                     {_data.userDetail != undefined ? (
                         <h1>{_data.userDetail.name || '未获取到信息'}
@@ -99,8 +91,8 @@ class UserCenter extends React.Component {
                             <Link to="/PendingPayOrder">
                                 <p>待付款</p>
                                 {_data.orderNumeric ? (
-                                    _data.orderNumeric.pendingPayment == 0 ? '' : (
-                                        <span>{_data.orderNumeric.pendingPayment}</span>
+                                    _data.orderNumeric.prepay_order_cnt == 0 ? '' : (
+                                        <span>{_data.orderNumeric.prepay_order_cnt}</span>
                                     )
                                 ) : ''}
 
@@ -110,8 +102,8 @@ class UserCenter extends React.Component {
                             <Link to="/UnfilledOrder">
                                 <p>未发货</p>
                                 {_data.orderNumeric ? (
-                                    _data.orderNumeric.unfilled == 0 ? '' : (
-                                        <span>{_data.orderNumeric.unfilled}</span>
+                                    _data.orderNumeric.posting_order_cnt == 0 ? '' : (
+                                        <span>{_data.orderNumeric.posting_order_cnt}</span>
                                     )
                                 ) : ''}
                             </Link>
@@ -120,8 +112,8 @@ class UserCenter extends React.Component {
                             <Link to="/ReceiptOrder">
                                 <p>确认收货</p>
                                 {_data.orderNumeric ? (
-                                    _data.orderNumeric.receipt == 0 ? '' : (
-                                        <span>{_data.orderNumeric.receipt}</span>
+                                    _data.orderNumeric.confirm_order_cnt == 0 ? '' : (
+                                        <span>{_data.orderNumeric.confirm_order_cnt}</span>
                                     )
                                 ) : ''}
                             </Link>
@@ -129,19 +121,14 @@ class UserCenter extends React.Component {
                         <li>
                             <Link to="/RateOrder">
                                 <p>评价</p>
-                                {_data.orderNumeric ? (
-                                    _data.orderNumeric.commnet == 0 ? '' : (
-                                        <span>{_data.orderNumeric.commnet}</span>
-                                    )
-                                ) : ''}
                             </Link>
                         </li>
                         <li>
                             <Link to="/ReturnOrder">
                                 <p>退换货</p>
                                 {_data.orderNumeric ? (
-                                    _data.orderNumeric.returns == 0 ? '' : (
-                                        <span>{_data.orderNumeric.returns}</span>
+                                    _data.orderNumeric.refund_order_cnt == 0 ? '' : (
+                                        <span>{_data.orderNumeric.refund_order_cnt}</span>
                                     )
                                 ) : ''}
                             </Link>

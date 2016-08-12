@@ -10,12 +10,12 @@ export default function RateOrder (state = initialState,action){
     switch(action.type){
         case RATE_ORDER:
             return Object.assign({},state,{
-                data:action.data
+                data: action.data
             })
             break;
         case LOAD_MORE_RATE_ORDER:
             return Object.assign({},state,{
-                data:action.data
+                data: action.data
             })
         default:
             return state;

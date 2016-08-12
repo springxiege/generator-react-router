@@ -17,12 +17,10 @@ class AddressEdit extends Component {
             data: {},
             beforeSend:(request)=>{
                 $.loading.show()
-                if(config.head!=''){
-                    request.setRequestHeader("Authorization", "Bearer " + config.head);
-                }
+                config.setRequestHeader(request);
             },
             error:(error)=>{
-                console.error(error)
+                config.ProcessError(error);
             },
             success:(data)=>{
                 if(parseInt(data.code)==0){
@@ -48,22 +46,22 @@ class AddressEdit extends Component {
         let _address   = $form.find('[name=address]').val()
         let is_default = $form.find('[name=is_default]').is(':checked')?1:0
         if(_name == ''){
-            $.error('姓名不能为空');
+            $.tips('姓名不能为空');
             $form.find('[name=name]').focus();
             return false;
         }
         if(_tel == ''){
-            $.error('电话号码不能为空');
+            $.tips('电话号码不能为空');
             $form.find('[name=tel]').focus();
             return false
         };
         if(!(/^1[3|4|5|7|8]\d{9}$/.test(_tel))){
-            $.error('请输入正确的手机号');
+            $.tips('请输入正确的手机号');
             $form.find('input[name=tel]').focus();
             return false;
         };
         if(_address == ''){
-            $.error('地址不能为空');
+            $.tips('地址不能为空');
             $form.find('[name=address]').focus();
             return false
         };
@@ -79,9 +77,7 @@ class AddressEdit extends Component {
                     is_default:is_default
                 },
                 beforeSend:(request)=>{
-                    if(config.head!=''){
-                        request.setRequestHeader("Authorization", "Bearer " + config.head);
-                    };
+                    config.setRequestHeader(request);
                     $btn.addClass('disabled').html('提交中')
                 },
                 error:(error)=>{

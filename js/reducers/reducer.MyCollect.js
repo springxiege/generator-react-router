@@ -4,7 +4,8 @@
 import { 
     COLLECT_LIST,
     ADD_COLLECT,
-    CANCEL_COLLECT 
+    CANCEL_COLLECT,
+    GET_MORE_COLLECT_LIST
 } from '../actions/ActionTypes'
 
 const initialState = {
@@ -18,6 +19,14 @@ export default function Collect(state = initialState,action){
     switch (action.type) {
         case COLLECT_LIST:
             _data = Object.assign({},state.data,action.data)
+            return Object.assign({},state,{
+                data:_data
+            })
+            break;
+        case GET_MORE_COLLECT_LIST:
+            _data = Object.assign({},state.data,{
+                data:action.data
+            })
             return Object.assign({},state,{
                 data:_data
             })

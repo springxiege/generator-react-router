@@ -1,3 +1,4 @@
+@import url('./px2rem.less');
 @charset "utf-8";
 /* CSS Document */
 body, div, dl, dt, dd, ul, ol, li,h 1, h 2, h 3, h 4, h 5, h 6, pre, code,form, fieldset, legend, input, button,textarea, p, blockquote, th, td {margin: 0;padding: 0;font-size:12px;}
@@ -11,7 +12,13 @@ body {
     line-height:1.5; 
     font-family: '微软雅黑',tahoma,verdana,arial,helvetica,sans-serif,"宋体";
     color:#333;
-    -webkit-overflow-scrolling: touch
+    -webkit-overflow-scrolling: touch;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 ol,ul {list-style:none;}
 th{text-align:left;}
@@ -27,6 +34,12 @@ a{text-decoration:none;}
 a:link{color:#333;}
 a:visited{color:#333;}
 a:hover{color:#333;text-decoration:none;}
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb,
+div::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  border: 0px solid #fff;
+}
 /*---------------------全局css定义结束-------------------*/
 .fl{float: left;}
 .fr{float: right;}
@@ -36,9 +49,13 @@ input::-webkit-inner-spin-button {
     margin: 0;
     border-radius:0;
 }
+input[type="submit"],
+input[type="reset"],
+input[type="button"],
 input,
 button,
-textarea{
+textarea,
+select{
     -webkit-appearance: none !important;
     border-radius:0;
 }
@@ -53,3 +70,4 @@ textarea{
 }
 .bbn{border-bottom: 0 !important;}
 .pdt100{padding-top: 2.5rem !important;}
+.pdt80{padding-top: 2rem !important;}

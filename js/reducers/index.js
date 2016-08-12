@@ -18,6 +18,7 @@ import RateOrder from './reducer.RateOrder'
 import Tracking from './reducer.Tracking'
 import Settings from './reducer.Settings'
 import UserCenter from './reducer.UserCenter'
+import Messages from './reducer.Messages'
 import OrderDetail from './reducer.OrderDetail'
 
 const trade = combineReducers({
@@ -38,6 +39,7 @@ const trade = combineReducers({
     Tracking:Tracking,                          //售后跟踪信息
     Settings:Settings,                          //设置页面的用户信息
     UserCenter:UserCenter,                      //个人中心数据
+    Messages:Messages,                          //我的消息
     OrderDetail:OrderDetail,                    //订单详情
 
 })

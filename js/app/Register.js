@@ -15,12 +15,12 @@ export default class Register extends Component{
         let $btn = $(findDOMNode(e.target))
         let mobile = $form.find('input[name=mobile]').val()
         if(mobile==''){
-            $.error('手机号不能为空');
+            $.tips('手机号不能为空');
             $form.find('input[name=mobile]').focus();
             return false;
         }
         if(!(/^1[3|4|5|7|8]\d{9}$/.test(mobile))){
-            $.error('请输入正确的手机号');
+            $.tips('请输入正确的手机号');
             $form.find('input[name=mobile]').focus();
             return false;
         }
@@ -64,12 +64,12 @@ export default class Register extends Component{
         let mobile = $form.find('input[name=mobile]').val()
         let verify = $form.find('input[name=verify]').val()
         if(mobile==''){
-            $.error('手机号不能为空');
+            $.tips('手机号不能为空');
             $form.find('input[name=mobile]').focus();
             return false;
         }
         if(verify == ''){
-            $.error('请输入验证码');
+            $.tips('请输入验证码');
             $form.find('input[name=verify]').focus();
             return false;
         }
@@ -107,7 +107,7 @@ export default class Register extends Component{
                         alert('This browser does not supports localStorage')
                     }
                 }else{
-                    $.error(data.data.msg)
+                    $.tips(data.data.msg)
                 }
             }
         })

@@ -1,4 +1,5 @@
-;(function($){
+
+;(function(window,undefined,$){
     $.extend({
         /**
          * @ 非微信中存储token
@@ -20,7 +21,7 @@
             }
         },
         /**
-         * 
+         * 更新PC端token，防止页面报错
          */
         refreshToken:function(callback){
             $.ajax({
@@ -29,12 +30,15 @@
                 dataType: 'json',
                 data: {},
                 error:function(error){
-                    console.error(error);
+                    if(error.status === 401 && error.responseJSON.code === 1){
+                        alert('刷新token失败，请重新登录');
+                        var _hash = window.location.hash;
+                        _hash = _hash.replace('#','').replace(/\?.{1,}/gi,'');
+                        window.location.hash = '#/Register' + _hash;
+                    }
                 },
                 beforeSend:function(request){
-                    if(config.head!=''){
-                        request.setRequestHeader("Authorization", "Bearer " + config.head);
-                    }
+                    config.setRequestHeader(request);
                 },
                 success:function(data){
                     if(parseInt(data.code) === 0){
@@ -43,17 +47,24 @@
                         config.setStorage('trade','userinfo',data.data.user);
                         config.head = data.data.token;
                         callback && callback(data.data)
+                    };
+                    if(parseInt(data.code) === 1){
+                        alert('刷新token失败，请重新登录');
+                        var _hash = window.location.hash;
+                        _hash = _hash.replace('#','').replace(/\?.{1,}/gi,'');
+                        window.location.hash = '#/Register' + _hash;
+                        
                     }
                 }
             })
         },
         /**
-         * [error 提示消息框]
+         * [tips 提示消息框]
          * @param  {[type]} data [显示内容]
          * @param  {[type]} time [显示时间后立即隐藏]
          * @return {[type]}      [description]
          */
-        error:function(data,time,callback){
+        tips:function(data,time,callback){
             var _HTML = '<div class="pop-error" id="pop-error">'+data+'</div>'
             if($('#pop-error').length === 0){
                 $('body').append(_HTML);
@@ -164,61 +175,13 @@
             }
         },
         /**
-         * [loadpage 加载下一页]
-         * @param  {[type]} opts [description]
-         * @return {[type]}      [description]
-         */
-        loadpage:function(opts){
-            var defaults = $.extend(true, {
-                obj:this,
-                url:'',
-                pagesize:2,
-                page:2,
-            }, opts);
-            var flag = true,noMore = false;
-            var _winHeight = $(window).height();
-            defaults.obj.scroll = $(window).scroll(function(event) {
-                var _scolltop = $(this).scrollTop(),
-                    _bodyHeight = $('body').height();
-                if(_scolltop >= _bodyHeight-_winHeight){
-                    if(flag && !noMore){
-                        $.ajax({
-                            url: defaults.url,
-                            type: 'GET',
-                            dataType: 'json',
-                            data: {
-                                page:defaults.page
-                            },
-                            beforeSend:function(){
-                                defaults.loadBefore && defaults.loadBefore()
-                                flag = false
-                            },
-                            error:function(error){
-                                console.error(error)
-                            },
-                            success:function(data){
-                                defaults.callback && defaults.callback(data);
-                                flag = true
-                                if(data.data.data.length){
-                                    defaults.page++
-                                }else{
-                                    noMore = true
-                                }
-
-                            }
-                        })
-                    }
-                }
-            });
-        },
-        /**
          * [loading 页面加载]
          * @type {Object}
          */
         loading:{
             show:function(){
                 if(!$('#mobi_page_loading').length){
-                    $('body').append('<div id="mobi_page_loading" style="position:fixed;z-index:9999999;top:0;left:0;width:100%;height:100%;background-color:rgba(255,255,255,.98);"><div class="page-loader page-loader-circularSquare"></div></div>')
+                    $('body').append('<div id="mobi_page_loading"></div>')
                 }else{
                     $('#mobi_page_loading').show();
                 }
@@ -230,4 +193,4 @@
         }
     });
 
-})(jQuery)
+})(window,undefined,jQuery)

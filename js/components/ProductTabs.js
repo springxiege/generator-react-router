@@ -18,10 +18,14 @@ class ProductTabs extends React.Component {
     constructor(){
         super();
         this.state = {
+            target: 0,
             activeIndex: 0,
             type:0,
+            fixed:false,
+            loadComment:true
         };
         this.loadMorePage = this.loadMorePage.bind(this);
+        this.setFixed = this.setFixed.bind(this);
     }
     componentDidMount() {
         let _this = this;
@@ -35,6 +39,7 @@ class ProductTabs extends React.Component {
             paginationClickable: true,
             bulletClass: "tab",
             bulletActiveClass: "cur",
+            updateOnImagesReady:true,
             paginationBulletRender:(index, clsName)=>{
                 let _name, _comment_count = this.props.state.data.coumt_commet.count;
                 switch (index) {
@@ -57,50 +62,88 @@ class ProductTabs extends React.Component {
                     let _id  = this.props.state.data.id || '1'
                     let length = this.props.state.CommentList.list.data.data.length
                     if(length){return false;}
-                    $.ajax({
-                        url: config.url + '/goods/comment/'+_id,
-                        type: 'GET',
-                        dataType: 'json',
-                        data: {},
-                        beforeSend:function(request){
-                            if(config.head!=''){
-                                request.setRequestHeader("Authorization", "Bearer " + config.head);
+                    if(this.state.loadComment){
+                        $.ajax({
+                            url: config.url + '/goods/comment/'+_id,
+                            type: 'GET',
+                            dataType: 'json',
+                            data: {
+                                pagesize:10,
+                                page:1
+                            },
+                            beforeSend:function(request){
+                                config.setRequestHeader(request);
+                            },
+                            error:(error)=>{
+                                config.ProcessError(error);
+                            },
+                            success:(data)=>{
+                                if(parseInt(data.code)==0){
+                                    if(data.data.data){
+                                        this.props.dispatch(GetComment(data))
+                                        setTimeout(()=>{
+                                            swiper.updateContainerSize()
+                                            swiper.updateSlidesSize();
+                                            swiper.updateProgress();
+                                            swiper.updatePagination();
+                                            swiper.updateClasses();
+                                            swiper.update();
+                                        },800)
+                                        if(!data.data.next_page_url){
+                                            $('#loading-more').html('已全部加载')
+                                        }
+                                    }else{
+                                        $('#loading-more').hide();
+                                        $('.nolist').show();
+                                    }
+                                    this.setState({
+                                        loadComment:false
+                                    })
+                                }
                             }
-                        },
-                        error:(error)=>{
-                            console.error(error)
-                        },
-                        success:(data)=>{
-                            if(parseInt(data.code)==0){
-                                this.props.dispatch(GetComment(data))
-                                setTimeout(()=>{
-                                    swiper.updateContainerSize()
-                                    swiper.updateSlidesSize();
-                                    swiper.updateProgress();
-                                    swiper.updatePagination();
-                                    swiper.updateClasses();
-                                    swiper.update();
-                                },500)
-                            }
-                        }
-                    })
+                        }) 
+                    }
+                    
                 }
+            },
+            onImagesReady:(swiper)=>{
+                swiper.height = $(findDOMNode(this.refs.productTabs)).find('.swiper-slide').eq(swiper.activeIndex).height()
             }
         });
+        window.addEventListener('scroll',this.setFixed)
+        this.setState({
+            target: $(findDOMNode(this.refs.ProductFixed)).offset().top
+        })
     }
     componentWillUnmount() {
         // 销毁Swiper
         this.productTabs.destroy(false)
+        window.removeEventListener('scroll',this.setFixed)
     }
     componentDidUpdate(){
-        let activeIndex = this.productTabs.activeIndex;
-        this.productTabs.updateContainerSize()
-        this.productTabs.updateSlidesSize();
-        this.productTabs.updateProgress();
-        this.productTabs.updatePagination();
-        this.productTabs.updateClasses();
-        this.productTabs.update();
-        this.productTabs.height = $(findDOMNode(this.refs.productTabs)).find('.swiper-slide').eq(activeIndex).height();
+        setTimeout(()=>{
+            let activeIndex = this.productTabs.activeIndex;
+            this.productTabs.updateContainerSize()
+            this.productTabs.updateSlidesSize();
+            this.productTabs.updateProgress();
+            this.productTabs.updatePagination();
+            this.productTabs.updateClasses();
+            this.productTabs.update();
+            this.productTabs.height = $(findDOMNode(this.refs.productTabs)).find('.swiper-slide').eq(activeIndex).height();
+        },800)
+    }
+    setFixed(){
+        let wh = this.state.winHeight;
+        let scrollTop = $(window).scrollTop();
+        if(scrollTop >= this.state.target){
+            this.setState({
+                fixed:true
+            })
+        }else{
+            this.setState({
+                fixed:false
+            })
+        }
     }
     loadMorePage(){
 
@@ -108,7 +151,6 @@ class ProductTabs extends React.Component {
     _Get_Good_Comment(e){
         let _this = this
         if(e.target.className == 'cur'){return false;}
-        let $target = $(findDOMNode(e.target))
         let _id  = this.props.state.id || '1'
         $.ajax({
             url: config.url + '/goods/comment/'+_id+'?summary=1',
@@ -120,11 +162,15 @@ class ProductTabs extends React.Component {
             },
             success:(data)=>{
                 if(parseInt(data.code)==0){
-                    $target.addClass('cur').siblings('li').removeClass('cur');
-                    _this.props.dispatch(GetGoodComment(data));
+                    if(data.data.data){
+                        _this.props.dispatch(GetGoodComment(data));
+                    }else{
+                        $('#loading-more').hide()
+                    }
                     _this.setState({
                         type:1
-                    })
+                    }) 
+                    
                 }
             }
         })
@@ -132,7 +178,6 @@ class ProductTabs extends React.Component {
     _Get_Bad_Comment(e){
         let _this = this
         if(e.target.className == 'cur'){return false;}
-        let $target = $(findDOMNode(e.target))
         let _id  = this.props.state.id || '1'
         $.ajax({
             url: config.url + '/goods/comment/'+_id+'?summary=2',
@@ -144,11 +189,15 @@ class ProductTabs extends React.Component {
             },
             success:(data)=>{
                 if(parseInt(data.code)==0){
-                    $target.addClass('cur').siblings('li').removeClass('cur');
-                    _this.props.dispatch(GetBadComment(data));
+                    if(data.data.data){
+                        _this.props.dispatch(GetBadComment(data));
+                    }else{
+                        $('#loading-more').hide()
+                    }
                     _this.setState({
                         type:2
-                    })
+                    }) 
+                    
                 }
             }
         })
@@ -175,7 +224,7 @@ class ProductTabs extends React.Component {
         return (
             <div className="main-module">
                 <div className="main-detailtab">
-                    <div className="main-tab">
+                    <div className={this.state.fixed?"main-tab fixed":"main-tab"} ref="ProductFixed">
                         <ul className="main-tab-page clearfix" ref="productTabsPage"></ul>
                     </div>
                     <div className="main-product-content swiper-container" ref="productTabs">
@@ -191,7 +240,9 @@ class ProductTabs extends React.Component {
                                     </ul>
                                 </div>
                                 <div className="coment-container">
-                                    {!CommentDataArray.data.data.length?"":CommentDataArray.data.data.map((item,index)=>{
+                                    {!CommentDataArray.data.data.length?(
+                                        <p className="nolist" style={{display:'none'}}>暂无评论</p>
+                                    ):CommentDataArray.data.data.map((item,index)=>{
                                         let _clsName = 'coment-stars stars'+item.satisfaction_star
                                         let buy = item.buy
                                         return (
@@ -212,6 +263,7 @@ class ProductTabs extends React.Component {
                                             </div>
                                         )
                                     })}
+                                    <p id="loading-more">评论加载中···</p>
                                 </div>
                             </div>
                             {/*<ProductComment good_count={_good_comment} bad_count={_bad_comment} />*/}

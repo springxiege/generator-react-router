@@ -49,15 +49,17 @@
         float: left;
         .wpx2rem(34);
         .hpx2rem(33);
-        background-image: url(../images/icon_star_unselected.png);
+        // background-image: url(../images/icon_star_unselected.png);
+        background-image: url(../images/icon_stars.png);
         background-repeat: no-repeat;
-        background-size: 100% auto;
-        background-position: 0 0;
+        background-size: 200% auto;
+        background-position: 100% 0;
         &:not(:last-of-type){
             .mgrpx2rem(35);
         }
         &.cur{
-            background-image: url(../images/icon_star_selected.png);
+            background-position:0 0;
+            // background-image: url(../images/icon_star_selected.png);
         }
     }
 }
@@ -75,20 +77,24 @@
             .mgrpx2rem(10);
             .vpx2rem(-5);
             background-repeat: no-repeat;
-            background-size: 100% auto;
-            background-position: 0 0;
+            background-size: 200% auto;
+            background-image: url(../images/icon_comment2.png)
         }
         &:first-of-type::before{
-            background-image: url(../images/icon_good_unselected.png);
+            // background-image: url(../images/icon_good_unselected.png);
+            background-position:0 100%;
         }
         &:first-of-type.cur::before{
-            background-image: url(../images/icon_good.png);
+            background-position:0 0;
+            // background-image: url(../images/icon_good.png);
         }
         &:last-of-type::before{
-            background-image: url(../images/icon_bad.png);
+            background-position:100% 100%;
+            // background-image: url(../images/icon_bad.png);
         }
         &:last-of-type.cur::before{
-            background-image: url(../images/icon_bad_selected.png);
+            background-position:100% 0;
+            // background-image: url(../images/icon_bad_selected.png);
         }
         &:first-of-type{
             .mgrpx2rem(70);

@@ -6,6 +6,9 @@ import {
     getPendingPayOrder,
     getMorePendingPayOrder
 } from '../actions/ActionFuncs'
+import CommonImage from '../components/CommonImage'
+import CommonLogo from '../components/CommonLogo'
+import LoadMorePageData from '../event/event.LoadMorePageData'
 class PendingPayOrder extends Component{
     constructor() {
         super();
@@ -22,11 +25,9 @@ class PendingPayOrder extends Component{
          */
         this.state = {
             url: config.url + '/orders/prepayment',
-            pagesize: 2,
             page: 2, 
             flag: true, 
             noMore: false,
-            winHeight: $(window).height(),
             callback: function(pdata){ 
                 if(parseInt(pdata.code) === 0){
                     if(pdata.data.data && pdata.data.data.length){
@@ -39,35 +40,40 @@ class PendingPayOrder extends Component{
                 }
             },
         };
-        this.loadMorePage = this.loadMorePage.bind(this);
+        this.LoadMorePageData = LoadMorePageData.bind(this);
     }
     componentDidMount() {
-        document.title = '待支付订单'
+        document.title = '待付款'
         let _this = this
         this.serverRequest = $.ajax({
             url: _this.state.url,
             type: 'GET',
             dataType: 'json',
             data: {
-                pagesize: _this.state.pagesize,
+                pagesize: config.pagesize,
                 page: 1
             },
             beforeSend:(request)=>{
                 $.loading.show();
-                if(config.head!=''){
-                    request.setRequestHeader("Authorization", "Bearer " + config.head);
-                }
+                config.setRequestHeader(request);
             },
             error:(error)=>{
-                console.error(error)
+                config.ProcessError(error);
             },
             success:(data)=>{
                 if(parseInt(data.code) === 0){
                     if(data.data.data){
                         _this.props.dispatch(getPendingPayOrder(data.data.data));
                         $.loading.hide();
-                        // 加载更多
-                        window.addEventListener('scroll',_this.loadMorePage);
+                        // 加载更多列表
+                        if(parseInt(data.data.last_page) <= 1){
+                            $('#loading-more').html('已全部加载')
+                        }else{
+                            window.addEventListener('scroll',_this.LoadMorePageData);
+                        };
+                        if(parseInt(data.data.last_page) === 0){
+                            $('#loading-more').hide();
+                        }
                     }else{
                         alert(data.data.msg);
                     }
@@ -79,59 +85,7 @@ class PendingPayOrder extends Component{
     }
     componentWillUnmount() {
         this.serverRequest.abort();
-        window.removeEventListener('scroll',this.loadMorePage);
-    }
-    // 加载更多
-    // opt为传入的对象
-    // 其中包括请求链接
-    // 每页返回数据条数
-    // 请求第几页参数
-    // 回调参数
-    loadMorePage(){
-        let opt = this.state;
-        let _scrollTop = $(window).scrollTop();
-        let _bodyHeight = $('body').height();
-        if(_scrollTop >= (_bodyHeight - opt.winHeight)){
-            if(opt.flag && !opt.noMore){
-                $.ajax({
-                    url:opt.url,
-                    type:'GET',
-                    dataType:'json',
-                    data:{
-                        pagesize:opt.pagesize,
-                        page:opt.page
-                    },
-                    beforeSend:(request)=>{
-                        this.setState({
-                            flag:false
-                        })
-                        if(config.head!=''){
-                            request.setRequestHeader("Authorization", "Bearer " + config.head);
-                        }
-                    },
-                    error:(error)=>{
-                        console.error(error)
-                    },
-                    success:(data)=>{
-                        opt.callback && opt.callback(data);
-                        this.setState({
-                            flag:true
-                        })
-                        if(data.data.data.length){
-                            let nextpage = (opt.page - 0) + 1
-                            this.setState({
-                                page:nextpage
-                            })
-                        }else{
-                            this.setState({
-                                noMore:true
-                            })
-                        }
-                    }
-                })
-            }
-        }
-
+        window.removeEventListener('scroll',this.LoadMorePageData);
     }
     // 取消订单
     cancelOrder(e){
@@ -152,12 +106,10 @@ class PendingPayOrder extends Component{
                         ids:_ids
                     },
                     beforeSend:(request)=>{
-                        if(config.head!=''){
-                            request.setRequestHeader("Authorization", "Bearer " + config.head);
-                        }
+                        config.setRequestHeader(request);
                     },
                     error:(error)=>{
-                        console.error(error)
+                        config.ProcessError(error);
                     },
                     success:(data)=>{
                         if(parseInt(data.code) === 0){
@@ -185,7 +137,7 @@ class PendingPayOrder extends Component{
                                     <div className="part-list" key={subindex} data-id={subitem.id}>
                                         <div className="part-info">
                                             <Link to={`/OrderDetail/${subitem.id}`} className="clearfix">
-                                                <img src={subitem.goods.goods_images[0]||subitem.goods.goods_images[1]||subitem.goods.goods_images[2]} alt="" className="fl" />
+                                                <CommonImage src={subitem.goods.goods_images} className="fl" />
                                                 <div className="part-detail">
                                                     <h4>{subitem.goods.title}</h4>
                                                     <p>{subitem.feature_main}&ensp;{subitem.feature_sub}</p>
@@ -211,7 +163,10 @@ class PendingPayOrder extends Component{
             })
         }
         return (
-            <div>{_HTML}</div>
+            <div>
+                {_HTML}
+                <p id="loading-more">列表加载中···</p>
+            </div>
         )
     }
 }

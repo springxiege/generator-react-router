@@ -19,12 +19,10 @@ class OrderDetail extends Component{
             data: _params,
             beforeSend:(request)=>{
                 $.loading.show();
-                if(config.head!=''){
-                    request.setRequestHeader("Authorization", "Bearer " + config.head);
-                }
+                config.setRequestHeader(request);
             },
             error:(error)=>{
-                console.error(error)
+                config.ProcessError(error);
             },
             success:(data)=>{
                 if(parseInt(data.code) === 0){
@@ -61,16 +59,14 @@ class OrderDetail extends Component{
                         ids:_ids
                     },
                     beforeSend:(request)=>{
-                        if(config.head!=''){
-                            request.setRequestHeader("Authorization", "Bearer " + config.head);
-                        }
+                        config.setRequestHeader(request);
                     },
                     error:(error)=>{
-                        console.error(error)
+                        config.ProcessError(error);
                     },
                     success:(data)=>{
                         if(parseInt(data.code) === 0){
-                            $.error(data.data.msg,800,function(){
+                            $.tips(data.data.msg,800,function(){
                                 window.location.hash = '#/ReturnOrder'
                             })
                         }
@@ -98,17 +94,15 @@ class OrderDetail extends Component{
                         ids:_ids
                     },
                     beforeSend:(request)=>{
-                        if(config.head!=''){
-                            request.setRequestHeader("Authorization", "Bearer " + config.head);
-                        }
+                        config.setRequestHeader(request);
                     },
                     error:(error)=>{
-                        console.error(error)
+                        config.ProcessError(error);
                     },
                     success:(data)=>{
                         // console.log(data)
                         if(parseInt(data.code) === 0){
-                            $.error(data.data.msg)
+                            $.tips(data.data.msg)
                             window.location.hash = '#//RateOrder'
                         }
                     }
@@ -117,7 +111,7 @@ class OrderDetail extends Component{
         })
     }
     UpdateOrder(e){
-        $.error('提醒发货成功')
+        $.tips('提醒发货成功')
     }
     render(){
         let _data = this.props.state.data

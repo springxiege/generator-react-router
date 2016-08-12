@@ -108,7 +108,9 @@ export default function GoodsDetail(state = initialState, action) {
             max_price = parseFloat(action.data.max_price).toFixed(2);
             _tempObj = Object.assign({}, state.GoodsSelectSku, {
                 price: min_price + '~' + max_price,
-                originalprice:max_price
+                originalprice:max_price,
+                selected: null,
+                subselected: null
             })
             return Object.assign({}, state, {
                 userId:action.data.user_id,
@@ -120,6 +122,7 @@ export default function GoodsDetail(state = initialState, action) {
                     good_list:{data:{data:[]}},
                     bad_list:{data:{data:[]}}
                 },
+                SelectedSku:'选择：规格分类',
                 data:action.data
             })
             break;

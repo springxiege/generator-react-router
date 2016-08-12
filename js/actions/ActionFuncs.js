@@ -24,6 +24,12 @@ export function ModifyNickName(name){
     return {type:types.MODIFY_NICKNAME,name}
 }
 /**
+ * 获取消息中心数据
+ */
+export function getMessages(data){
+    return {type:types.MESSAGES,data}
+}
+/**
  * 商品sku
  */
 export function GoodsSelectSku(index){
@@ -58,6 +64,10 @@ export function RefreshRecommend(){
  */
 export function getCollectList(data){
     return {type:types.COLLECT_LIST,data};
+}
+
+export function getMoreCollectList(data){
+    return {type:types.GET_MORE_COLLECT_LIST,data}
 }
 /**
  * 商品收藏
@@ -334,7 +344,7 @@ export function getRateOrder(data){
 }
 // 获取更多待评论订单
 export function getMoreRateOrder(data){
-    return {type:types.LOAD_MORE_RATE_ORDER}
+    return {type:types.LOAD_MORE_RATE_ORDER,data}
 }
 // 获取订单评论
 export function getOrderComment(data){

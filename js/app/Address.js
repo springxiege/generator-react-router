@@ -70,12 +70,10 @@ class AddressList extends Component {
             dataType: 'json',
             data: obj,
             beforeSend:(request)=>{
-                if(config.head!=''){
-                    request.setRequestHeader("Authorization", "Bearer " + config.head);
-                }
+                config.setRequestHeader(request);
             },
             error:(error)=>{
-                console.error(error)
+                config.ProcessError(error);
             },
             success:(data)=>{
                 if(parseInt(data.code)==0){
@@ -106,13 +104,11 @@ class AddressList extends Component {
                 _method:'DELETE'
             },
             beforeSend:(request)=>{
-                if(config.head!=''){
-                    request.setRequestHeader("Authorization", "Bearer " + config.head);
-                }
+                config.setRequestHeader(request);
             },
             error:(error)=>{
                 if(error.status === 401 && error.responseJSON.code === 1){
-                    $.error('header请求错误，将重新请求');
+                    $.tips('header请求错误，将重新请求');
                     $.refreshToken(function(){
                         window.location.reload();
                     })
@@ -157,7 +153,7 @@ class AddressList extends Component {
         
     }
     componentDidMount(){
-        document.title = '地址库'
+        document.title = '我的地址'
         this.serverRequest = $.ajax({
             url: config.url + '/user/address',   
             type: 'GET',
@@ -165,12 +161,10 @@ class AddressList extends Component {
             data: {},
             beforeSend:(request)=>{
                 $.loading.show()
-                if(config.head!=''){
-                    request.setRequestHeader("Authorization", "Bearer " + config.head);
-                }
+                config.setRequestHeader(request);
             },
             error:(error)=>{
-                console.error(error)
+                config.ProcessError(error);
             },
             success:(data)=>{
                 if(parseInt(data.code) == 0){

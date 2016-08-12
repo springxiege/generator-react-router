@@ -1,13 +1,17 @@
 import React,{Component,find} from 'react'
 import {findDOMNode} from 'react-dom'
 import {connect} from 'react-redux'
+import FormVerify from '../event/event.FormVerify'
 class AddressAdd extends Component {
+    constructor(){
+        super();
+        this.state = {
+            checked:false
+        };
+    }
     componentDidMount(){
         document.title = '添加地址'
         $.loading.hide();
-    }
-    componentWillUnmount() {
-        
     }
     formSubmit(e){
         let $form      = $(findDOMNode(this.refs.form))
@@ -17,22 +21,22 @@ class AddressAdd extends Component {
         let _address   = $form.find('[name=address]').val()
         let is_default = $form.find('[name=is_default]').is(':checked')?1:0
         if(_name == ''){
-            $.error('姓名不能为空');
+            $.tips('姓名不能为空');
             $form.find('[name=name]').focus();
             return false;
         }
         if(_tel == ''){
-            $.error('电话号码不能为空');
+            $.tips('电话号码不能为空');
             $form.find('[name=tel]').focus();
             return false
         };
         if(!(/^1[3|4|5|7|8]\d{9}$/.test(_tel))){
-            $.error('请输入正确的手机号');
+            $.tips('请输入正确的手机号');
             $form.find('input[name=tel]').focus();
             return false;
         };
         if(_address == ''){
-            $.error('地址不能为空');
+            $.tips('地址不能为空');
             $form.find('[name=address]').focus();
             return false
         };
@@ -41,7 +45,7 @@ class AddressAdd extends Component {
             tel:_tel,
             address:_address,
             is_default:is_default
-        }
+        };
         if(!$btn.hasClass('disabled')){
             $.ajax({
                 url: config.url + '/user/address',
@@ -49,13 +53,11 @@ class AddressAdd extends Component {
                 dataType: 'json',
                 data: param,
                 beforeSend:(request)=>{
-                    if(config.head!=''){
-                        request.setRequestHeader("Authorization", "Bearer " + config.head);
-                    };
+                    config.setRequestHeader(request);
                     $btn.addClass('disabled').html('提交中')
                 },
                 error:(error)=>{
-                    console.error(error)
+                    config.ProcessError(error);
                 },
                 success:(data)=>{
                     $btn.removeClass('disabled').html('确认')
@@ -65,10 +67,11 @@ class AddressAdd extends Component {
                 }
             })
         }
-        
     }
     ChangeDefault(e){
-        $(e.target).closest('label').toggleClass('checked');
+        this.setState({
+            checked:!this.state.checked
+        })
     }
     render(){
         return (
@@ -95,7 +98,7 @@ class AddressAdd extends Component {
                         </div>
                     </label>
                     <div>
-                        <label>
+                        <label className={this.state.checked?"checked":""}>
                             <input type="checkbox" name="is_default" id="" onChange={e=>this.ChangeDefault(e)} />
                             设置成默认收货地址
                         </label>

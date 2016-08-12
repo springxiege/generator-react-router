@@ -93,12 +93,23 @@
             border-left-color: #e8832a;
             .mglpx2rem(10);
         }
-        &.returned-money,
         &.returning-money,
-        &.returned-order,
         &.returning{
             color:#e8832a;
             border: 1px solid #e8832a;
+        }
+        &.returned-money,
+        &.returned-order{
+            color:#A0A0A0;
+            border: 1px solid #A0A0A0;
+            &::after{
+                border: .175rem solid transparent;
+                border-left: .225rem solid #A0A0A0;
+                width: 0;
+                height: 0;
+                border-left-color: #A0A0A0;
+                .mglpx2rem(10);
+            }
         }
     }
 }
@@ -210,13 +221,22 @@
         }
     }
 }
-.returned{
+.returned,
+.returnning{
     .return-order{
         span:first-of-type{
             color:#e8832a;
             border-color:#e8832a;
             &::after{
                 border-left-color:#e8832a;
+            };
+            &.returned-money,
+            &.returned-order{
+                color:#A0A0A0;
+                border: 1px solid #A0A0A0;
+                &::after{
+                    border-left-color:#A0A0A0;
+                }
             }
         }
         &.show{
@@ -230,6 +250,18 @@
                 border-top-color: #e8832a;
                 border-left-color:transparent;
                 .mglpx2rem(10); 
+
+            }
+            span:first-of-type{
+                &.returned-money,
+                &.returned-order{
+                    color:#A0A0A0;
+                    border: 1px solid #A0A0A0;
+                    &::after{
+                        border-top-color: #A0A0A0;
+                        border-left-color:transparent;
+                    }
+                }
             }
         }
     }
@@ -354,18 +386,19 @@
     font-weight: bold;
     color:#fff;
     background-color: #FA462F;
+    text-align: center;
     &::before{
-        display: inline-block;
-        content:'';
-        .wpx2rem(80);
-        .hpx2rem(80);
-        .vpx2rem(-21);
-        border-radius: 50%;
-        background-color: #fff;
-        background-image: url(../images/icon_success2.png);
-        background-repeat: no-repeat;
-        background-size: 1.325rem auto;
-        background-position: center center;
+        // display: inline-block;
+        // content:'';
+        // .wpx2rem(80);
+        // .hpx2rem(80);
+        // .vpx2rem(-21);
+        // border-radius: 50%;
+        // background-color: #fff;
+        // background-image: url(../images/icon_success2.png);
+        // background-repeat: no-repeat;
+        // background-size: 1.325rem auto;
+        // background-position: center center;
     }
 }
 .ApplicationTrade{
@@ -378,6 +411,10 @@
         .hpx2rem(80);
         .lhpx2rem(80);
         color:#929292;
+        white-space:nowrap; 
+        text-overflow:ellipsis; 
+        -o-text-overflow:ellipsis; 
+        overflow: hidden;
         span{
             color:#333;
         }
@@ -414,6 +451,7 @@
     p{
         .pdtpx2rem(20);
         .pdbpx2rem(20);
+        .ftpx2rem(28);
         input{
             display: block;
             width: 100%;
@@ -439,19 +477,20 @@
     font-weight: bold;
     background-color: #FA462F;
     color:#fff;
+    text-align: center;
     &::before{
-        display: inline-block;
-        content:'';
-        .wpx2rem(80);
-        .hpx2rem(80);
-        .vpx2rem(-25);
-        .mgrpx2rem(20);
-        border-radius:50%;
-        background-color: #fff;
-        background-repeat: no-repeat;
-        background-position: 0 0;
-        background-size: 100% auto;
-        background-image: url(../images/icon_wating.png);
+        // display: inline-block;
+        // content:'';
+        // .wpx2rem(80);
+        // .hpx2rem(80);
+        // .vpx2rem(-25);
+        // .mgrpx2rem(20);
+        // border-radius:50%;
+        // background-color: #fff;
+        // background-repeat: no-repeat;
+        // background-position: 0 0;
+        // background-size: 100% auto;
+        // background-image: url(../images/icon_wating.png);
     }
     &.finished::before{
         background-image: url(../images/icon_finished.png);

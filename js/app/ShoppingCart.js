@@ -16,10 +16,11 @@ import {
     SelectShopGoodsSingle,
     SelectShopGoodsMultiple
 } from '../actions/ActionFuncs'
-
+import CommonImage from '../components/CommonImage'
+import CommonLogo from '../components/CommonLogo'
 class ShoppingCart extends React.Component {
     componentDidMount() {
-        document.title = '购物车';
+        document.title = '我的购物车';
         this.serverRequest = $.ajax({
             url: config.url + '/goods/cart',
             type: 'GET',
@@ -27,17 +28,10 @@ class ShoppingCart extends React.Component {
             data: {},
             beforeSend:(request)=>{
                 $.loading.show();
-                if(config.head!=''){
-                    request.setRequestHeader("Authorization", "Bearer " + config.head);
-                }
+                config.setRequestHeader(request);
             },
             error:(error)=>{
-                if(error.status === 401 && error.responseJSON.code === 1){
-                    $.error('header请求错误，将重新请求');
-                    $.refreshToken(function(){
-                        window.location.reload();
-                    })
-                }
+                config.ProcessError(error);
             },
             success:(data)=>{
                 if(parseInt(data.code) === 0){
@@ -51,13 +45,37 @@ class ShoppingCart extends React.Component {
     componentWillUnmount() {
         this.serverRequest.abort()
     }
-    _ChangeSingle(e,id){
-        
-        this.props.dispatch(SelectShopGoodsSingle(id))
+    _ChangeSingle(e,id,stock){
+        if(parseInt(stock) === 0){
+            $.tips('库存为0，不可购买')
+        }else{
+            this.props.dispatch(SelectShopGoodsSingle(id))
+        }
     }
     _ChangeAll(e){
-        let checked = $(findDOMNode(e.target)).is(':checked');
-        this.props.dispatch(SelectShopGoodsMultiple(checked))
+        let data = this.props.state.data;
+        let flag = true;
+        if(data.length){
+            $.each(data, function(index, val) {
+                 if(val.goods_addon && parseInt(val.goods_addon.stock) > 0){
+                    flag = true;
+                 }else{
+                    flag = false;
+                    return false;
+                 }
+            });
+        }else{
+            $.tips('购物车暂无商品')
+            return false;
+        }
+        if(flag){
+            let checked = $(findDOMNode(e.target)).is(':checked');
+            this.props.dispatch(SelectShopGoodsMultiple(checked))
+        }else{
+            $.tips('存在下架商品或库存为0商品，不可全选')
+            // $(findDOMNode(e.target)).attr('checked',false)
+        }
+        
     }
     deleteThis(e,id){
         let _this = this;
@@ -70,92 +88,74 @@ class ShoppingCart extends React.Component {
                     dataType: 'json',
                     data: {},
                     beforeSend:function(request){
-                        if(config.head!=''){
-                            request.setRequestHeader("Authorization", "Bearer " + config.head);
-                        }
+                        config.setRequestHeader(request);
                     },
                     error:function(error){
-                        console.error(error)
+                        config.ProcessError(error);
                     },
                     success:(data)=>{
                         if(parseInt(data.code)==0){
-                            $.error('删除成功！')
+                            $.tips('删除成功！')
                             _this.props.dispatch(DeleteConfirm(id))
                         }else{
-                            $.error(data.data.msg)
+                            $.tips(data.data.msg)
                         }
                     }
                 })
             }
         })
     }
-    increment(e){
-        let _id = $(findDOMNode(e.target)).data('id'),
-            _current = this.props.state.amount[_id].count,
-            _stock = $(findDOMNode(e.target)).data('stock'),
+    increment(e,id,stock){
+        let _current = this.props.state.amount[id].count,
             $this = this;
-        if(parseInt(_current)==parseInt(_stock)){
+        if(parseInt(_current) >= parseInt(stock)){
             return false;
         }else{
             $.ajax({
-                url: config.url + '/goods/cart/addto/' + _id,
+                url: config.url + '/goods/cart/addto/' + id,
                 type: 'PUT',
                 dataType: 'json',
                 data: {
                     amount:++_current
                 },
                 beforeSend:function(request){
-                    if(config.head!=''){
-                        request.setRequestHeader("Authorization", "Bearer " + config.head);
-                    }
+                    config.setRequestHeader(request);
                 },
                 error:(error)=>{
-                    $.error('header请求错误，将重新请求');
-                    // $.refreshToken(function(){
-                    //     window.location.reload();
-                    // })
+                    config.ProcessError(error);
                 },
                 success:(data)=>{
-                    // console.log(data)
                     if(parseInt(data.code) == 0){
-                        $this.props.dispatch(Increment(_id))
+                        $this.props.dispatch(Increment(id))
                     }
                 }
             })
-            
-            
         }
         
     }
-    decrement(e){
-        let _id = $(findDOMNode(e.target)).data('id'),
-            _current = this.props.state.amount[_id].count,
+    decrement(e,id){
+        let _current = this.props.state.amount[id].count,
             $this = this;
-        if(parseInt(_current)==1){
+        if(parseInt(_current) <= 1){
             return false;
         }else{
             $.ajax({
-                url: config.url + '/goods/cart/reduce/' + _id,
+                url: config.url + '/goods/cart/reduce/' + id,
                 type: 'PUT',
                 dataType: 'json',
                 data: {
                     amount:--_current
                 },
                 beforeSend:function(request){
-                    if(config.head!=''){
-                        request.setRequestHeader("Authorization", "Bearer " + config.head);
-                    }
+                    config.setRequestHeader(request);
                 },
                 error:(error)=>{
-                    $.error('header请求错误，将重新请求');
-                    // $.refreshToken(function(){
-                    //     window.location.reload();
-                    // })
+                    config.ProcessError(error);
                 },
                 success:(data)=>{
                     // console.log(data)
                     if(parseInt(data.code) == 0){
-                        $this.props.dispatch(Decrement(_id))
+                        $this.props.dispatch(Decrement(id))
                     }
                 }
             })
@@ -168,31 +168,46 @@ class ShoppingCart extends React.Component {
         let html = ''
         if(data.length){
             html = data.map((item,index)=>{
-                let _link = '/ProductDetails/'+item.goods_id
                 return (
                     <div className="main-module" key={index}>
                         <div className="cart-info">
-                            <div className="cart-info-header clearfix">
-                                <label className={this.props.state.amount[item.id].checked?"checked fl":"fl"}><input type="checkbox" name="product" onChange={e=>this._ChangeSingle(e,item.id)} data-id={item.id} checked={this.props.state.amount[item.id].checked?true:false} /></label>
-                                <img src={item.goods.get_user_profile.shop_logo||"/images/shop_logo.gif"} alt="" className="fl" />
-                                <p className="fl">{item.goods.get_user_profile.shop_name}</p>
-                                <a href="javascript:;" className="fr" data-id={item.id} onClick={e=>this.deleteThis(e,item.id)}>删除</a>
-                            </div>
+                            {item.goods?(
+                                <div className="cart-info-header clearfix">
+                                    <label className={this.props.state.amount[item.id].checked?"checked fl":"fl"}><input type="checkbox" name="product" onChange={e=>this._ChangeSingle(e,item.id,item.goods_addon.stock)} data-id={item.id} checked={this.props.state.amount[item.id].checked?true:false} /></label>
+                                    <CommonLogo src={item.goods.get_user_profile.shop_logo} className="fl" />
+                                    <p className="fl">{item.goods.get_user_profile.shop_name}</p>
+                                    <a href="javascript:;" className="fr" data-id={item.id} onClick={e=>this.deleteThis(e,item.id)}>删除</a>
+                                </div>
+                            ):(
+                                <div className="cart-info-header clearfix">
+                                    <label className="fl"><input type="checkbox" name="product" onChange={e=>this._ChangeSingle(e,item.id,0)} data-id={item.id} /></label>
+                                    <CommonLogo src="/images/shop_logo.gif" className="fl" />
+                                    <p className="fl">该商品已被删除</p>
+                                    <a href="javascript:;" className="fr" data-id={item.id} onClick={e=>this.deleteThis(e,item.id)}>删除</a>
+                                </div>
+                            )}
+                            
                             <div className="cart-info-item clearfix">
-                                <Link to={_link} className="fl"><img src={item.goods.goods_images[0]||item.goods.goods_images[1]||item.goods.goods_images[2]||'images/7.jpg'} alt="" /></Link>
+                                <Link to={`/ProductDetails/${item.goods_id}`} className="fl">
+                                    {item.goods?(
+                                        <CommonImage src={item.goods.goods_images} />
+                                    ):(
+                                        <CommonImage src={["/images/shop_logo.gif"]} />
+                                    )}
+                                </Link>
                                 <div>
-                                    <p><Link to={_link}>{item.goods.title}</Link></p>
+                                    <p><Link to={`/ProductDetails/${item.goods_id}`}>{item.goods?item.goods.title:"此商品已被商家删除，请在购物车中清除此商品"}</Link></p>
                                     {item.goods_addon?(
                                         <p>{item.goods_addon.parent_addon ? item.goods_addon.parent_addon.feature_main : ""}  {item.goods_addon.feature_sub}</p>
                                     ):(
                                         <p>暂无</p>
                                     )}
                                     
-                                    <p>&yen;{`${item.goods_addon ? parseFloat(item.goods_addon.goods_price).toFixed(2) : 0.00}`}<span>快递：{`${parseFloat(item.goods.fare).toFixed(2)}`}元</span></p>
+                                    <p>&yen;{`${item.goods_addon ? parseFloat(item.goods_addon.goods_price).toFixed(2) : 0.00}`}<span>快递：{`${parseFloat(item.goods?item.goods.fare:0).toFixed(2)}`}元</span></p>
                                     <div className="cart-setcount">
-                                        <span className="fl" onClick={e=>this.decrement(e)} data-id={item.id}></span>
+                                        <span className={this.props.state.amount[item.id].count==1?"disabled fl":"fl"} onClick={e=>this.decrement(e,item.id)}></span>
                                         <input type="number" name="" value={this.props.state.amount[item.id].count} id="" className="fl" readOnly />
-                                        <span className="fl" onClick={e=>this.increment(e)} data-id={item.id} data-stock={item.goods_addon?item.goods_addon.stock:0}></span>
+                                        <span className={item.goods_addon ? this.props.state.amount[item.id].count>= item.goods_addon.stock ? "disabled fl" : "fl" : "fl"} onClick={e=>this.increment(e,item.id,item.goods_addon?item.goods_addon.stock:0)}></span>
                                         {/*<span className="fr">原小计：699.00元</span>*/}
                                     </div>
                                 </div>
@@ -235,7 +250,7 @@ class ShoppingCart extends React.Component {
                 _Obj.count         = item.amount;
                 _Obj.goods_addon   = item.goods_addon;
                 _Obj.title          = item.goods.title;
-                _Obj.images         = item.goods.goods_images[0]||item.goods.goods_images[1]||item.goods.goods_images[2];
+                _Obj.images         = item.goods.goods_images;
                 _Obj.price         = item.goods_addon.goods_price;
                 _Obj.originalprice = item.goods.max_price;
                 _Obj.fare          = item.goods.fare;
@@ -253,11 +268,11 @@ class ShoppingCart extends React.Component {
         }
         // 过滤空数据
         if(!_mapDate.length){
-            $.error('购物车无商品，不可直接结算');
+            $.tips('请选择商品后再购买');
             return false;
         }else{
             if(!_mapDate[0].list.length){
-                $.error('请选择商品后再购买');
+                $.tips('请选择商品后再购买');
                 return false;
             }
         }

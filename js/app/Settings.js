@@ -8,6 +8,7 @@ import {
     getUserInfo,
     ModifyNickName
 } from '../actions/ActionFuncs'
+import ButtonCenter from '../components/ButtonCenter'
 class Settings extends Component{
     componentDidMount() {
         document.title = '设置'
@@ -18,17 +19,10 @@ class Settings extends Component{
             data: {},
             beforeSend:(request)=>{
                 $.loading.show();
-                if(config.head!=''){
-                    request.setRequestHeader("Authorization", "Bearer " + config.head);
-                }
+                config.setRequestHeader(request);
             },
             error:(error)=>{
-                if(error.status === 401 && error.responseJSON.code === 1){
-                    $.error('header请求错误，将重新请求');
-                    $.refreshToken(function(){
-                        window.location.reload();
-                    })
-                }
+                config.ProcessError(error);
             },
             success:(data)=>{
                 if(parseInt(data.code) === 0){
@@ -61,7 +55,7 @@ class Settings extends Component{
             okBtn:function(pop){
                 let _new_nickname = $(pop).find('input[name=nickname]').val()
                 if(_new_nickname == ''||_new_nickname===undefined){
-                    $.error('请输入昵称',1000,function(){
+                    $.tips('请输入昵称',1000,function(){
                         $(pop).find('[name=nickname]').focus();
                     });
                     return false;
@@ -74,12 +68,10 @@ class Settings extends Component{
                         name:_new_nickname
                     },
                     beforeSend:(request)=>{
-                        if(config.head!=''){
-                            request.setRequestHeader("Authorization", "Bearer " + config.head);
-                        }
+                        config.setRequestHeader(request);
                     },
                     error:(error)=>{
-                        console.error(error)
+                        config.ProcessError(error);
                     },
                     success:(data)=>{
                         if(parseInt(data.code) === 0){
@@ -97,7 +89,7 @@ class Settings extends Component{
         var reader = new FileReader();
         reader.readAsDataURL(e.target.files[0]);
         if(e.target.files[0].size > 2*1024*1024){
-            $.error('上传图片大于2M，请上传小图片')
+            $.tips('上传图片大于2M，请上传小图片')
             return false;
         }
         reader.onload = function(e){
@@ -125,20 +117,18 @@ class Settings extends Component{
                             headimgurl:datas.data.url
                         },
                         error:(error)=>{
-                            console.error(error)
+                            config.ProcessError(error);
                         },
                         beforeSend:(request)=>{
-                            if(config.head!=''){
-                                request.setRequestHeader("Authorization", "Bearer " + config.head);
-                            }
+                            config.setRequestHeader(request);
                         },
                         success:(idata)=>{
                             // console.log(idata)
                             if(parseInt(idata.code) === 0){
-                                $.error('上传成功');
+                                $.tips('上传成功');
                                 $('#logo').prop('src', datas.data.url)
                             }else{
-                                $.error('上传失败，请重试！')
+                                $.tips('上传失败，请重试！')
                             }
                         }
                     })
@@ -183,6 +173,7 @@ class Settings extends Component{
                         <li><Link to="/Address/setting">收货地址</Link></li>
                     </ul>
                 </div>
+                <ButtonCenter />
                 {/*<div className="pop-confirm">
                     <div className="pop-container">
                         <div className="pop-main">

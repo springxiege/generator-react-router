@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import { Link } from 'react-router'
+import CommonImage from './CommonImage'
 export default class BrowseHistory extends Component{
     render(){
         let data = this.props.browsehistory
@@ -10,7 +11,7 @@ export default class BrowseHistory extends Component{
                     <li key={index}>
                         <Link to={`/ProductDetails/${item.id}`}>
                             <div className="his-imgs">
-                                <img src={item.goods_images[0]||item.goods_images[1]||item.goods_images[2]} alt="" />
+                                <CommonImage src={item.goods_images} />
                             </div>
                             <p>{item.title}</p>
                             <p>&yen;{item.min_price}</p>

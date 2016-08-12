@@ -10,9 +10,10 @@ import {
     BuySelectSku,
     BuySelectSubSku
 } from '../actions/ActionFuncs'
+import CommonImage from '../components/CommonImage'
 class BuyList extends Component{
     componentDidMount() {
-        document.title = '确认购买';
+        document.title = '选择规格';
         $.loading.show();
         if(store.enabled){
             let OriginalBuyOrder = store.get('goods');
@@ -69,7 +70,7 @@ class BuyList extends Component{
         let _addonLen = _list[_index].goods_addon[_selected].addon.length;
         let _feature_sub = _list[_index].goods_addon[_selected].addon[0].feature_sub;
         if(_addonLen === 1 && _feature_sub == '' && parseInt(_stock) === 0){
-            $.error('库存为0，不可购买');
+            $.tips('库存为0，不可购买');
             return false;
         }
         this.props.dispatch(BuySelectSku(_data))
@@ -86,7 +87,7 @@ class BuyList extends Component{
         let _mainselect = _list[_index].selected;
         let _stock =  _list[_index].goods_addon[_mainselect].addon[_selected].stock;
         if(parseInt(_stock) === 0){
-            $.error('库存为0，不可购买');
+            $.tips('库存为0，不可购买');
             return false;
         }
         this.props.dispatch(BuySelectSubSku(_data))
@@ -147,7 +148,7 @@ class BuyList extends Component{
             return (
                 <div className="buy-item" key={index}>
                     <Link to={_link}>
-                        <img src={item.images[0]||item.images[1]||item.images[2]} alt="" className="fl" />
+                        <CommonImage src={item.images} className="fl" />
                         <div className="buy-info">
                             <h2>{item.title}</h2>
                             <p className="buy-summary">

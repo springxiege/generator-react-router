@@ -2,6 +2,14 @@ import React,{Component} from 'react'
 import {findDOMNode} from 'react-dom'
 import {Link} from 'react-router'
 export default class Comment extends Component{
+    constructor(){
+        super();
+        this.state = {
+            star:[1,1,1,1,1],
+            slen:4,
+            complex:1
+        }
+    }
     componentDidMount(){
         document.title = '评价'
         $.loading.hide();
@@ -11,47 +19,46 @@ export default class Comment extends Component{
     }
     // 提交评论
     handleSendComment(e){
-        let $form = $(findDOMNode(this.refs.comment))
-        let _content = $form.find('[name=content]').val()
-        let _stars = $form.find(':radio[name=star]:checked').val()||-1
-        let _complex = $form.find(':radio[name=complex]:checked').val()||0
+        let $form = $(findDOMNode(this.refs.comment));
+        let _content = $form.find('[name=content]').val();
+        let _stars = this.state.slen;
+        let _complex = this.state.complex;
+        let _params = {};
         if(_content == ''){
-            $.error('评论内容不能为空')
+            $.tips('评论内容不能为空')
             $form.find('[name=content]').focusin()
             return false;
         }
         if(_stars < 0){
-            $.error('请选择商品满意度')
+            $.tips('请选择商品满意度')
             return false;
         }else{
             _stars = (_stars - 0) + (1 - 0)
         }
+        _params.satisfaction_star = _stars ? _stars : 0;
+        _params.satisfaction_summary = _complex ? _complex : 0;
+        _params.content = _content;
+        
         $.ajax({
             url: config.url + '/orders/comment/' + this.props.params.orderId,
             type: 'POST',
             dataType: 'json',
-            data: {
-                satisfaction_star:_stars,
-                satisfaction_summary:_complex,
-                content:_content
-            },
+            data: _params,
             beforeSend:(request)=>{
-                if(config.head!=''){
-                    request.setRequestHeader("Authorization", "Bearer " + config.head);
-                }
+                config.setRequestHeader(request);
             },
             error:(error)=>{
-                console.error(error)
+                config.ProcessError(error);
             },
             success:(data)=>{
                 // console.log(data)
                 if(parseInt(data.code) === 0){
-                    $.error(data.data.msg,1500,function(){
+                    $.tips(data.data.msg,1500,function(){
                         window.location.hash = '#/RateOrder'
                     })
                 }
                 if(parseInt(data.code) === 1){
-                    $.error(data.data.msg,1200,function(){
+                    $.tips(data.data.msg,1200,function(){
                         window.location.hash = '#/RateOrder'
                     })
                 }
@@ -68,14 +75,28 @@ export default class Comment extends Component{
         $('#count').html((50-_content.length)<=0?0:(50-_content.length)) 
     }
     // 评星
-    handleGetStars(e){
+    handleGetStars(e,id){
         let index = (e.target.value-0) + (1-0)
-        $(e.target).closest('div').find('label').removeClass('cur').slice(0,index).addClass('cur');
+        let array = this.state.star
+        let tem = []
+        for (let i = 0; i < array.length; i++) {
+            let item = array[i]
+            if(i<=id){
+                tem.push(1)
+            }else{
+                tem.push(0)
+            }
+        }
+        this.setState({
+            star:tem,
+            slen:id
+        })
     }
     // 综合满意度
-    handleComplex(e){
-        let _value = e.target.value
-        $(e.target).closest('label').addClass('cur').siblings('label').removeClass('cur');
+    handleComplex(e,id){
+        this.setState({
+            complex:id
+        })
     }
     render(){
         return (
@@ -83,23 +104,27 @@ export default class Comment extends Component{
                 <form className="rate" ref="comment">
                     <textarea name="content" id="" placeholder="您对宝贝的评价很重要，我们决不妥协任何一次瑕疵。(非必填，默认填写为：宝贝不错，无须评价。)" onChange={this.handleCount}></textarea>
                     <p>还可以输入<span id="count">50</span>个字符</p>
+                    {!this.props.params.Review?(
                     <div className="rate-star clearfix">
                         <span className="fl">商品满意度</span>
                         <div>
-                            <label className="star"><input type="radio" name="star" defaultValue="0" onChange={e=>this.handleGetStars(e)} /></label>
-                            <label className="star"><input type="radio" name="star" defaultValue="1" onChange={e=>this.handleGetStars(e)} /></label>
-                            <label className="star"><input type="radio" name="star" defaultValue="2" onChange={e=>this.handleGetStars(e)} /></label>
-                            <label className="star"><input type="radio" name="star" defaultValue="3" onChange={e=>this.handleGetStars(e)} /></label>
-                            <label className="star"><input type="radio" name="star" defaultValue="4" onChange={e=>this.handleGetStars(e)} /></label>
+                            <label className={this.state.star[0]==1?"star cur":"star"}><input type="radio" name="star" value="0" onChange={e=>this.handleGetStars(e,0)} /></label>
+                            <label className={this.state.star[1]==1?"star cur":"star"}><input type="radio" name="star" value="1" onChange={e=>this.handleGetStars(e,1)} /></label>
+                            <label className={this.state.star[2]==1?"star cur":"star"}><input type="radio" name="star" value="2" onChange={e=>this.handleGetStars(e,2)} /></label>
+                            <label className={this.state.star[3]==1?"star cur":"star"}><input type="radio" name="star" value="3" onChange={e=>this.handleGetStars(e,3)} /></label>
+                            <label className={this.state.star[4]==1?"star cur":"star"}><input type="radio" name="star" value="4" onChange={e=>this.handleGetStars(e,4)} /></label>
                         </div>
                     </div>
-                    <div className="rate-ctrl clearfix">
-                        <span className="fl">综合满意度</span>
-                        <div>
-                            <label><input type="radio" name="complex" defaultValue="1" onChange={e=>this.handleComplex(e)} />好评</label>
-                            <label><input type="radio" name="complex" defaultValue="2" onChange={e=>this.handleComplex(e)} />差评</label>
+                    ):''}
+                    {!this.props.params.Review?(
+                        <div className="rate-ctrl clearfix">
+                            <span className="fl">综合满意度</span>
+                            <div>
+                                <label className={this.state.complex==1?"cur":""}><input type="radio" name="complex" defaultValue="1" onChange={e=>this.handleComplex(e,1)} />好评</label>
+                                <label className={this.state.complex==1?"":"cur"}><input type="radio" name="complex" defaultValue="2" onChange={e=>this.handleComplex(e,0)} />差评</label>
+                            </div>
                         </div>
-                    </div>
+                    ):''}
                 </form>
                 <footer className="cart-footer rate-footer clearfix">
                     <aside className="fl"><Link to="/UserCenter">下次评价</Link></aside>

@@ -48,8 +48,13 @@ class ProductComment extends React.Component {
             },
             success:(data)=>{
                 if(parseInt(data.code)==0){
-                    $target.addClass('cur').siblings('li').removeClass('cur');
-                    this.props.dispatch(GetGoodComment(data))
+                    if(data.data.data){
+                        $target.addClass('cur').siblings('li').removeClass('cur');
+                        this.props.dispatch(GetGoodComment(data))
+                    }else{
+                        $.tips('没有更多评论了')
+                    }
+                    
                 }
             }
         })
@@ -70,8 +75,13 @@ class ProductComment extends React.Component {
             },
             success:(data)=>{
                 if(parseInt(data.code)==0){
-                    $target.addClass('cur').siblings('li').removeClass('cur');
-                    this.props.dispatch(GetBadComment(data))
+                    if(data.data.data){
+                        $target.addClass('cur').siblings('li').removeClass('cur');
+                        this.props.dispatch(GetBadComment(data))
+                    }else{
+                        $.tips('没有更多评论了')
+                    }
+                    
                 }
             }
         })
@@ -91,7 +101,7 @@ class ProductComment extends React.Component {
                 data = state.list
                 break;
         }
-        let _li = !data.data.data.length ? "" : data.data.data.map((item,index)=>{
+        let _li = data.data.data&&data.data.data.length ? data.data.data.map((item,index)=>{
             let _clsName = 'coment-stars stars'+item.satisfaction_star
             let buy = item.buy
             return (
@@ -111,7 +121,7 @@ class ProductComment extends React.Component {
                     </div>
                 </div>
             )
-        })
+        }) : "";
         return (
             <div className="main-product-comment swiper-slide swiper-no-swiping">
                 <div className="coment-tab">

@@ -9,6 +9,23 @@ import {
 } from '../actions/ActionFuncs'
 class ProductPriceAndFuncs extends React.Component {
     _doCollect(e) {
+        if(!window.config.isWX){
+            if(store.enabled){
+                var tradeStore = store.get('trade');
+                if(!tradeStore){
+                    window.location.hash = '#/Register/ProductDetails/' + this.props.detailId
+                    return false;
+                }else{
+                    if(!tradeStore.token){
+                        window.location.hash = '#/Register/ProductDetails/' + this.props.detailId
+                        return false;
+                    }
+                }
+            }else{
+                alert('This browser does not supports localStorage')
+                return false;
+            }
+        }
         let _id     = this.props.state.data.id||'1'
         let _status = e.target.getAttribute('data-status');
         let _param  = {}
@@ -21,26 +38,24 @@ class ProductPriceAndFuncs extends React.Component {
             dataType: 'json',
             data: _param,
             beforeSend:(request)=>{
-                if(config.head!=''){
-                    request.setRequestHeader("Authorization", "Bearer " + config.head);
-                }
+                config.setRequestHeader(request);
             },
             error:function(error){
-                console.error(error)
                 if(_param._method){
-                    $.error('取消收藏失败，请重试')
+                    $.tips('取消收藏失败，请重试')
                 }else{
-                    $.error('收藏失败，请重试')
+                    $.tips('收藏失败，请重试')
                 }
+                config.ProcessError(error);
             },
             success:(data)=>{
                 if(parseInt(data.code)==0){
                     if(_param._method){
                         this.props.dispatch(CancelCollect());
-                        $.error('取消收藏成功')
+                        $.tips('取消收藏成功')
                     }else{
                         this.props.dispatch(AddCollect());
-                        $.error('收藏成功')
+                        $.tips('收藏成功')
                     }
                 }
             }
@@ -61,6 +76,23 @@ class ProductPriceAndFuncs extends React.Component {
         }
         goods_id = state.data.goods_addon[selected].goods_id;
         addon_id = state.data.goods_addon[selected].addon[subselected||0].id;
+        if(!window.config.isWX){
+            if(store.enabled){
+                var tradeStore = store.get('trade');
+                if(!tradeStore){
+                    window.location.hash = '#/Register/ProductDetails/' + this.props.detailId
+                    return false;
+                }else{
+                    if(!tradeStore.token){
+                        window.location.hash = '#/Register/ProductDetails/' + this.props.detailId
+                        return false;
+                    }
+                }
+            }else{
+                alert('This browser does not supports localStorage')
+                return false;
+            }
+        }
         $.ajax({
             url: config.url + '/goods/cart',
             type: 'POST',
@@ -71,16 +103,16 @@ class ProductPriceAndFuncs extends React.Component {
                 amount:amount
             },
             beforeSend:(request)=>{
-                if(config.head!=''){
-                    request.setRequestHeader("Authorization", "Bearer " + config.head);
-                }
+                config.setRequestHeader(request);
             },
             error:(error)=>{
-                $.error('加入购物车失败')
+                $.tips('加入购物车失败',1200,function(){
+                    config.ProcessError(error);
+                })
             },
             success:(data)=>{
                 if(parseInt(data.code) == 0){
-                    $.error('加入购物车成功')
+                    $.tips('加入购物车成功')
                 }
             }
         })

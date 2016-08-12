@@ -32,30 +32,74 @@ class ProductDetails extends React.Component {
                 $.loading.show();
             },
             error:(error)=>{
-                alert('网络错误，请刷新页面重试！');
+                alert('网络错误，请重新打开页面！');
                 // window.location.reload();
             },
             success: (data)=>{
                 if(parseInt(data.code) == 0){
-                    document.title = '商品详情-' + data.data.title
+                    document.title = data.data.title
                     this.props.dispatch(GoodsDetail(data.data));
                     $.loading.hide();
                     // 详情页统计数据
                     let tradeStore = store.get('trade');
+                    config.buyid = data.data.id;
+                    config.goods_id = _id;
+                    config.imgUrl = data.data.goods_images[0]||data.data.goods_images[1]||data.data.goods_images[2];
                     if(tradeStore && tradeStore.userinfo){
+                        config.buyid = store.get('trade').userinfo.id
                         LYA({
                             action: ['user_visit', 'common'],
                             debug: false,
                             param: {
-                                buy_id: store.get('trade').userinfo.id,
-                                goods_id: data.id,
+                                buy_id: config.buyid,
+                                goods_id: _id,
                                 come_from: 'xds'
                             }
                         });
                     }
+                    window.share_config = {
+                        // title : '我要联赢标题',//标题
+                        desc : '我要联赢描述',//描述 
+                        link : config.link,//链接地址   
+                        imgUrl : config.imgUrl,//图片地址
+                        shareTrigger: function (res) {
+                            console.log('trigger');
+                        },
+                        shareSuccess: function (res, channel) {
+                             console.log(res);
+                            switch (channel) {
+                                case 'toFriend':
+                                    config.state('share_weixin_to_friend');
+                                    break; 
+                                case 'toTimeline':
+                                    config.state('share_weixin_to_timeline');
+                                    break; 
+                                case 'toQQ':
+                                    config.state('share_weixin_to_qq');
+                                    break; 
+                                case 'toWeibo':
+                                    config.state('share_weixin_to_weibo');
+                                    break; 
+                                default:
+                                    break;
+                            }
+                            // share_stat(_code);
+                        },
+
+                        shareCancel: function (res) {
+                            console.log('cancel');
+                            // share_stat('3');
+                        },
+                        shareFail: function (res) {
+                            console.log('fail');
+                            // share_stat('4');
+                        }
+                    };
                     
                 }else{
-                    alert('请求成功，返回错误,错误code:'+data.code+'，请刷新页面重试！');
+                    alert('商品应该不存在!');
+                    window.close();
+                    // alert('请求成功，返回错误,错误code:'+data.code+'，请刷新页面重试！');
                     // window.location.reload();
                 }
 

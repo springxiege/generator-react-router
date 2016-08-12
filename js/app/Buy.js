@@ -8,9 +8,11 @@ import {
     GenerateTempOrders
 } from '../actions/ActionFuncs'
 import ButtonCenter from '../components/ButtonCenter'
+import CommonImage from '../components/CommonImage'
+import CommonLogo from '../components/CommonLogo'
 class Buy extends Component{
     componentDidMount() {
-        document.title = '合并付款'
+        document.title = '选择地址'
         let _Address = this.props.state.Address.data
         if(_Address === null || _Address.length === 0){
             this.serverRequest = $.ajax({
@@ -20,17 +22,10 @@ class Buy extends Component{
                 data: {},
                 beforeSend:(request)=>{
                     $.loading.show();
-                    if(config.head!=''){
-                        request.setRequestHeader("Authorization", "Bearer " + config.head);
-                    }
+                    config.setRequestHeader(request);
                 },
                 error:(error)=>{
-                    if(error.status === 401 && error.responseJSON.code === 1){
-                        $.error('header请求错误，将重新请求');
-                        $.refreshToken(function(){
-                            window.location.reload();
-                        })
-                    }
+                    config.ProcessError(error);
                 },
                 success:(data)=>{
                     if(parseInt(data.code) == 0){
@@ -102,13 +97,11 @@ class Buy extends Component{
                 data:_params
             },
             beforeSend:(request)=>{
-                if(config.head!=''){
-                    request.setRequestHeader("Authorization", "Bearer " + config.head);
-                };
+                config.setRequestHeader(request);
                 $.loading.show();
             },
             error:(error)=>{
-                console.error(error)
+                config.ProcessError(error);
             },
             success:(data)=>{
                 $.loading.hide();
@@ -116,7 +109,7 @@ class Buy extends Component{
                     store.remove('BuyTempOrder');
                     window.location.hash = '#/SelectPay/'+data.data.data.orderNumber
                 }else{
-                    $.error('错误代码:'+data.code+','+data.data.msg.msg);
+                    $.tips('错误代码:'+data.code+','+data.data.msg.msg);
                 }
             }
         });
@@ -138,13 +131,16 @@ class Buy extends Component{
                     _HTML = _mapDate.map((item,index)=>{
                         return (
                             <div className="part-item" key={index}>
-                                <h3><img src={item.user.logo||'/images/shop_logo.gif'} alt="" />{item.user.realname||''}</h3>
+                                <h3>
+                                    <CommonLogo src={item.user.logo} />
+                                    {item.user.realname||''}
+                                </h3>
                                 <div className="part-list">
                                     {item.list.map((subitem,subindex)=>{
                                         _totalprice += ((subitem.price - 0)*(subitem.count - 0) + (subitem.fare-0))
                                         return(
                                             <div className="part-info clearfix" key={subindex}>
-                                                <img src={subitem.images[0]||subitem.images[1]||subitem.images[2]} alt="" className="fl" />
+                                                <CommonImage src={subitem.images} className="fl" />
                                                 <div className="part-detail">
                                                     <h4>{subitem.title}</h4>
                                                     <p>{subitem.sku}</p>
@@ -171,7 +167,7 @@ class Buy extends Component{
                                         _totalprice += (parseFloat(subitem.price - 0)*(subitem.count - 0) + parseFloat(subitem.fare-0))
                                         return(
                                             <div className="part-info clearfix" key={subindex}>
-                                                <img src={subitem.images} alt="" className="fl" />
+                                                <CommonImage src={subitem.images} className="fl" />
                                                 <div className="part-detail">
                                                     <h4>{subitem.title}</h4>
                                                     <p>{subitem.goods_addon.parent_addon.feature_main} {subitem.goods_addon.feature_sub}</p>
