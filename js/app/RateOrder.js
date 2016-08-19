@@ -9,6 +9,7 @@ import {
 import CommonImage from '../components/CommonImage'
 import CommonLogo from '../components/CommonLogo'
 import LoadMorePageData from '../event/event.LoadMorePageData'
+import scrollLoading from '../event/event.scrollLoading'
 class RateOrder extends Component{
     constructor() {
         super();
@@ -41,9 +42,10 @@ class RateOrder extends Component{
             },
         };
         this.LoadMorePageData = LoadMorePageData.bind(this);
+        this.scrollLoading = scrollLoading.bind(this);
     }
     componentDidMount() {
-        document.title = '评价'
+        document.title = '已收货'
         let _this = this
         this.serverRequest = $.ajax({
             url: _this.state.url,
@@ -66,11 +68,13 @@ class RateOrder extends Component{
                     if(data.data.data){
                         this.props.dispatch(getRateOrder(data.data.data));
                         $.loading.hide();
+                        _this.scrollLoading();
                         // 加载更多列表
                         if(parseInt(data.data.last_page) <= 1){
                             $('#loading-more').html('已全部加载')
                         }else{
                             window.addEventListener('scroll',_this.LoadMorePageData);
+                            window.addEventListener('scroll',_this.scrollLoading);
                         };
                         if(parseInt(data.data.last_page) === 0){
                             $('#loading-more').hide();
@@ -84,11 +88,11 @@ class RateOrder extends Component{
     componentWillUnmount() {
         this.serverRequest.abort()
         window.removeEventListener('scroll',this.LoadMorePageData);
+        window.removeEventListener('scroll',this.scrollLoading);
     }
-    ShowComment(e){
+    ShowComment(e,id){
         let $target = $(e.target)
         let $origin = $target.closest('.part-funcs').siblings('.comment-detail')
-        let id = $target.data('id')
         if($origin.hasClass('show')){
             $origin.removeClass('show').slideUp()
         }else{
@@ -169,17 +173,18 @@ class RateOrder extends Component{
                                 小计：<span>{_totalPrice}</span>元
                             </div>
                             <div className="part-funcs">
-                                {item.comment_stats == 0 ? (
+                                {item.reply_id <= 0 ? (
                                     <span className="fr"><Link to={`/Comment/${item.id}`}>评价</Link></span>
                                 ) : (
-                                    item.comment_stats == 1 ? (
-                                        <span className="fr">待商家回复</span>
-                                    ) : (
+                                    item.reply_id > 1 ? (
                                         <span className="fr"><Link to={`/Comment/${item.id}/add`}>追评</Link></span>
+                                        
+                                    ) : (
+                                        <span className="fr">待商家回复</span>
                                     )
                                 )}
 
-                                <span className="fr" onClick={e=>this.ShowComment(e)} data-id={item.id}>查看评价</span>
+                                <span className="fr" onClick={e=>this.ShowComment(e,item.id)}>查看评价</span>
                             </div>
                             <div className="return-detail comment-detail clearfix">
                                 {/*

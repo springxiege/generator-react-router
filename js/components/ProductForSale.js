@@ -16,19 +16,19 @@ class ProductForSale extends React.Component {
                         </div>*/}
                         <div className="main-table-tr clearfix">
                             <div className="main-table-td fl">生产地址</div>
-                            <div className="main-table-td fl">{this.props.madeby}</div>
+                            <div className="main-table-td"><p>{this.props.madeby}</p></div>
                         </div>
                         <div className="main-table-tr clearfix">
                             <div className="main-table-td fl">保质时长</div>
-                            <div className="main-table-td fl">{this.props.expire}</div>
+                            <div className="main-table-td"><p>{this.props.expire}</p></div>
                         </div>
                         <div className="main-table-tr clearfix">
                             <div className="main-table-td fl">售后方式</div>
-                            <div className="main-table-td fl">{this.props.maintain==0?"全国联保":"商家自保"}</div>
+                            <div className="main-table-td"><p>{this.props.maintain==0?"全国联保":"商家自保"}</p></div>
                         </div>
                         <div className="main-table-tr clearfix">
                             <div className="main-table-td fl">发货地</div>
-                            <div className="main-table-td fl">{this.props.deliver_address}</div>
+                            <div className="main-table-td"><p>{this.props.deliver_address}</p></div>
                         </div>
                     </div>
                 </div>

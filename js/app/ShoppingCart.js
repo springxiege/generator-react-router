@@ -10,15 +10,18 @@ import {
     ShopCart,
     Increment,
     Decrement,
-    DeleteCartGoods,
-    DeleteCancel,
     DeleteConfirm,
     SelectShopGoodsSingle,
     SelectShopGoodsMultiple
 } from '../actions/ActionFuncs'
 import CommonImage from '../components/CommonImage'
 import CommonLogo from '../components/CommonLogo'
+// import scrollLoading from '../event/event.scrollLoading'
 class ShoppingCart extends React.Component {
+    constructor(){
+        super();
+        // this.scrollLoading = scrollLoading.bind(this);
+    }
     componentDidMount() {
         document.title = '我的购物车';
         this.serverRequest = $.ajax({
@@ -36,16 +39,22 @@ class ShoppingCart extends React.Component {
             success:(data)=>{
                 if(parseInt(data.code) === 0){
                     this.props.dispatch(ShopCart(data));
-                    $.loading.hide()
+                    $.loading.hide();
+                    // this.scrollLoading();
+                    // window.addEventListener('scroll',this.scrollLoading);
                 }
                 
             },
         })
     }
-    componentWillUnmount() {
-        this.serverRequest.abort()
+    componentDidUpdate(prevProps, prevState) {
+        
     }
-    _ChangeSingle(e,id,stock){
+    componentWillUnmount() {
+        this.serverRequest.abort();
+        // window.removeEventListener('scroll',this.scrollLoading);
+    }
+    _ChangeSingle(id,stock){
         if(parseInt(stock) === 0){
             $.tips('库存为0，不可购买')
         }else{
@@ -96,7 +105,7 @@ class ShoppingCart extends React.Component {
                     success:(data)=>{
                         if(parseInt(data.code)==0){
                             $.tips('删除成功！')
-                            _this.props.dispatch(DeleteConfirm(id))
+                            _this.props.dispatch(DeleteConfirm(id));
                         }else{
                             $.tips(data.data.msg)
                         }
@@ -105,7 +114,7 @@ class ShoppingCart extends React.Component {
             }
         })
     }
-    increment(e,id,stock){
+    increment(id,stock){
         let _current = this.props.state.amount[id].count,
             $this = this;
         if(parseInt(_current) >= parseInt(stock)){
@@ -133,7 +142,7 @@ class ShoppingCart extends React.Component {
         }
         
     }
-    decrement(e,id){
+    decrement(id){
         let _current = this.props.state.amount[id].count,
             $this = this;
         if(parseInt(_current) <= 1){
@@ -173,9 +182,9 @@ class ShoppingCart extends React.Component {
                         <div className="cart-info">
                             {item.goods?(
                                 <div className="cart-info-header clearfix">
-                                    <label className={this.props.state.amount[item.id].checked?"checked fl":"fl"}><input type="checkbox" name="product" onChange={e=>this._ChangeSingle(e,item.id,item.goods_addon.stock)} data-id={item.id} checked={this.props.state.amount[item.id].checked?true:false} /></label>
-                                    <CommonLogo src={item.goods.get_user_profile.shop_logo} className="fl" />
-                                    <p className="fl">{item.goods.get_user_profile.shop_name}</p>
+                                    <label className={this.props.state.amount[item.id].checked?"checked fl":"fl"}><input type="checkbox" name="product" onChange={()=>this._ChangeSingle(item.id,item.goods_addon.stock)} data-id={item.id} checked={this.props.state.amount[item.id].checked?true:false} /></label>
+                                    <CommonLogo src={item.goods.get_user_profile?item.goods.get_user_profile.shop_logo:"/images/shop_logo.gif"} className="fl" />
+                                    <p className="fl">{item.goods.get_user_profile?item.goods.get_user_profile.shop_name:"我要联赢商家"}</p>
                                     <a href="javascript:;" className="fr" data-id={item.id} onClick={e=>this.deleteThis(e,item.id)}>删除</a>
                                 </div>
                             ):(
@@ -188,15 +197,15 @@ class ShoppingCart extends React.Component {
                             )}
                             
                             <div className="cart-info-item clearfix">
-                                <Link to={`/ProductDetails/${item.goods_id}`} className="fl">
+                                <a href={item.goods?item.goods.goodsLink:""} className="fl">
                                     {item.goods?(
                                         <CommonImage src={item.goods.goods_images} />
                                     ):(
-                                        <CommonImage src={["/images/shop_logo.gif"]} />
+                                        <CommonImage src={["/images/logobg_mini.gif"]} />
                                     )}
-                                </Link>
+                                </a>
                                 <div>
-                                    <p><Link to={`/ProductDetails/${item.goods_id}`}>{item.goods?item.goods.title:"此商品已被商家删除，请在购物车中清除此商品"}</Link></p>
+                                    <p><a href={item.goods?item.goods.goodsLink:""}>{item.goods?item.goods.title:"此商品已被商家删除，请在购物车中清除此商品"}</a></p>
                                     {item.goods_addon?(
                                         <p>{item.goods_addon.parent_addon ? item.goods_addon.parent_addon.feature_main : ""}  {item.goods_addon.feature_sub}</p>
                                     ):(
@@ -205,9 +214,9 @@ class ShoppingCart extends React.Component {
                                     
                                     <p>&yen;{`${item.goods_addon ? parseFloat(item.goods_addon.goods_price).toFixed(2) : 0.00}`}<span>快递：{`${parseFloat(item.goods?item.goods.fare:0).toFixed(2)}`}元</span></p>
                                     <div className="cart-setcount">
-                                        <span className={this.props.state.amount[item.id].count==1?"disabled fl":"fl"} onClick={e=>this.decrement(e,item.id)}></span>
+                                        <span className={this.props.state.amount[item.id].count==1?"disabled fl":"fl"} onClick={()=>this.decrement(item.id)}></span>
                                         <input type="number" name="" value={this.props.state.amount[item.id].count} id="" className="fl" readOnly />
-                                        <span className={item.goods_addon ? this.props.state.amount[item.id].count>= item.goods_addon.stock ? "disabled fl" : "fl" : "fl"} onClick={e=>this.increment(e,item.id,item.goods_addon?item.goods_addon.stock:0)}></span>
+                                        <span className={item.goods_addon ? this.props.state.amount[item.id].count>= item.goods_addon.stock ? "disabled fl" : "fl" : "fl"} onClick={()=>this.increment(item.id,item.goods_addon?item.goods_addon.stock:0)}></span>
                                         {/*<span className="fr">原小计：699.00元</span>*/}
                                     </div>
                                 </div>
@@ -242,12 +251,12 @@ class ShoppingCart extends React.Component {
                 _trade[item.goods.get_user_profile.user_id].list     = [];
                 _trade[item.goods.get_user_profile.user_id].user     = {};
                 _trade[item.goods.get_user_profile.user_id].user.user_id  = item.goods.get_user_profile.user_id;
-                _trade[item.goods.get_user_profile.user_id].user.logo     = item.goods.get_user_profile.logo||'/images/shop_logo.gif';
-                _trade[item.goods.get_user_profile.user_id].user.userName = item.goods.get_user_profile.shop_name;
+                _trade[item.goods.get_user_profile.user_id].user.shop_logo     = item.goods.get_user_profile.shop_logo||'/images/shop_logo.gif';
+                _trade[item.goods.get_user_profile.user_id].user.shop_name = item.goods.get_user_profile.shop_name;
             }
             if(_state.amount[item.id].checked){
                 let _Obj           = {};
-                _Obj.count         = item.amount;
+                _Obj.count         = _state.amount[item.id].count;
                 _Obj.goods_addon   = item.goods_addon;
                 _Obj.title          = item.goods.title;
                 _Obj.images         = item.goods.goods_images;
@@ -286,7 +295,7 @@ class ShoppingCart extends React.Component {
     }
     render(){
         let _html = this._getList();
-        // console.log(this.props.state)
+        console.log(this.props.state)
         return (
             <div className="ShopCartList">
                 <div className="main">
@@ -299,10 +308,9 @@ class ShoppingCart extends React.Component {
                     <aside className="fl">
                         <label className={this.props.state.checkedAll?"checked fl":"fl"}><input type="checkbox" name="" id="allgoods" checked={this.props.state.checkedAll?true :false} onChange={e=>this._ChangeAll(e)} /></label>
                         <label className="fl" htmlFor="allgoods">全选</label>
-                        <p className="fr">合计：<span>{this.props.state.totalAmount}</span></p>
+                        <p className="fr">合计：<span>&yen;{this.props.state.totalAmount}</span></p>
                     </aside>
                     <a href="javascript:;" onClick={e=>this.handleBilling(e)}>去结算</a>
-                    {/*<Link to="/Buy/shopcart">去结算</Link>*/}
                 </footer>
             </div>
         )

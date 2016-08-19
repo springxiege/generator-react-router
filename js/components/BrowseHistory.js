@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import { Link } from 'react-router'
-import CommonImage from './CommonImage'
+import CommonLogo from './CommonLogo'
 export default class BrowseHistory extends Component{
     render(){
         let data = this.props.browsehistory
@@ -9,13 +9,14 @@ export default class BrowseHistory extends Component{
             _HTML = data.map((item,index)=>{
                 return (
                     <li key={index}>
-                        <Link to={`/ProductDetails/${item.id}`}>
+                        <a href={item.link}>
                             <div className="his-imgs">
-                                <CommonImage src={item.goods_images} />
+                                <CommonLogo src={item.logo} />
                             </div>
-                            <p>{item.title}</p>
-                            <p>&yen;{item.min_price}</p>
-                        </Link>
+                            {/*<p>{item.title}</p>*/}
+                            
+                            <p>&yen;{item.price}</p>
+                        </a>
                     </li>
                 )
             })   

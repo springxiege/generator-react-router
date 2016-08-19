@@ -8,6 +8,7 @@ import {
 import CommonImage from '../components/CommonImage'
 import CommonLogo from '../components/CommonLogo'
 import LoadMorePageData from '../event/event.LoadMorePageData'
+import scrollLoading from '../event/event.scrollLoading'
 class ReceiptOrder extends Component{
     constructor() {
         super();
@@ -40,6 +41,7 @@ class ReceiptOrder extends Component{
             },
         };
         this.LoadMorePageData = LoadMorePageData.bind(this);
+        this.scrollLoading = scrollLoading.bind(this);
     }
     componentDidMount() {
         document.title = '已发货';
@@ -65,11 +67,13 @@ class ReceiptOrder extends Component{
                     if(data.data.data){
                         this.props.dispatch(getReceiptOrder(data.data.data));
                         $.loading.hide();
+                        _this.scrollLoading();
                         // 加载更多列表
                         if(parseInt(data.data.last_page) <= 1){
                             $('#loading-more').html('已全部加载')
                         }else{
                             window.addEventListener('scroll',_this.LoadMorePageData);
+                            window.addEventListener('scroll',_this.scrollLoading);
                         };
                         if(parseInt(data.data.last_page) === 0){
                             $('#loading-more').hide();
@@ -85,6 +89,7 @@ class ReceiptOrder extends Component{
     componentWillUnmount() {
         this.serverRequest.abort();
         window.removeEventListener('scroll',this.LoadMorePageData);
+        window.removeEventListener('scroll',this.scrollLoading);
     }
     ConfirmOrder(e){
         let $order = $(e.target).closest('.main-module')
@@ -158,8 +163,8 @@ class ReceiptOrder extends Component{
                             <div className="part-funcs">
                                 {/*<span className="fr"><Link to="">查看物流</Link></span>*/}
                                 <span className="fr" onClick={e=>this.ConfirmOrder(e)}>确认收货</span>
-                                <span className="change fr"><Link to={`/Reason/${item.id}`}>换货</Link></span>
-                                <span className="return fr"><Link to={`/Back/${item.id}`}>退货</Link></span>
+                                <span className="change fr"><Link to={`/ReturnsReason/${item.id}/ReturnOrder`}>换货</Link></span>
+                                <span className="return fr"><Link to={`/ReturnsReason/${item.id}/ReceiptOrder`}>退货</Link></span>
                             </div>
                         </div>
                     </div>

@@ -11,7 +11,6 @@ import CommonLogo from './CommonLogo'
 class CollectList extends Component {
     componentDidMount(){
         
-        
     }
     componentWillUnmount() {
         
@@ -76,17 +75,17 @@ class CollectList extends Component {
                             <span className="fr" onClick={e=>this.cancelCollect(e,item.id)}>取消收藏</span>
                         </div>
                         <div className="main-mycollect-item">
-                            <Link to={`/ProductDetails/${item.goods.id}`} className="clearfix">
+                            <a href={item.goods.goodsLink} className="clearfix">
                                 <CommonImage src={item.goods.goods_images} className="fl" />
                                 <div className="main-mycollect-info">
                                     <h5>{item.goods.title}</h5>
                                     <p>&yen;{item.price} <span>&yen;{item.price}</span></p>
                                 </div>
-                            </Link>
+                            </a>
                         </div>
                         <div className="main-mycollect-footer clearfix">
                             <span className="fl">收藏时间：{item.created_at}</span>
-                            <Link to={`/ProductDetails/${item.goods.id}`} className="fr">去购买</Link>
+                            <a href={item.goods.goodsLink} className="fr">去购买</a>
                         </div>
                     </div>
                 )

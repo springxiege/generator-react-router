@@ -52,7 +52,7 @@ class ProductComment extends React.Component {
                         $target.addClass('cur').siblings('li').removeClass('cur');
                         this.props.dispatch(GetGoodComment(data))
                     }else{
-                        $.tips('没有更多评论了')
+                        $.error('没有更多评论了')
                     }
                     
                 }
@@ -79,7 +79,7 @@ class ProductComment extends React.Component {
                         $target.addClass('cur').siblings('li').removeClass('cur');
                         this.props.dispatch(GetBadComment(data))
                     }else{
-                        $.tips('没有更多评论了')
+                        $.error('没有更多评论了')
                     }
                     
                 }

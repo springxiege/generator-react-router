@@ -9,6 +9,8 @@ import {connect} from 'react-redux'
 // import Recommend from '../components/Recommend'
 import CopyRight from '../components/CopyRight'
 import LoadMorePageData from '../event/event.LoadMorePageData'
+import scrollLoading from '../event/event.scrollLoading'
+import CommonImage from '../components/CommonImage'
 import { 
     getGoodsList,
     getMoreGoodsList
@@ -45,11 +47,16 @@ class AllGoods extends Component {
             },
         };
         this.LoadMorePageData = LoadMorePageData.bind(this);
+        this.scrollLoading = scrollLoading.bind(this);
     }
     componentDidMount() {
         document.title = '全部宝贝'
         let _this = this;
         let _id = this.props.params.userId||'1';
+        this.setState({
+            url:config.url + '/goods/list/' + _id
+        })
+        console.log(_this.state.url)
         this.serverRequest = $.ajax({
             url: _this.state.url + _id,
             type: 'GET',
@@ -70,10 +77,13 @@ class AllGoods extends Component {
                     this.props.dispatch(getGoodsList(data.data))
                     $.loading.hide()
                     // 加载更多列表
-                    window.addEventListener('scroll',_this.LoadMorePageData);
-
+                    _this.scrollLoading();
+                    if(data.data.last_page > 1){
+                        window.addEventListener('scroll',_this.LoadMorePageData);
+                    }
+                    window.addEventListener('scroll',_this.scrollLoading);
                 }else{
-                    alert('网络错误');
+                    // alert('网络错误');
                     // window.location.reload();
                 }
             }
@@ -83,6 +93,7 @@ class AllGoods extends Component {
     componentWillUnmount() {
         this.serverRequest.abort();
         window.removeEventListener('scroll',this.LoadMorePageData);
+        window.removeEventListener('scroll',this.scrollLoading);
     }
     render(){
         let _data = this.props.state
@@ -90,14 +101,16 @@ class AllGoods extends Component {
         let user = _data.userProfile
         if(_data.data.length){
             _HTML = _data.data.map((item,index)=>{
-                let _link = '/ProductDetails/'+item.id
+                // let _link = '/'+item.id+'/ProductDetails/'+item.id
                 return (
                     <li key={index}>
-                        <Link className="gllgoods-item" to={_link}>
-                            <div><img src={item.goods_images[0]||item.goods_images[1]||item.goods_images[2]} alt="" /></div>
+                        <a className="gllgoods-item" href={item.goodsLink}>
+                            <div>
+                                <CommonImage src='/images/logobg_mini.gif' url={item.goods_images} className="loadimg" />
+                            </div>
                             <p>{item.title}</p>
                             <p>&yen;{item.min_price}~{item.max_price}</p>
-                        </Link>
+                        </a>
                     </li>
                 )
             })

@@ -43,7 +43,7 @@ export default class PaySuccess extends Component{
                     <p>搜索关注 “我要联赢” 微信公众号随时跟踪订单进度</p>
                     <p><span ref="countdown">10</span>秒钟后跳转至<a href="#/UserCenter">个人中心</a></p>
                     <p>
-                        <img src="images/code.jpg" alt="" />
+                        <img src="/images/code.jpg" alt="" />
                     </p>
                 </div>
                 <p className="main-pay-tel">联系客服：<a href="tel://4006728266">4006728266</a></p>

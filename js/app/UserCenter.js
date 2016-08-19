@@ -46,12 +46,12 @@ class UserCenter extends React.Component {
                         <div>
                             {_data.userDetail != undefined ? (
                                 _data.userDetail.headimgurl == '' ? (
-                                    <img src="images/3.jpg" alt="" />
+                                    <img src="/images/msg.png" alt="" />
                                 ) : (
                                     <img src={_data.userDetail.headimgurl} alt="" />
                                 )
                             ) : (
-                                <img src={"images/3.jpg"} alt="" />
+                                <img src={"/images/msg.png"} alt="" />
                             )}
                         </div>
                         <Link to="/Settings">设置</Link>
@@ -120,7 +120,7 @@ class UserCenter extends React.Component {
                         </li>
                         <li>
                             <Link to="/RateOrder">
-                                <p>评价</p>
+                                <p>已收货</p>
                             </Link>
                         </li>
                         <li>
@@ -163,7 +163,7 @@ class UserCenter extends React.Component {
                 */}
                 <BrowseHistory browsehistory={_data.historyGoods} />
                 <div className="no-longer">
-                    <h3><p>没有更多了</p></h3>
+                    <h3><p>我们一直都有底线</p></h3>
                 </div>
                 <CopyRight />
             </div>

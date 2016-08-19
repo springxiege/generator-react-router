@@ -118,12 +118,12 @@ export default class Register extends Component{
             <div className="main">
                 <form className="quick-form" ref="quicForm">
                     <label className="clearfix">
-                        <input type="text" defaultValue="" name="mobile" placeholder="请输入手机号" />
+                        <input type="number" defaultValue="" name="mobile" placeholder="请输入手机号" />
                         {/* 正在获取中则添加disabled类 */}
                         <span onClick={e=>this.handleGetVerify(e)}>获取验证码</span>
                     </label>
                     <label>
-                        <input type="text" name="verify" id="" placeholder="请输入短信验证码" />
+                        <input type="number" name="verify" id="" placeholder="请输入短信验证码" />
                     </label>
                     <p className="form-notes">点击登录，即表示您已同意 <Link to={`/Protocal`}>《我要联赢服务协议》</Link></p>
                     <span className="btn-add-address" onClick={e=>this.Signin(e)}>登录</span>

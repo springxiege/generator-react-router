@@ -19,11 +19,12 @@ import PaySuccess from '../app/PaySuccess'                  //支付后跳转成
 import Order from '../app/Order'                            //订单列表
 import PendingPayOrder from '../app/PendingPayOrder'        //待付款订单
 import UnfilledOrder from '../app/UnfilledOrder'            //未发货订单
-import ReceiptOrder from '../app/ReceiptOrder'              // 已发货订单
+import ReceiptOrder from '../app/ReceiptOrder'              //已发货订单
 import ReturnOrder from '../app/ReturnOrder'                //退换货
 import RateOrder from '../app/RateOrder'                    //评价
-import Reason from '../app/Reason'                          //换货原因
-import Back from '../app/Back'                              //退货原因
+import ReturnsReason from '../app/ReturnsReason'            //退换货原因
+// import Reason from '../app/Reason'                          //换货原因
+// import Back from '../app/Back'                              //退货原因
 import Tracking from '../app/Tracking'                      //售后跟踪
 import OrderDetail from '../app/OrderDetail'                //订单详情
 import Comment from '../app/Comment'                        //评论
@@ -35,7 +36,7 @@ export default {
         path: "/",
         component: ProductDetails,
     }, {
-        path: "/ProductDetails/:DetailId",
+        path: "/",
         component: ProductDetails
     }, {
         path: "/UserCenter",
@@ -85,13 +86,19 @@ export default {
     }, {
         path: "/PaySuccess/:payStatus", //payStatus表示支付成功的状态，0为失败，1为成功
         component: PaySuccess
-    }, {
-        path: "/Reason(/:orderId)",
-        component: Reason
-    }, {
-        path: "/Back(/:orderId)",
-        component: Back
-    }, {
+    },{
+        path: "/ReturnsReason(/:orderId(/:type))",
+        component: ReturnsReason
+    }, 
+    // {
+    //     path: "/Reason(/:orderId)",
+    //     component: Reason
+    // }, 
+    // {
+    //     path: "/Back(/:orderId)",
+    //     component: Back
+    // }, 
+    {
         path: "/Tracking(/:orderId)",
         component: Tracking
     }, {

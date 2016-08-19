@@ -6,7 +6,7 @@ class AddressAdd extends Component {
     constructor(){
         super();
         this.state = {
-            checked:false
+            checked:true
         };
     }
     componentDidMount(){
@@ -99,7 +99,7 @@ class AddressAdd extends Component {
                     </label>
                     <div>
                         <label className={this.state.checked?"checked":""}>
-                            <input type="checkbox" name="is_default" id="" onChange={e=>this.ChangeDefault(e)} />
+                            <input type="checkbox" name="is_default" id="" onChange={e=>this.ChangeDefault(e)} checked />
                             设置成默认收货地址
                         </label>
                     </div>

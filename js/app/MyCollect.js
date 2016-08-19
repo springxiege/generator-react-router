@@ -18,6 +18,8 @@ import {
 import CollectList from '../components/CollectList'
 import CopyRight from '../components/CopyRight'
 import ReturnTop from '../components/ReturnTop'
+import LoadMorePageData from '../event/event.LoadMorePageData'
+import scrollLoading from '../event/event.scrollLoading'
 class MyCollect extends React.Component {
     constructor(){
         super();
@@ -51,7 +53,8 @@ class MyCollect extends React.Component {
                 }
             },
         };
-        this.loadMorePage = this.loadMorePage.bind(this);
+        this.LoadMorePageData = LoadMorePageData.bind(this);
+        this.scrollLoading = scrollLoading.bind(this);
     }
     componentDidMount(){
         document.title = '我的收藏';
@@ -79,7 +82,9 @@ class MyCollect extends React.Component {
                     if(parseInt(data.data.last_page) <= 1){
                         $('#loading-more').html('已全部加载')
                     }else{
-                        window.addEventListener('scroll',_this.loadMorePage);
+                        _this.scrollLoading();
+                        window.addEventListener('scroll',_this.LoadMorePageData);
+                        window.addEventListener('scroll',_this.scrollLoading);
                     };
                     if(parseInt(data.data.last_page) === 0){
                         $('#loading-more').hide();
@@ -89,57 +94,10 @@ class MyCollect extends React.Component {
         })
         
     }
-    loadMorePage(){
-        let opt = this.state;
-        let _scrollTop = $(window).scrollTop();
-        let _bodyHeight = $('body').height();
-        if(_scrollTop >= (_bodyHeight - opt.winHeight)){
-            if(opt.flag && !opt.noMore){
-                $.ajax({
-                    url:opt.url,
-                    type:'GET',
-                    dataType:'json',
-                    data:{
-                        pagesize:opt.pagesize,
-                        page:opt.page
-                    },
-                    beforeSend:(request)=>{
-                        this.setState({
-                            flag:false
-                        })
-                        config.setRequestHeader(request);
-                    },
-                    error:(error)=>{
-                        console.error(error)
-                    },
-                    success:(data)=>{
-                        opt.callback && opt.callback(data);
-                        this.setState({
-                            flag:true
-                        })
-                        if(data.data.data.length){
-                            let nextpage = (opt.page - 0) + 1;
-                            this.setState({
-                                page:nextpage
-                            });
-                            if(parseInt(nextpage) > parseInt(data.data.last_page)){
-                                this.setState({
-                                    noMore:true
-                                });
-                                $('#loading-more').html('已全部加载');
-                            };
-                        }else{
-                            this.setState({
-                                noMore:true
-                            })
-                        }
-                    }
-                })
-            }
-        }
-    }
     componentWillUnmount() {
         this.serverRequest.abort() 
+        window.removeEventListener('scroll',this.LoadMorePageData);
+        window.removeEventListener('scroll',this.scrollLoading);
     }
     render(){
         return (

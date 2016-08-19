@@ -12,7 +12,7 @@ class Order extends Component{
                         <li><Link activeClassName="cur" to="/PendingPayOrder">待付款</Link></li>
                         <li><Link activeClassName="cur" to="/UnfilledOrder">未发货</Link></li>
                         <li><Link activeClassName="cur" to="/ReceiptOrder">确认收货</Link></li>
-                        <li><Link activeClassName="cur" to="/RateOrder">评价</Link></li>
+                        <li><Link activeClassName="cur" to="/RateOrder">已收货</Link></li>
                         <li><Link activeClassName="cur" to="/ReturnOrder">退换货</Link></li>
                     </ul>
                 </div>

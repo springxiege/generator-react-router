@@ -7,7 +7,7 @@ export default class Comment extends Component{
         this.state = {
             star:[1,1,1,1,1],
             slen:4,
-            complex:1
+            complex:2
         }
     }
     componentDidMount(){
@@ -35,8 +35,8 @@ export default class Comment extends Component{
         }else{
             _stars = (_stars - 0) + (1 - 0)
         }
-        _params.satisfaction_star = _stars ? _stars : 0;
-        _params.satisfaction_summary = _complex ? _complex : 0;
+        _params.satisfaction_star = this.props.params.Review ? 0 : _stars;
+        _params.satisfaction_summary = this.props.params.Review ? 0 : _complex;
         _params.content = _content;
         
         $.ajax({
@@ -120,8 +120,8 @@ export default class Comment extends Component{
                         <div className="rate-ctrl clearfix">
                             <span className="fl">综合满意度</span>
                             <div>
-                                <label className={this.state.complex==1?"cur":""}><input type="radio" name="complex" defaultValue="1" onChange={e=>this.handleComplex(e,1)} />好评</label>
-                                <label className={this.state.complex==1?"":"cur"}><input type="radio" name="complex" defaultValue="2" onChange={e=>this.handleComplex(e,0)} />差评</label>
+                                <label className={this.state.complex==2?"cur":""}><input type="radio" name="complex" defaultValue="1" onChange={e=>this.handleComplex(e,2)} />好评</label>
+                                <label className={this.state.complex==1?"cur":""}><input type="radio" name="complex" defaultValue="2" onChange={e=>this.handleComplex(e,1)} />差评</label>
                             </div>
                         </div>
                     ):''}

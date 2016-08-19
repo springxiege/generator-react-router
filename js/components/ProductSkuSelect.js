@@ -10,6 +10,8 @@ import {
     countIncrement , 
     countDecrement 
 } from '../actions/ActionFuncs'
+import doBuy from '../event/event.gotoBuy'
+import addToShopCart from '../event/event.addToShopCart'
 
 class ProductSkuSelect extends React.Component {
     constructor(){
@@ -17,6 +19,8 @@ class ProductSkuSelect extends React.Component {
         this.state = {
             stock:0
         };
+        this.doBuy = doBuy.bind(this);
+        this.addToShopCart = addToShopCart.bind(this);
     }
     _closeSKU(){
         this.props.dispatch(ShowAndHideSelectSku())
@@ -26,7 +30,7 @@ class ProductSkuSelect extends React.Component {
         let index = e.target.getAttribute('data-index')
         let clsName = e.target.className
         if(clsName=='cur'){return false;}
-        let _data = this.props.state.data.goods_addon
+        let _data = this.props.state.GoodsDetail.data.goods_addon
         // 判断库存
         if(_data[index].addon.length==1&&_data[index].addon[0].feature_sub==''){
             if(parseInt(_data[index].addon[0].stock) === 0){
@@ -54,11 +58,11 @@ class ProductSkuSelect extends React.Component {
         let index = e.target.getAttribute('data-index')
         let clsName = e.target.className
         if(clsName=='cur'){return false;}
-        if(this.props.state.GoodsSelectSku.selected === null){
+        if(this.props.state.GoodsDetail.GoodsSelectSku.selected === null){
             $.tips('请先选择规格一')
             return false;
         };
-        let _data = this.props.state;
+        let _data = this.props.state.GoodsDetail;
         let mainindex = _data.GoodsSelectSku.selected;
         let _stock = _data.data.goods_addon[mainindex].addon[index].stock;
         if(parseInt(_stock) === 0){
@@ -76,11 +80,14 @@ class ProductSkuSelect extends React.Component {
     }
     // 增加购买数量
     _Increment(e){
-        let current = this.props.state.GoodsSelectSku.count
-        let state = this.props.state
+        let current = this.props.state.GoodsDetail.GoodsSelectSku.count
+        let state = this.props.state.GoodsDetail
         let stock = state.data.goods_addon[(state.GoodsSelectSku.selected||0)].addon[0].stock
         if(state.GoodsSelectSku.selected !== null && state.GoodsSelectSku.subselected !== null){
             stock = state.data.goods_addon[state.GoodsSelectSku.selected].addon[state.GoodsSelectSku.subselected].stock
+        }
+        if($(e.target).closest('div').hasClass('disabled') || $(e.target).hasClass('disabled')){
+            return false;
         }
         if(parseInt(current) < parseInt(stock)){
             this.props.dispatch(countIncrement())
@@ -88,144 +95,17 @@ class ProductSkuSelect extends React.Component {
     }
     // 减少购买数量
     _Decrement(e){
-        let current = this.props.state.GoodsSelectSku.count
+        let current = this.props.state.GoodsDetail.GoodsSelectSku.count
+        if($(e.target).closest('div').hasClass('disabled') || $(e.target).hasClass('disabled')){
+            return false;
+        }
         if(parseInt(current) > 1){
             this.props.dispatch(countDecrement())
         }
         
     }
-    // 添加至购物车
-    addtoCart(e){
-        let _this = this
-        if(!window.config.isWX){
-            if(store.enabled){
-                var tradeStore = store.get('trade');
-                if(!tradeStore){
-                    window.location.hash = '#/Register/ProductDetails/' + this.props.detailId
-                    return false;
-                }else{
-                    if(!tradeStore.token){
-                        window.location.hash = '#/Register/ProductDetails/' + this.props.detailId
-                        return false;
-                    }
-                }
-            }else{
-                alert('This browser does not supports localStorage')
-                return false;
-            }
-        }
-
-        let state          = this.props.state
-        let GoodsSelectSku = state.GoodsSelectSku
-        let selected       = GoodsSelectSku.selected
-        let subselected    = GoodsSelectSku.subselected
-        let goods_id       = null
-        let addon_id       = null
-        let amount         = GoodsSelectSku.count
-        if(selected === null && subselected ===null){
-            $.tips('请选择规格')
-            return false;
-        }
-        goods_id = state.data.goods_addon[selected].goods_id
-        if(subselected===null){
-            addon_id = state.data.goods_addon[selected].addon[0].id
-        }else{
-            addon_id = state.data.goods_addon[selected].addon[subselected].id
-        }
-        $.ajax({
-            url: config.url + '/goods/cart',
-            type: 'POST',
-            dataType: 'json',
-            data: {
-                goods_id:goods_id,
-                addon_id:addon_id,
-                amount:amount
-            },
-            beforeSend:(request)=>{
-                config.setRequestHeader(request);
-            },
-            error:(error)=>{
-                $.tips('加入购物车失败',1200,function(){
-                    config.ProcessError(error);
-                })
-            },
-            success:(data)=>{
-                if(parseInt(data.code) == 0){
-                    _this.props.dispatch(ShowAndHideSelectSku())
-                    $.tips('加入购物车成功')
-                }
-            }
-        })
-        
-    }
-    gotoBuy(e){
-        if(!window.config.isWX){
-            if(store.enabled){
-                var tradeStore = store.get('trade');
-                if(!tradeStore){
-                    window.location.hash = '#/Register/ProductDetails/' + this.props.detailId
-                }else{
-                    if(!tradeStore.token){
-                        window.location.hash = '#/Register/ProductDetails/' + this.props.detailId
-                    }
-                }
-            }else{
-                alert('This browser does not supports localStorage')
-                return false;
-            }
-        }
-
-
-        let _data      = this.props.state
-        let _selectObj = _data.GoodsSelectSku
-        let _select    = _selectObj.selected
-        let _subselect = _selectObj.subselected
-        let _count     = _selectObj.count
-        let _id        = _data.data.id
-        let _title     = _data.data.title
-        if(_select === null && _subselect === null){
-            $.tips('请选择规格')
-            return false;
-        }
-        let _addon = _data.data.goods_addon[_select].addon
-        if(_addon.length === 1 && _addon[0].feature_sub === ''){
-            if(parseInt(_addon[0].stock) === 0){
-                $.tips('库存为0，不可购买');
-                return false;
-            }
-        }else{
-            if(_subselect === null){
-                $.tips('请选择子规格');
-                return false;
-            }
-            if(parseInt(_addon[_subselect||0].stock) === 0){
-                $.tips('库存为0，不可购买');
-                return false;
-            }
-        }
-        this._closeSKU();
-        if(store.enabled){
-            let goods          = {};
-            goods.id           = _id;
-            goods.title        = _title;
-            goods.count        = _count;
-            goods.select       = _select;
-            goods.subselect    = _subselect;
-            goods.fare         = _data.data.fare;
-            goods.get_users    = _data.data.get_users;
-            goods.goods_images = _data.data.goods_images;
-            goods.max_price    = _data.data.max_price;
-            goods.goods_addon  = _data.data.goods_addon;
-            store.set('goods',goods);
-        }else{
-            alert('This browser does not supports localStorage')
-            return false;
-        }
-        window.location.hash = '#/BuyList/'+_id
-    }
     render() {
-        let _state          = this.props.state
-        console.log(_state)
+        let _state          = this.props.state.GoodsDetail
         let _data           = _state.data
         let _GoodsSelectSku = _state.GoodsSelectSku
         let _count          = _GoodsSelectSku.count
@@ -234,11 +114,19 @@ class ProductSkuSelect extends React.Component {
         let subskudata      = _data.goods_addon?_data.goods_addon[(_selected||0)].addon:[]
         let _fare           = parseFloat(_data.fare).toFixed(1)
         let _clsName        = !_GoodsSelectSku.isvisible?"sku-pop":"sku-pop selecting"
-        let sku = (_data.goods_addon||[]).map((item,index)=>{
-
-            return (
-                <li className={_selected == index ? "cur" : ""} onClick={e=>this._handleClick(e)} data-stock={item.stock} data-index={index} key={index}>{item.feature_main}</li>
-            )
+        let sku = (_data.goods_addon).map((item,index)=>{
+            let firstaddon = item.addon[0];
+            if(item.addon.length === 1 && firstaddon.stock == 0){
+                return (
+                    <li className="disabled" key={index}>{item.feature_main}</li>
+                )
+            }
+            if(item.addon.length){
+                return (
+                    <li className={_selected == index ? "cur" : ""} onClick={e=>this._handleClick(e)} data-stock={item.addon[0].stock} data-index={index} key={index}>{item.feature_main}</li>
+                )
+            }
+            
         })
         let subsku = ''
         let subskuwrap = ''
@@ -290,14 +178,14 @@ class ProductSkuSelect extends React.Component {
                                 <div className="main-price clearfix">
                                     <div className="main-price-module fl">
                                         合计：
-                                        <span className="main-money">{_GoodsSelectSku.price}元</span>
+                                        <span className="main-money">{_GoodsSelectSku.amountprice}元</span>
                                         <p><span>(含快递费{_fare}元)</span></p>
                                     </div>
                                 </div>
                             </div>
                             <div className="sku-count clearfix">
-                                <div className="add-to-cart fl" onClick={e=>this.addtoCart(e)}>加入购物车</div>
-                                <span className="buy-right-now fr" onClick={e=>this.gotoBuy(e)}>立即购买</span>
+                                <div className="add-to-cart fl" onClick={e=>this.addToShopCart(0)}>加入购物车</div>
+                                <span className="buy-right-now fr" onClick={e=>this.doBuy(e)}>立即购买</span>
                             </div>
                         </div>
                     </div>
@@ -308,7 +196,7 @@ class ProductSkuSelect extends React.Component {
 };
 function select (state) { // 手动注入state，dispatch分发器被connect自动注入
     return { // 注入的内容自行选择
-      state: state.GoodsDetail
+      state: state
     }
 }
 export default connect(select)(ProductSkuSelect);

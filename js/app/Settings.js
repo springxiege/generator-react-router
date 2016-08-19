@@ -3,6 +3,7 @@ import React,{Component} from 'react';
 import {
     Link
 } from 'react-router';
+import {findDOMNode} from 'react-dom'
 import {connect} from 'react-redux'
 import {
     getUserInfo,
@@ -86,56 +87,141 @@ class Settings extends Component{
     }
     // 上传图片
     uploadImage(e){
-        var reader = new FileReader();
-        reader.readAsDataURL(e.target.files[0]);
-        if(e.target.files[0].size > 2*1024*1024){
-            $.tips('上传图片大于2M，请上传小图片')
-            return false;
-        }
-        reader.onload = function(e){
-            // console.log(e.target.result);
-            var base64 = e.target.result;
-            base64 = base64.substr( base64.indexOf(',') + 1 );
+        let f = e.target.files[0];
+        let FR = new FileReader();
+        function compressImg(imgData,maxHeight,onCompress){
+            if(!imgData)return;
+            onCompress = onCompress || function(){};
 
-            $.ajax({
-                url: 'http://s.51lianying.com/upload/?c=image&m=process_for_form&type=trade&item=avator&base64=1&field=photo',
-                type: 'POST',
-                dataType: 'json',
-                data: {
-                    'image_data':base64
-                },
-                error:(error)=>{
-                    console.error(error)
-                },
-                success:(datas)=>{
-                    // console.log(datas)
-                    $.ajax({
-                        url: config.url + '/user/info',
-                        type: 'put',
-                        dataType: 'json',
-                        data: {
-                            headimgurl:datas.data.url
-                        },
-                        error:(error)=>{
-                            config.ProcessError(error);
-                        },
-                        beforeSend:(request)=>{
-                            config.setRequestHeader(request);
-                        },
-                        success:(idata)=>{
-                            // console.log(idata)
-                            if(parseInt(idata.code) === 0){
-                                $.tips('上传成功');
-                                $('#logo').prop('src', datas.data.url)
-                            }else{
-                                $.tips('上传失败，请重试！')
-                            }
-                        }
-                    })
+            maxHeight = maxHeight || 200;//默认最大高度200px
 
+            var canvas = document.createElement('canvas');
+
+            var img = new Image();
+            img.onload = function(){ 
+                if(img.height > maxHeight) {//按最大高度等比缩放
+                    img.width *= maxHeight / img.height; 
+                    img.height = maxHeight; 
                 }
-            })
+                var ctx = canvas.getContext("2d"); 
+                ctx.clearRect(0, 0, canvas.width, canvas.height); // canvas清屏   
+                        //重置canvans宽高
+                canvas.width = img.width;
+                canvas.height = img.height; 
+                ctx.drawImage(img, 0, 0, img.width, img.height); // 将图像绘制到canvas上 
+
+                onCompress(canvas.toDataURL("image/jpeg",0.6));//必须等压缩完才读取canvas值，否则canvas内容是黑帆布
+            };
+            // 记住必须先绑定事件，才能设置src属性，否则img没内容可以画到canvas
+            img.src = imgData;
         }
+        FR.onload = function(f){
+            compressImg(this.result,150,function(data){//压缩完成后执行的callback
+                // $('imgData').value = data;//写到form元素待提交服务器
+                // $('myImg').src = data;//压缩结果验证
+                var base64 = data.substr( data.indexOf(',') + 1 );
+                $.ajax({
+                    url: 'http://s.51lianying.com/upload/?c=image&m=process_for_form&type=trade&item=avator&base64=1&field=photo',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        'image_data':base64
+                    },
+                    beforeSend:()=>{
+                        $.loadingtips('show','上传中···')
+                    },
+                    error:(error)=>{
+                        console.error(error)
+                    },
+                    success:(datas)=>{
+                        // console.log(datas)
+                        $.ajax({
+                            url: config.url + '/user/info',
+                            type: 'put',
+                            dataType: 'json',
+                            data: {
+                                headimgurl:datas.data.url
+                            },
+                            error:(error)=>{
+                                config.ProcessError(error);
+                            },
+                            beforeSend:(request)=>{
+                                config.setRequestHeader(request);
+                            },
+                            success:(idata)=>{
+                                // console.log(idata)
+                                if(parseInt(idata.code) === 0){
+                                    $.loadingtips('hide');
+                                    $.tips('上传成功');
+                                    $('#logo').prop('src', datas.data.url)
+                                }else{
+                                    $.tips('上传失败，请重试！')
+                                }
+                            }
+                        })
+
+                    }
+                })
+            });
+        };
+        FR.readAsDataURL(f);
+            
+
+        // var reader = new FileReader();
+        // reader.readAsDataURL(e.target.files[0]);
+        // if(e.target.files[0].size > 5*1024*1024){
+        //     $.tips('上传图片大于2M，请上传小图片')
+        //     return false;
+        // }
+
+        // reader.onload = function(e){
+        //     // console.log(e.target.result);
+        //     var base64 = e.target.result;
+        //     base64 = base64.substr( base64.indexOf(',') + 1 );
+            
+        //     $.ajax({
+        //         url: 'http://s.51lianying.com/upload/?c=image&m=process_for_form&type=trade&item=avator&base64=1&field=photo',
+        //         type: 'POST',
+        //         dataType: 'json',
+        //         data: {
+        //             'image_data':base64
+        //         },
+        //         beforeSend:()=>{
+        //             $.loadingtips('show','上传中···')
+        //         },
+        //         error:(error)=>{
+        //             console.error(error)
+        //         },
+        //         success:(datas)=>{
+        //             // console.log(datas)
+        //             $.ajax({
+        //                 url: config.url + '/user/info',
+        //                 type: 'put',
+        //                 dataType: 'json',
+        //                 data: {
+        //                     headimgurl:datas.data.url
+        //                 },
+        //                 error:(error)=>{
+        //                     config.ProcessError(error);
+        //                 },
+        //                 beforeSend:(request)=>{
+        //                     config.setRequestHeader(request);
+        //                 },
+        //                 success:(idata)=>{
+        //                     // console.log(idata)
+        //                     if(parseInt(idata.code) === 0){
+        //                         $.loadingtips('hide');
+        //                         $.tips('上传成功');
+        //                         $('#logo').prop('src', datas.data.url)
+        //                     }else{
+        //                         $.tips('上传失败，请重试！')
+        //                     }
+        //                 }
+        //             })
+
+        //         }
+        //     })
+        // }
     }
     render(){
         let _data = this.props.state

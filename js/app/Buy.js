@@ -52,6 +52,9 @@ class Buy extends Component{
         }
         this.props.dispatch(GenerateTempOrders(_mapDate))
     }
+    componentDidUpdate(prevProps, prevState) {
+        config.errorImage()     
+    }
     componentWillUnmount() {
         let _Address = this.props.state.Address.data
         if(_Address === null || _Address.length === 0){
@@ -161,7 +164,7 @@ class Buy extends Component{
                     _HTML = _mapDate.map((item,index)=>{
                         return (
                             <div className="part-item" key={index}>
-                                <h3><img src={item.user.logo} alt="" />{item.user.userName}</h3>
+                                <h3><img src={item.user.shop_logo} alt="" />{item.user.shop_name}</h3>
                                 <div className="part-list">
                                     {item.list.map((subitem,subindex)=>{
                                         _totalprice += (parseFloat(subitem.price - 0)*(subitem.count - 0) + parseFloat(subitem.fare-0))

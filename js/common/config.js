@@ -27,15 +27,37 @@ config.setRequestHeader = function(request){
         request.setRequestHeader("Authorization", "Bearer " + config.head);
     }
 };
+config.flag = true;
 // 统一处理请求错误 401 问题
 config.ProcessError = function(error,callback){
-    if(error.status === 401 && error.responseJSON.code === 1){
-        $.tips('header请求错误，将重新请求');
+    if(parseInt(error.status) === 401 && error.responseJSON.code === 1&&config.flag){
+        // config.flag = false;
+        // $.tips('header请求错误，将重新请求');
         callback && callback();
         $.refreshToken(function(){
+            config.flag = true;
             window.location.reload();
         })
+    }else{
+        $.tips('请求错误，error code->'+error.status)
     }
 };
+config.errorImage = function(){
+    $(function(){
+        // 图片错误处理
+        $('img').error(function() {
+            /* Act on the event */
+            $(this).prop({
+                src:'/images/logobg.gif'
+            })
+        });
+    })
+}
+config.errorImage();
 // 列表页加载，每页加载条数
 config.pagesize = 10;
+// 控制支付的价格
+// [market_price,goods_price]
+// goods_price -> 原价
+// market_price -> 折扣价
+config.price = 'goods_price';

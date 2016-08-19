@@ -34,13 +34,16 @@ export default function ShopCart(state=initialState,action){
     // 删除购物车商品更新数据
     let updateSateDate = (id) =>{
         let oldDate = state.data;
-        let newDate=[];
+        let newDate = oldDate;
+        let ai;
         for (var i = 0; i < oldDate.length; i++) {
             let item = oldDate[i];
-            if(parseInt(item.id) != parseInt(id)){
-                newDate.push(item)
+            if(parseInt(item.id) === parseInt(id)){
+                ai = i;
+                break;
             }
         }
+        newDate.splice(ai,1);
         return newDate;
     }
     // 更新删除后的check状态

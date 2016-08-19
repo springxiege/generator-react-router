@@ -8,6 +8,7 @@ import {
 import CommonImage from '../components/CommonImage'
 import CommonLogo from '../components/CommonLogo'
 import LoadMorePageData from '../event/event.LoadMorePageData'
+import scrollLoading from '../event/event.scrollLoading'
 class UnfilledOrder extends Component{
     constructor() {
         super();
@@ -40,6 +41,7 @@ class UnfilledOrder extends Component{
             },
         };
         this.LoadMorePageData = LoadMorePageData.bind(this);
+        this.scrollLoading = scrollLoading.bind(this);
     }
     componentDidMount() {
         document.title = '未发货'
@@ -64,11 +66,13 @@ class UnfilledOrder extends Component{
                 if(parseInt(data.code) === 0){
                     this.props.dispatch(getUnfilledOrder(data.data.data))
                     $.loading.hide()
+                    _this.scrollLoading();
                     // 加载更多列表
                     if(parseInt(data.data.last_page) <= 1){
                         $('#loading-more').html('已全部加载')
                     }else{
                         window.addEventListener('scroll',_this.LoadMorePageData);
+                        window.addEventListener('scroll',_this.scrollLoading);
                     };
                     if(parseInt(data.data.last_page) === 0){
                         $('#loading-more').hide();
@@ -81,6 +85,7 @@ class UnfilledOrder extends Component{
     componentWillUnmount() {
         this.serverRequest.abort();
         window.removeEventListener('scroll',this.LoadMorePageData);
+        window.removeEventListener('scroll',this.scrollLoading);
     }
     UpdateOrder(e){
         if(store.enabled){
@@ -176,7 +181,7 @@ class UnfilledOrder extends Component{
                             </div>
                             <div className="part-funcs">
                                 <span className="fr" onClick={e=>this.UpdateOrder(e)}>提醒发货</span>
-                                <span className="fr" onClick={e=>this.doReturnOrder(e)}>退款</span>
+                                <span className="fr"><Link to={`/ReturnsReason/${item.items[0].id}/UnfilledOrder`}></Link> 退款</span>
                             </div>
                         </div>
                     </div>

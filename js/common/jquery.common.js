@@ -24,39 +24,41 @@
          * 更新PC端token，防止页面报错
          */
         refreshToken:function(callback){
-            $.ajax({
-                url: config.url + '/auth/refresh',
-                type: 'GET',
-                dataType: 'json',
-                data: {},
-                error:function(error){
-                    if(error.status === 401 && error.responseJSON.code === 1){
-                        alert('刷新token失败，请重新登录');
-                        var _hash = window.location.hash;
-                        _hash = _hash.replace('#','').replace(/\?.{1,}/gi,'');
-                        window.location.hash = '#/Register' + _hash;
+            if(config.flag){
+                config.flag = false;
+                $.ajax({
+                    url: config.url + '/auth/refresh',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {},
+                    error:function(error){
+                        if(error.status === 401 && error.responseJSON.code === 1){
+                            // alert('刷新token失败，请重新登录');
+                            window.location.hash = '#/Register';
+                        }
+                    },
+                    beforeSend:function(request){
+                        config.setRequestHeader(request);
+                    },
+                    success:function(data){
+                        config.flag = true;
+                        if(parseInt(data.code) === 0){
+                            config.setStorage('trade','time',new Date().getTime());
+                            config.setStorage('trade','token',data.data.token);
+                            config.setStorage('trade','userinfo',data.data.user);
+                            config.head = data.data.token;
+                            callback && callback(data.data)
+                        };
+                        if(parseInt(data.code) === 1){
+                            alert('刷新token失败，请重新登录');
+                            var _hash = window.location.hash;
+                            _hash = _hash.replace('#','').replace(/\?.{1,}/gi,'');
+                            window.location.hash = '#/Register' + _hash;
+                            
+                        }
                     }
-                },
-                beforeSend:function(request){
-                    config.setRequestHeader(request);
-                },
-                success:function(data){
-                    if(parseInt(data.code) === 0){
-                        config.setStorage('trade','time',new Date().getTime());
-                        config.setStorage('trade','token',data.data.token);
-                        config.setStorage('trade','userinfo',data.data.user);
-                        config.head = data.data.token;
-                        callback && callback(data.data)
-                    };
-                    if(parseInt(data.code) === 1){
-                        alert('刷新token失败，请重新登录');
-                        var _hash = window.location.hash;
-                        _hash = _hash.replace('#','').replace(/\?.{1,}/gi,'');
-                        window.location.hash = '#/Register' + _hash;
-                        
-                    }
-                }
-            })
+                })
+            }
         },
         /**
          * [tips 提示消息框]
@@ -84,6 +86,29 @@
                     $pop.remove();
                 });
             },(time||1200))
+        },
+        /**
+         * [loadingtips 请求过程中的loading]
+         * @param  {[type]} type [状态，为真表示显示，反之删除dom]
+         * @param  {[type]} data [传入显示文本]
+         * @return {[type]}      [description]
+         */
+        loadingtips:function(type,data){
+            if(type == 'show' || type == 1 || type == true){
+                var _HTML = '<div class="pop-error" id="pop-error">'+data+'</div>'
+                if($('#pop-error').length === 0){
+                    $('body').append(_HTML);
+                }
+                var $pop = $('#pop-error');
+                var _width = $pop.outerWidth(true);
+                $pop.css({
+                    'margin-left': -(_width/2)
+                });
+            }
+            if(type == 'hide' || type == 0 || type == false){
+                var $pop = $('#pop-error');
+                $pop.remove();
+            }
         },
         /**
          * [confirm 确认弹窗]

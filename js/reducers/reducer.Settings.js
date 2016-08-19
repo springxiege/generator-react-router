@@ -3,8 +3,8 @@ import {
     MODIFY_NICKNAME
 } from '../actions/ActionTypes'
 const initialState = {
-    name:'测试用户名',
-    headimgurl:"images/3.jpg",
+    name:'获取中···',
+    headimgurl:"/images/msg.png",
     country:"中国",
     content:"浙江",
     city:"杭州"

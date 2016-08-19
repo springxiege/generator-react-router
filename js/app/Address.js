@@ -13,7 +13,7 @@ class AddressList extends Component {
     getHTML(data){
         let _HTML = 'address list page is loading...';
         if(data === null || data === undefined){
-            return _HTML
+            return 'something is wrong,please reload this page!'
         }
         if(data.length){
             _HTML = data.map((item,index)=>{
@@ -37,8 +37,7 @@ class AddressList extends Component {
                 )
             })
         }else{
-
-            // window.location.hash = '#/AddressAdd/'+this.props.params.transfertype
+            return (<div className="nolist">暂无地址</div>);
         }
         return _HTML;
     }
@@ -169,11 +168,8 @@ class AddressList extends Component {
             success:(data)=>{
                 if(parseInt(data.code) == 0){
                     $.loading.hide()
-                    if(data.data.length){
-                        this.props.dispatch(Address(data.data))
-                    }else{
-                        window.location.hash = '#/AddressAdd/'+this.props.params.transfertype
-                    }
+                    this.props.dispatch(Address(data.data))
+                    
                 }
             }
         })

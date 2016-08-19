@@ -15,16 +15,24 @@ import ProductSkuSelect from '../components/ProductSkuSelect'
 import ProductDetailFooter from '../components/ProductDetailFooter';
 import ReturnTop from '../components/ReturnTop'
 import {
-    GoodsDetail,
-    AddCollect,
-    CancelCollect
+    GoodsDetail
 } from '../actions/ActionFuncs'
+import doCollect from '../event/event.doCollect'
 class ProductDetails extends React.Component {
+    constructor(){
+        super();
+        this.state = {
+            collect:false,
+            id:1,
+        };
+        this.doCollect = doCollect.bind(this);
+    }
     componentDidMount(){
         document.title = '商品详情';
-        let _id = this.props.params.DetailId||'1';
+        let _this = this;
+        let pathname = window.location.pathname.replace(/\//,'').replace(/\.html/,'');
         this.serverRequest = $.ajax({
-            url: config.url + '/goods/detail/'+_id,
+            url: config.url + '/goods/detail/'+pathname,
             type: 'GET',
             dataType: 'json',
             data: {},
@@ -37,14 +45,16 @@ class ProductDetails extends React.Component {
             },
             success: (data)=>{
                 if(parseInt(data.code) == 0){
+
                     document.title = data.data.title
+
                     this.props.dispatch(GoodsDetail(data.data));
                     $.loading.hide();
                     // 详情页统计数据
                     let tradeStore = store.get('trade');
-                    config.buyid = data.data.id;
-                    config.goods_id = _id;
-                    config.imgUrl = data.data.goods_images[0]||data.data.goods_images[1]||data.data.goods_images[2];
+                    this.setState({
+                        id:data.data.id
+                    })
                     if(tradeStore && tradeStore.userinfo){
                         config.buyid = store.get('trade').userinfo.id
                         LYA({
@@ -52,52 +62,52 @@ class ProductDetails extends React.Component {
                             debug: false,
                             param: {
                                 buy_id: config.buyid,
-                                goods_id: _id,
+                                goods_id: data.data.id,
                                 come_from: 'xds'
                             }
                         });
+                        $.refreshToken(function(){
+                            // 商品收藏
+                            $.ajax({
+                                url: config.url + '/goods/collect/whether/' + data.data.id,
+                                type: 'POST',
+                                dataType: 'json',
+                                data: {},
+                                beforeSend:(request)=>{
+                                    config.setRequestHeader(request);
+                                },
+                                error:(error)=>{
+                                    config.ProcessError(error);
+                                },
+                                success:(data)=>{
+                                    if(parseInt(data.code) === 0){
+                                        _this.setState({
+                                            collect:data.data[0]
+                                        })
+                                    }
+                                }
+                            });
+                            // 历史记录
+                            $.ajax({
+                                url: config.url + '/goods/log/' + data.data.id,
+                                type: 'GET',
+                                dataType: 'json',
+                                data: {},
+                                beforeSend:(request)=>{
+                                    config.setRequestHeader(request);
+                                },
+                                error:(error)=>{
+                                    config.ProcessError(error);
+                                },
+                                success:(data)=>{
+                                    console.log(data);
+                                }
+                            })
+                        })
                     }
-                    window.share_config = {
-                        // title : '我要联赢标题',//标题
-                        desc : '我要联赢描述',//描述 
-                        link : config.link,//链接地址   
-                        imgUrl : config.imgUrl,//图片地址
-                        shareTrigger: function (res) {
-                            console.log('trigger');
-                        },
-                        shareSuccess: function (res, channel) {
-                             console.log(res);
-                            switch (channel) {
-                                case 'toFriend':
-                                    config.state('share_weixin_to_friend');
-                                    break; 
-                                case 'toTimeline':
-                                    config.state('share_weixin_to_timeline');
-                                    break; 
-                                case 'toQQ':
-                                    config.state('share_weixin_to_qq');
-                                    break; 
-                                case 'toWeibo':
-                                    config.state('share_weixin_to_weibo');
-                                    break; 
-                                default:
-                                    break;
-                            }
-                            // share_stat(_code);
-                        },
-
-                        shareCancel: function (res) {
-                            console.log('cancel');
-                            // share_stat('3');
-                        },
-                        shareFail: function (res) {
-                            console.log('fail');
-                            // share_stat('4');
-                        }
-                    };
                     
                 }else{
-                    alert('商品应该不存在!');
+                    alert('商品不存在!');
                     window.close();
                     // alert('请求成功，返回错误,错误code:'+data.code+'，请刷新页面重试！');
                     // window.location.reload();
@@ -105,10 +115,12 @@ class ProductDetails extends React.Component {
 
             }
         })
-
+    }
+    componentDidUpdate(prevProps, prevState) {
+        config.errorImage()     
     }
     componentWillUnmount() {
-        this.serverRequest.abort()
+        this.serverRequest.abort();
     }
     render() {
         // var _Children = React.Children.map(this.props.children, function(data) {});
@@ -119,15 +131,15 @@ class ProductDetails extends React.Component {
                         <ProductImages />
                         <ProductTitle title={this.props.state.data.title} />
                         <ProductDescription description={this.props.state.data.description} />
-                        <ProductPriceAndFuncs price={this.props.state.GoodsSelectSku.price} />
+                        <ProductPriceAndFuncs id={this.state.id} collect={this.state.collect} price={this.props.state.GoodsSelectSku.price} onClick={e=>this.doCollect(e)} />
                         <ProductOriginalPriceAndFee originalprice={this.props.state.GoodsSelectSku.originalprice} fare={this.props.state.data.fare} />
                     </div>
                     <ProductSku />
                     <ProductTabs data={this.props.state.data} />
                     {/*<Recommend />*/}
                 </div>
-                <ProductDetailFooter userId={this.props.state.userId} detailId={this.props.params.DetailId}/>
-                <ProductSkuSelect detailId={this.props.params.DetailId} />
+                <ProductDetailFooter userId={this.props.state.userId} detailId={this.state.id}/>
+                <ProductSkuSelect detailId={this.state.id} />
                 <ReturnTop />
             </div>
         )

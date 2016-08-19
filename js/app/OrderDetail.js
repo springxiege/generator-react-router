@@ -5,7 +5,12 @@ import {connect} from 'react-redux'
 import { 
     getOrderDetail
 } from '../actions/ActionFuncs'
+import CommonImage from '../components/CommonImage'
+// import copyToClipboard from '../event/event.copyToClipboard'
 class OrderDetail extends Component{
+    constructor(){
+        super();
+    }
     componentDidMount(){
         let _type = this.props.params.ordertype
         let _params = {}
@@ -114,23 +119,34 @@ class OrderDetail extends Component{
         $.tips('提醒发货成功')
     }
     render(){
-        let _data = this.props.state.data
+        let _data = this.props.state.data;
+        let item = _data[0];
         return (
             <div className="main pdb0">
-                <div className={parseInt(_data[0].parcel_status)===2?"orderheader finished":"orderheader"}>买家待收货</div>
+                {parseInt(item.status) === 0 ? (
+                    <div className="orderheader">买家待付款</div>
+                ) : (
+                    parseInt(item.parcel_status) === 0 ? (
+                        <div className="orderheader">卖家待发货</div>
+                    ) : (
+                        parseInt(item.parcel_status) === 1 ? (
+                            <div className="orderheader">卖家已发货</div>
+                        ) : (
+                            <div className="orderheader">买家已收货</div>
+                        )
+                    )
+                )}
                 <div className="part-address">
-                    <h2>收货人：{_data[0].purchaser||'...'}<span className="fr">{_data[0].purchaser_phone||1300000000}</span></h2>
-                    <p>收货地址：{_data[0].purchaser_address||'...'}</p>
+                    <h2>收货人：{item.purchaser||'...'}<span className="fr">{item.purchaser_phone||1300000000}</span></h2>
+                    <p>收货地址：{item.purchaser_address||'...'}</p>
                 </div>
                 {_data.map((item,index)=>{
-                    let imgArray = item.goods.goods_images;
-                    let img = imgArray[0]||imgArray[1]||imgArray[2]
                     return (
                         <div className="main-module" key={index}>
                             <div className="part-item">
                                 <h3>
                                     <img src={item.shop.shop_logo||'/images/shop_logo.gif'} alt="" />
-                                    &ensp;&ensp;{item.shop.shop_name}
+                                    {item.shop.shop_name}
                                     {item.is_abandon == 0 ? (
                                         item.status == 1 ? (
                                             <span className="order-status fr">买家待付款</span>
@@ -151,8 +167,8 @@ class OrderDetail extends Component{
                                 </h3>
                                 <div className="part-list">
                                     <div className="part-info clearfix">
-                                        <Link to={`/ProductDetails/${item.goods_id}`}>
-                                            <img src={img} alt="" className="fl"/>
+                                        <a href={item.goods.goodsLink}>
+                                            <CommonImage src={item.goods.goods_images} className="fl" />
                                             <div className="part-detail">
                                                 <h4>{item.goods.title}</h4>
                                                 <p>{item.feature_main} {item.feature_sub}</p>
@@ -162,7 +178,7 @@ class OrderDetail extends Component{
                                                 </p>
                                                 <span>&times;{item.total_number}</span>
                                             </div>
-                                        </Link>
+                                        </a>
                                     </div>
                                 </div>
                                 <div className="part-subtotal">实付：<span>{item.preferential}</span>元</div>
@@ -170,7 +186,10 @@ class OrderDetail extends Component{
                                     <p>订单编号：<span>{item.common_out_trade_no}</span></p>
                                     <p>创建时间：<span>{item.created_at}</span></p>
                                     {item.parcel_num ? (
-                                        <p>物流编号：<span>{item.parcel_num}</span></p>
+                                        <p>物流单号：<span>{item.parcel_num}</span> 
+                                            {/*<span onClick={()=>copyToClipboard(item.parcel_num)}>复制</span>
+                                             <a href="http://m.kuaidi100.com/">查询</a>*/}
+                                        </p>
                                     ) : ''}
                                 </div>
                             </div>

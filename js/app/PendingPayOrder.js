@@ -9,6 +9,7 @@ import {
 import CommonImage from '../components/CommonImage'
 import CommonLogo from '../components/CommonLogo'
 import LoadMorePageData from '../event/event.LoadMorePageData'
+import scrollLoading from '../event/event.scrollLoading'
 class PendingPayOrder extends Component{
     constructor() {
         super();
@@ -41,6 +42,7 @@ class PendingPayOrder extends Component{
             },
         };
         this.LoadMorePageData = LoadMorePageData.bind(this);
+        // this.scrollLoading = scrollLoading.bind(this);
     }
     componentDidMount() {
         document.title = '待付款'
@@ -66,10 +68,13 @@ class PendingPayOrder extends Component{
                         _this.props.dispatch(getPendingPayOrder(data.data.data));
                         $.loading.hide();
                         // 加载更多列表
+                        // _this.scrollLoading()
                         if(parseInt(data.data.last_page) <= 1){
                             $('#loading-more').html('已全部加载')
                         }else{
+                            // _this.scrollLoading();
                             window.addEventListener('scroll',_this.LoadMorePageData);
+                            // window.addEventListener('scroll',_this.scrollLoading);
                         };
                         if(parseInt(data.data.last_page) === 0){
                             $('#loading-more').hide();
@@ -86,6 +91,7 @@ class PendingPayOrder extends Component{
     componentWillUnmount() {
         this.serverRequest.abort();
         window.removeEventListener('scroll',this.LoadMorePageData);
+        // window.removeEventListener('scroll',this.scrollLoading);
     }
     // 取消订单
     cancelOrder(e){
@@ -129,7 +135,7 @@ class PendingPayOrder extends Component{
                 return (
                    <div className="main-module" key={index}>
                         <div className="part-item">
-                            <h3><img src="images/3.jpg" alt="" />&ensp;&ensp;{item.shop_name} <span className="order-status fr">买家待付款</span></h3>
+                            <h3><img src="images/3.jpg" alt="" />{item.shop_name} <span className="order-status fr">买家待付款</span></h3>
                             {item.items.map((subitem,subindex)=>{
                                 let _link = '/OrderDetail/'+subitem.id;
                                 _totalPrice += (subitem.preferential - 0);
@@ -137,7 +143,7 @@ class PendingPayOrder extends Component{
                                     <div className="part-list" key={subindex} data-id={subitem.id}>
                                         <div className="part-info">
                                             <Link to={`/OrderDetail/${subitem.id}`} className="clearfix">
-                                                <CommonImage src={subitem.goods.goods_images} className="fl" />
+                                                <CommonImage src="/images/logobg_mini.gif" url={subitem.goods.goods_images} className="loadimg fl" />
                                                 <div className="part-detail">
                                                     <h4>{subitem.goods.title}</h4>
                                                     <p>{subitem.feature_main}&ensp;{subitem.feature_sub}</p>

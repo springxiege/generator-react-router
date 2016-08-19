@@ -2,62 +2,41 @@ import React,{Component} from 'react'
 import {findDOMNode} from 'react-dom'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
+import FormElement from '../components/FormElement'
+import handleForm from '../event/event.handleForm'
+import CommitForm from '../event/event.CommitForm'
 export default class RateOrder extends Component{
+    constructor(){
+        super();
+        this.state = {
+            title:'换货原因',
+            type:2,
+            url:config.url + '/orders/abandon',
+            checked:0,
+            data:[
+                '换吧，换吧不是罪，我来付邮费。',
+                '如果再给我一次机会，我还是选择换换换。',
+                '描述失误啊，下次不能这样欺骗我邮费了。',
+                '我收到是别人的宝宝，我现在要换回我的宝宝！',
+            ],
+            content:''
+        }
+        this.handleForm = handleForm.bind(this);
+        this.CommitForm = CommitForm.bind(this);
+    }
     componentDidMount() {
-        document.title = '换货原因'
+        document.title = this.state.title
         $.loading.hide();
     }
     componentWillUnmount() {
           
     }
-    FormConfirm(e){
-        let $form = $(findDOMNode(this.refs.reason))
-        let abandon_reason = $form.find('[name=abandon_reason]').val()
-        let content = $form.find('[name=content]').val()
-        let orderid = this.props.params.orderId
-        $.ajax({
-            url: config.url + '/orders/abandon',
-            type: 'POST',
-            dataType: 'json',
-            data: {
-                _method:'put',
-                ids:[orderid],
-                type:2,
-                abandon_reason:abandon_reason,
-                leave_message:content
-            },
-            beforeSend:(request)=>{
-                config.setRequestHeader(request);
-            },
-            error:(error)=>{
-                config.ProcessError(error);
-            },
-            success:(data)=>{
-                $.loading.hide();
-                if(parseInt(data.code) === 0){
-                    window.location.hash = '#/Tracking/'+orderid
-                }else{
-                    $.tips(data.data.msg,1000)
-                }
-            }
-        })
-        
-    }
     render(){
+        let checked = this.state.checked;
         return (
-            <div className="main">
-                <form className="return-money" ref="reason">
-                    <h2 className="address-title">换货原因</h2>
-                    <select name="abandon_reason" id="">
-                        <option value="七天无理由退货">七天无理由退货</option>
-                        <option value="不想要了">不想要了</option>
-                        <option value="卖家未按时间发货">卖家未按时间发货</option>
-                        <option value="冲动了">冲动了</option>
-                    </select>
-                    <textarea name="content" id="" placeholder="给卖家留言"></textarea>
-                    <p>还可以输入<span>50</span>个字符</p>
-                </form>
-                <span className="btn-add-address" onClick={e=>this.FormConfirm(e)}>确认</span>
+            <div className="main" onChange={e=>this.handleForm(e)}>
+                <FormElement data={this.state} />
+                <span className="btn-add-address" onClick={e=>this.CommitForm(e)}>确认</span>
             </div>
         )
     }
