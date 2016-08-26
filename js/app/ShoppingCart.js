@@ -183,14 +183,14 @@ class ShoppingCart extends React.Component {
                             {item.goods?(
                                 <div className="cart-info-header clearfix">
                                     <label className={this.props.state.amount[item.id].checked?"checked fl":"fl"}><input type="checkbox" name="product" onChange={()=>this._ChangeSingle(item.id,item.goods_addon.stock)} data-id={item.id} checked={this.props.state.amount[item.id].checked?true:false} /></label>
-                                    <CommonLogo src={item.goods.get_user_profile?item.goods.get_user_profile.shop_logo:"/images/shop_logo.gif"} className="fl" />
+                                    <CommonLogo src={item.goods.get_user_profile?item.goods.get_user_profile.shop_logo:""} className="fl" />
                                     <p className="fl">{item.goods.get_user_profile?item.goods.get_user_profile.shop_name:"我要联赢商家"}</p>
                                     <a href="javascript:;" className="fr" data-id={item.id} onClick={e=>this.deleteThis(e,item.id)}>删除</a>
                                 </div>
                             ):(
                                 <div className="cart-info-header clearfix">
                                     <label className="fl"><input type="checkbox" name="product" onChange={e=>this._ChangeSingle(e,item.id,0)} data-id={item.id} /></label>
-                                    <CommonLogo src="/images/shop_logo.gif" className="fl" />
+                                    <CommonLogo src="" className="fl" />
                                     <p className="fl">该商品已被删除</p>
                                     <a href="javascript:;" className="fr" data-id={item.id} onClick={e=>this.deleteThis(e,item.id)}>删除</a>
                                 </div>
@@ -201,7 +201,7 @@ class ShoppingCart extends React.Component {
                                     {item.goods?(
                                         <CommonImage src={item.goods.goods_images} />
                                     ):(
-                                        <CommonImage src={["/images/logobg_mini.gif"]} />
+                                        <CommonImage src={["http://s.51lianying.com/images/xds/trade/logobg_mini.gif"]} />
                                     )}
                                 </a>
                                 <div>
@@ -251,7 +251,7 @@ class ShoppingCart extends React.Component {
                 _trade[item.goods.get_user_profile.user_id].list     = [];
                 _trade[item.goods.get_user_profile.user_id].user     = {};
                 _trade[item.goods.get_user_profile.user_id].user.user_id  = item.goods.get_user_profile.user_id;
-                _trade[item.goods.get_user_profile.user_id].user.shop_logo     = item.goods.get_user_profile.shop_logo||'/images/shop_logo.gif';
+                _trade[item.goods.get_user_profile.user_id].user.shop_logo     = item.goods.get_user_profile.shop_logo;
                 _trade[item.goods.get_user_profile.user_id].user.shop_name = item.goods.get_user_profile.shop_name;
             }
             if(_state.amount[item.id].checked){

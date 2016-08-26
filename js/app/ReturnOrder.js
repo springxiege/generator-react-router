@@ -40,6 +40,7 @@ class ReturnOrder extends Component{
                     // 如果token失效
                 }
             },
+            loadMore:true
         };
         this.LoadMorePageData = LoadMorePageData.bind(this);
         this.scrollLoading = scrollLoading.bind(this);
@@ -71,13 +72,20 @@ class ReturnOrder extends Component{
                         _this.scrollLoading();
                         // 加载更多列表
                         if(parseInt(data.data.last_page) <= 1){
-                            $('#loading-more').html('已全部加载')
+                            // $('#loading-more').html('已全部加载')
+                            this.setState({
+                                loadMore:true,
+                                noMore:true
+                            })
                         }else{
                             window.addEventListener('scroll',_this.LoadMorePageData);
                             window.addEventListener('scroll',_this.scrollLoading);
                         };
                         if(parseInt(data.data.last_page) === 0){
-                            $('#loading-more').hide();
+                            // $('#loading-more').hide();
+                            this.setState({
+                                loadMore:false
+                            })
                         }
                     }
                 }
@@ -233,7 +241,7 @@ class ReturnOrder extends Component{
         return (
             <div id="boxmodel">
                 {_HTML}
-                <p id="loading-more">列表加载中···</p>
+                <p id="loading-more" style={{display:this.state.loadMore?"block":"none"}}>{this.state.noMore?"已加载全部":'列表加载中···'}</p>
             </div>
         )
     }

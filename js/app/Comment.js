@@ -7,7 +7,8 @@ export default class Comment extends Component{
         this.state = {
             star:[1,1,1,1,1],
             slen:4,
-            complex:2
+            complex:2,
+            disabled:false
         }
     }
     componentDidMount(){
@@ -38,32 +39,40 @@ export default class Comment extends Component{
         _params.satisfaction_star = this.props.params.Review ? 0 : _stars;
         _params.satisfaction_summary = this.props.params.Review ? 0 : _complex;
         _params.content = _content;
-        
-        $.ajax({
-            url: config.url + '/orders/comment/' + this.props.params.orderId,
-            type: 'POST',
-            dataType: 'json',
-            data: _params,
-            beforeSend:(request)=>{
-                config.setRequestHeader(request);
-            },
-            error:(error)=>{
-                config.ProcessError(error);
-            },
-            success:(data)=>{
-                // console.log(data)
-                if(parseInt(data.code) === 0){
-                    $.tips(data.data.msg,1500,function(){
-                        window.location.hash = '#/RateOrder'
+        if(!this.state.disabled){
+            this.setState({
+                disabled:true
+            })
+            $.ajax({
+                url: config.url + '/orders/comment/' + this.props.params.orderId,
+                type: 'POST',
+                dataType: 'json',
+                data: _params,
+                beforeSend:(request)=>{
+                    config.setRequestHeader(request);
+                },
+                error:(error)=>{
+                    config.ProcessError(error);
+                },
+                success:(data)=>{
+                    // console.log(data)
+                    this.setState({
+                        disabled:false
                     })
+                    if(parseInt(data.code) === 0){
+                        $.tips(data.data.msg,1500,function(){
+                            window.location.hash = '#/RateOrder'
+                        })
+                    }
+                    if(parseInt(data.code) === 1){
+                        $.tips(data.data.msg,1200,function(){
+                            window.location.hash = '#/RateOrder'
+                        })
+                    }
                 }
-                if(parseInt(data.code) === 1){
-                    $.tips(data.data.msg,1200,function(){
-                        window.location.hash = '#/RateOrder'
-                    })
-                }
-            }
-        })
+            })
+        }
+
         
     }
     // 获取内容进行计数
@@ -128,7 +137,7 @@ export default class Comment extends Component{
                 </form>
                 <footer className="cart-footer rate-footer clearfix">
                     <aside className="fl"><Link to="/UserCenter">下次评价</Link></aside>
-                    <a href="javascript:;" onClick={e=>this.handleSendComment(e)}>提交评价</a>
+                    <a href="javascript:;" className={this.state.disabled?"disabled":""} onClick={e=>this.handleSendComment(e)}>{this.state.disabled?"提交中···":"提交评价"}</a>
                 </footer>
             </div>
             

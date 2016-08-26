@@ -2,14 +2,23 @@ import React,{Component} from 'react'
 import {findDOMNode} from 'react-dom'
 import {connect} from 'react-redux'
 class SelectPay extends Component{
-    radioChange(e){
-        let $self = $(e.target)
-        let _type = $self.val()
-        $self.closest('label').addClass('checked').siblings('label').removeClass('checked')
+    constructor(){
+        super();
+        this.state = {
+            payment:1
+        }
+    }
+    radioChange(e,id){
+        // let $self = $(e.target)
+        // let _type = $self.val()
+        this.setState({
+            payment: id
+        });
+        // $self.closest('label').addClass('checked').siblings('label').removeClass('checked')
     }
     handleClick(e){
-        let $payment = $(findDOMNode(this.refs.paymethod))
-        let _type    = $payment.find(':radio:checked').val() || 1
+        // let $payment = $(findDOMNode(this.refs.paymethod))
+        let _type    = this.state.payment
         let _order   = this.props.params.orderNumber
         switch(parseInt(_type)){
             case 1:
@@ -32,13 +41,15 @@ class SelectPay extends Component{
         return (
             <div className="main" ref="paymethod" >
                 <div className="main-pay">
-                    <label className="checked"><input type="radio" name="payment" value="1" id="" onChange={e=>this.radioChange(e)} /></label>
-                    <label><input type="radio" name="payment" value="2" id="" onChange={e=>this.radioChange(e)} /></label>
+                    <label className={this.state.payment == 1 ? "checked" : ""}><input type="radio" name="payment" value="1" id="" onChange={e=>this.radioChange(e,1)} /></label>
+                    <label className={this.state.payment == 2 ? "checked" : ""}><input type="radio" name="payment" value="2" id="" onChange={e=>this.radioChange(e,2)} /></label>
                 </div>
+                {/*
                 <div className="main-pay-note">
                     <p>搜索关注 “我要联赢” 微信公众号随时跟踪订单进度</p>
                     <p><img src="images/code.jpg" alt="" /></p>
                 </div>
+                */}
                 <p className="main-pay-tel">联系客服：<a href="tel://4006728266">4006728266</a></p>
                 <span className="btn-add-address" onClick={e=>this.handleClick(e)} >确认支付</span>
             </div>

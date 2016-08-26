@@ -165,63 +165,6 @@ class Settings extends Component{
             });
         };
         FR.readAsDataURL(f);
-            
-
-        // var reader = new FileReader();
-        // reader.readAsDataURL(e.target.files[0]);
-        // if(e.target.files[0].size > 5*1024*1024){
-        //     $.tips('上传图片大于2M，请上传小图片')
-        //     return false;
-        // }
-
-        // reader.onload = function(e){
-        //     // console.log(e.target.result);
-        //     var base64 = e.target.result;
-        //     base64 = base64.substr( base64.indexOf(',') + 1 );
-            
-        //     $.ajax({
-        //         url: 'http://s.51lianying.com/upload/?c=image&m=process_for_form&type=trade&item=avator&base64=1&field=photo',
-        //         type: 'POST',
-        //         dataType: 'json',
-        //         data: {
-        //             'image_data':base64
-        //         },
-        //         beforeSend:()=>{
-        //             $.loadingtips('show','上传中···')
-        //         },
-        //         error:(error)=>{
-        //             console.error(error)
-        //         },
-        //         success:(datas)=>{
-        //             // console.log(datas)
-        //             $.ajax({
-        //                 url: config.url + '/user/info',
-        //                 type: 'put',
-        //                 dataType: 'json',
-        //                 data: {
-        //                     headimgurl:datas.data.url
-        //                 },
-        //                 error:(error)=>{
-        //                     config.ProcessError(error);
-        //                 },
-        //                 beforeSend:(request)=>{
-        //                     config.setRequestHeader(request);
-        //                 },
-        //                 success:(idata)=>{
-        //                     // console.log(idata)
-        //                     if(parseInt(idata.code) === 0){
-        //                         $.loadingtips('hide');
-        //                         $.tips('上传成功');
-        //                         $('#logo').prop('src', datas.data.url)
-        //                     }else{
-        //                         $.tips('上传失败，请重试！')
-        //                     }
-        //                 }
-        //             })
-
-        //         }
-        //     })
-        // }
     }
     render(){
         let _data = this.props.state

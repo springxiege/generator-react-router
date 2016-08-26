@@ -245,7 +245,7 @@ class Messages extends Component{
                             return (
                                 <div className="msg-item unread" key={index}>
                                     <a href={item.content_url} className="bsb clearfix">
-                                        <img src="/images/msg.png" alt="" className="fl" />
+                                        <img src="http://s.51lianying.com/images/xds/trade/msg.png" alt="" className="fl" />
                                         <div className="msg-title">
                                             <p>{item.title}</p>
                                             <p>{item.send_department} {`${item.created_at.substring(11,item.created_at.length)}`}</p>

@@ -106,12 +106,7 @@ class AddressList extends Component {
                 config.setRequestHeader(request);
             },
             error:(error)=>{
-                if(error.status === 401 && error.responseJSON.code === 1){
-                    $.tips('header请求错误，将重新请求');
-                    $.refreshToken(function(){
-                        window.location.reload();
-                    })
-                }
+                config.ProcessError(error);
             },
             success:(data)=>{
                 if(parseInt(data.code)==0){
@@ -139,13 +134,13 @@ class AddressList extends Component {
     Edit(e,id){
         switch(this.props.params.transfertype){
             case 'buy':
-                window.location.hash = '#/AddressEdit/buy/'+id
+                window.location.hash = '#/AddressAdd/buy/'+id
                 break;
             case 'setting':
-                window.location.hash = '#/AddressEdit/setting/'+id
+                window.location.hash = '#/AddressAdd/setting/'+id
                 break;
             case 'shopcart':
-                window.location.hash = '#/AddressEdit/shopcart/'+id
+                window.location.hash = '#/AddressAdd/shopcart/'+id
             default:
                 break;
         }

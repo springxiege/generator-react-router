@@ -1,109 +1,88 @@
 import React,{Component,find} from 'react'
 import {findDOMNode} from 'react-dom'
 import {connect} from 'react-redux'
-import FormVerify from '../event/event.FormVerify'
+import handleAddressForm from '../event/event.handleAddressForm'
+import SubmitAddressForm from '../event/event.SubmitAddressForm'
 class AddressAdd extends Component {
     constructor(){
         super();
         this.state = {
-            checked:true
+            checked:true,
+            name:'',
+            tel:'',
+            address:'',
+            disabled:false
         };
+        this.handleAddressForm = handleAddressForm.bind(this);
+        this.SubmitAddressForm = SubmitAddressForm.bind(this);
     }
     componentDidMount(){
         document.title = '添加地址'
-        $.loading.hide();
-    }
-    formSubmit(e){
-        let $form      = $(findDOMNode(this.refs.form))
-        let $btn       = $(findDOMNode(e.target))
-        let _name      = $form.find('[name=name]').val()
-        let _tel       = $form.find('[name=tel]').val()
-        let _address   = $form.find('[name=address]').val()
-        let is_default = $form.find('[name=is_default]').is(':checked')?1:0
-        if(_name == ''){
-            $.tips('姓名不能为空');
-            $form.find('[name=name]').focus();
-            return false;
-        }
-        if(_tel == ''){
-            $.tips('电话号码不能为空');
-            $form.find('[name=tel]').focus();
-            return false
-        };
-        if(!(/^1[3|4|5|7|8]\d{9}$/.test(_tel))){
-            $.tips('请输入正确的手机号');
-            $form.find('input[name=tel]').focus();
-            return false;
-        };
-        if(_address == ''){
-            $.tips('地址不能为空');
-            $form.find('[name=address]').focus();
-            return false
-        };
-        let param = {
-            name:_name,
-            tel:_tel,
-            address:_address,
-            is_default:is_default
-        };
-        if(!$btn.hasClass('disabled')){
-            $.ajax({
-                url: config.url + '/user/address',
+        let id = this.props.params.AddressId
+        if(id){
+            this.serverRequest = $.ajax({
+                url: config.url + '/user/address/' + id,
                 type: 'POST',
                 dataType: 'json',
-                data: param,
+                data: {},
                 beforeSend:(request)=>{
+                    $.loading.show()
                     config.setRequestHeader(request);
-                    $btn.addClass('disabled').html('提交中')
                 },
                 error:(error)=>{
                     config.ProcessError(error);
                 },
                 success:(data)=>{
-                    $btn.removeClass('disabled').html('确认')
-                    if(parseInt(data.code) == 0){
-                        window.location.hash = '#/Address/'+this.props.params.transfertype
+                    if(parseInt(data.code)==0){
+                        this.setState({
+                            checked: data.data.is_default == 1 ? true : false,
+                            name: data.data.name,
+                            tel: data.data.tel,
+                            address: data.data.address,
+                            disabled:false
+                        })
+                        // this.props.dispatch(EditAddress(data.data))
+                        $.loading.hide()
                     }
                 }
             })
         }
+        $.loading.hide();
     }
-    ChangeDefault(e){
-        this.setState({
-            checked:!this.state.checked
-        })
+    componentWillUnmount() {
+        this.serverRequest && this.serverRequest.abort();
     }
     render(){
         return (
             <div className="main">
                 <h1 className="address-header">请您填写收货地址信息！</h1>
                 <h2 className="address-title">填写收货地址</h2>
-                <form className="address-form" ref="form">
+                <form className="address-form" ref="form" >
                     <label className="clearfix">
                         <span className="fl">姓名</span>
                         <div>
-                            <input type="text" name="name" defaultValue="" placeholder="最少两个字" />
+                            <input type="text" name="name" value={this.state.name} onChange={e=>this.handleAddressForm(e,'name')} placeholder="最少两个字" />
                         </div>
                     </label>
                     <label className="clearfix">
                         <span className="fl">电话</span>
                         <div>
-                            <input type="text" name="tel" defaultValue="" placeholder="手机号码或固定电话" />
+                            <input type="text" name="tel" value={this.state.tel} onChange={e=>this.handleAddressForm(e,'tel')} placeholder="手机号码或固定电话" />
                         </div>
                     </label>
                     <label>
                         <span className="fl">地址</span>
                         <div>
-                            <textarea defaultValue="" name="address" placeholder="5-60个字，且不能全部为数字"></textarea>
+                            <textarea value={this.state.address} name="address" onChange={e=>this.handleAddressForm(e,'address')} placeholder="5-60个字，且不能全部为数字"></textarea>
                         </div>
                     </label>
                     <div>
-                        <label className={this.state.checked?"checked":""}>
-                            <input type="checkbox" name="is_default" id="" onChange={e=>this.ChangeDefault(e)} checked />
+                        <label className={this.state.checked ? " checked" : ""}>
+                            <input type="checkbox" name="is_default" id="" onChange={e=>this.handleAddressForm(e,'is_default')} checked={this.state.checked} />
                             设置成默认收货地址
                         </label>
                     </div>
-                    <span className="btn-add-address" onClick={e=>this.formSubmit(e)}>确认</span>
+                    <span className="btn-add-address" onClick={e=>this.SubmitAddressForm(e)}>{this.state.disabled?"提交中···":"确认"}</span>
                 </form>
             </div>
         )

@@ -35,14 +35,16 @@
         }
         &::before{
             display: inline-block;
+            float: left;
             content:'';
             .wpx2rem(22);
-            .hpx2rem(22);
-            .vpx2rem(-5);
-            background-image: url(../images/icon_product_footer.png);
+            .hpx2rem(35);
+            // .vpx2rem(-5);
+            // background-image: url(../images/icon_product_footer.png);
+            background-image: url('@{url}/icon_product_footer.png');
             background-repeat: no-repeat;
             background-size: 236% auto;
-            .bgppx2rem(-15,-118);
+            .bgppx2rem(-15,-110);
             .mgrpx2rem(10);
         }
     }

@@ -19,6 +19,9 @@
             .mgrpx2rem(20);
             color:#686868;
             border:1px solid #D7D7D7;
+            a{
+                color:#686868;
+            }
         }
         a{
             display: block;
@@ -173,7 +176,8 @@
                 overflow: hidden;
                 margin-left: auto;
                 margin-right: auto;
-                background-image: url(../images/icon_success.png);
+                // background-image: url(../images/icon_success.png);
+                background-image: url('@{url}/icon_success.png');
                 background-repeat: no-repeat;
                 background-size: 100% auto;
                 background-position: 0 0;
@@ -292,7 +296,8 @@
                 display: inline-block;
                 .wpx2rem(120);
                 .hpx2rem(20);
-                background-image: url(../images/icon_stars_small.png);
+                // background-image: url(../images/icon_stars_small.png);
+                background-image: url('@{url}/icon_stars_small.png');
                 background-repeat: no-repeat;
                 background-size: 100% auto;
                 &.stars-1{
@@ -383,11 +388,13 @@
             border: 0;
             color: #ED5565;
             background-color: #fff;
-            background-image: url(../images/icon_radio_default.png);
+            // background-image: url(../images/icon_radio_default.png);
+            background-image: url('@{url}/icon_radio_default.png');
             background-repeat: no-repeat;
             background-size: 100% auto;
             background-position: 0 0;
         }
+        input{display: none;}
     }
     textarea{
         display: block;
@@ -529,7 +536,8 @@
         // background-image: url(../images/icon_wating.png);
     }
     &.finished::before{
-        background-image: url(../images/icon_finished.png);
+        // background-image: url(../images/icon_finished.png);
+        background-image: url('@{url}/icon_finished.png');
     }
 }
 .ordernumber{

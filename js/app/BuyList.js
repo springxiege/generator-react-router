@@ -13,7 +13,9 @@ import CommonImage from '../components/CommonImage'
 class BuyList extends Component {
     constructor() {
         super();
-        this.state = {}
+        this.state = {
+
+        }
     }
 
     componentDidMount() {
@@ -26,7 +28,7 @@ class BuyList extends Component {
             } else {
                 this.props.dispatch(gotoBuy(OriginalBuyOrder));
                 let _data = this.props.state.BuyList;
-                let _user = OriginalBuyOrder.get_users;
+                let _user = OriginalBuyOrder.get_shop;
                 store.set('BuyUser', _user);
                 $.loading.hide();
             }
@@ -130,6 +132,37 @@ class BuyList extends Component {
         let tmp = [];
         let jsonArray = [];
         let flag = true;
+        let uniqueData = function(arr,field,count){
+            let narr = arr
+            if(narr.length > 1){
+                let first = narr.shift();
+                if(narr.length > 0){
+                    let next = narr.findIndex((value,index,array)=>{
+                        return field.map((val,index)=>{
+                            return first[val] == value[val]
+                        }).reduce((prev,next) => prev&&next )
+                    })
+                    if(next >= 0){
+                        first[count] += parseInt(narr[next].count);
+                        narr.splice(next,1);
+                        narr.splice(0,0,first);
+                        uniqueData(narr,field,count);
+                    }else{
+                        jsonArray.push(first);
+                        uniqueData(narr,field,count);
+                    }
+                }else{
+                    jsonArray.push(first)
+                }
+                
+            }else{
+                jsonArray.push(narr[0])
+            }
+            return narr
+        }
+        // 合并同属性商品
+        uniqueData(data,['selected','subselected'],'count');
+        /*
         let F_unique = function (item, field, count) {
             item.sort();
             for (let i = 1; i < item.length;) {
@@ -144,25 +177,27 @@ class BuyList extends Component {
             return item;
         }
         let dealData = F_unique(data, ['selected', 'subselected'], 'count')
-        for (let i = 0; i < dealData.length; i++) {
-            let item = dealData[i]
+        */
+        for (let i = 0; i < jsonArray.length; i++) {
+            let item = jsonArray[i]
             if(item.count>item.stock){
                 flag = false;
-                dealData[i].count = item.stock;
+                jsonArray[i].count = item.stock;
                 break;
             }
         }
+        
         if(!flag){
             $.confirm({
                 content:'所选商品库存不足，数量将调至库存数',
                 okBtn:function(){
-                    config.setStorage('BuyOrderList', 'data', dealData)
+                    config.setStorage('BuyOrderList', 'data', jsonArray)
                     window.location.hash = '#/Buy/buylist'
                 }
             })
             return false;
         }
-        config.setStorage('BuyOrderList', 'data', dealData)
+        config.setStorage('BuyOrderList', 'data', jsonArray)
         window.location.hash = '#/Buy/buylist'
     }
 

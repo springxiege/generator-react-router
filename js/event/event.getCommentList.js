@@ -27,11 +27,13 @@ export default function getCommentList(id,type){
         beforeSend:(request)=>{
             config.setRequestHeader(request);
             this.setState({
-                type:type
+                type:type,
+                nolist:false,
+                loadMore:true,
+                noMore:false
             })
-            $('.coment-list').remove();
-            $('.nolist').hide();
-            $('#loading-more').show();
+            // $('.coment-list').remove();
+            this.props.dispatch(GetComment([]))
         },
         error:(error)=>{
             config.ProcessError(error);
@@ -54,7 +56,6 @@ export default function getCommentList(id,type){
 
                     },800);
                     if(!data.data.next_page_url){
-                        $('#loading-more').html('已全部加载');
                         this.setState({
                             flag:false,
                             noMore:true
@@ -66,13 +67,13 @@ export default function getCommentList(id,type){
                         })
                     }
                 }else{
-                    this.props.dispatch(GetComment([]))
-                    $('#loading-more').hide();
-                    $('.nolist').show();
                     this.setState({
                         flag:false,
-                        noMore:true
+                        noMore:true,
+                        loadMore:false,
+                        nolist:true
                     })
+                    this.props.dispatch(GetComment([]))
                 };
                 this.setState({
                     loadComment:false,

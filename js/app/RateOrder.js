@@ -40,6 +40,7 @@ class RateOrder extends Component{
                     // 如果token失效
                 }
             },
+            loadMore:true
         };
         this.LoadMorePageData = LoadMorePageData.bind(this);
         this.scrollLoading = scrollLoading.bind(this);
@@ -71,13 +72,20 @@ class RateOrder extends Component{
                         _this.scrollLoading();
                         // 加载更多列表
                         if(parseInt(data.data.last_page) <= 1){
-                            $('#loading-more').html('已全部加载')
+                            // $('#loading-more').html('已全部加载')
+                            this.setState({
+                                loadMore:true,
+                                noMore:true
+                            })
                         }else{
                             window.addEventListener('scroll',_this.LoadMorePageData);
                             window.addEventListener('scroll',_this.scrollLoading);
                         };
                         if(parseInt(data.data.last_page) === 0){
-                            $('#loading-more').hide();
+                            // $('#loading-more').hide();
+                            this.setState({
+                                loadMore:false
+                            })
                         }
                     }
                 }
@@ -173,16 +181,17 @@ class RateOrder extends Component{
                                 小计：<span>{_totalPrice}</span>元
                             </div>
                             <div className="part-funcs">
-                                {item.reply_id <= 0 ? (
-                                    <span className="fr"><Link to={`/Comment/${item.id}`}>评价</Link></span>
-                                ) : (
-                                    item.reply_id > 1 ? (
-                                        <span className="fr"><Link to={`/Comment/${item.id}/add`}>追评</Link></span>
-                                        
+                                {item.comment_cnt < 3 ? (
+                                    item.comment_cnt == 0 ? (
+                                        <span className="fr"><Link to={`/Comment/${item.id}`}>评价</Link></span>
                                     ) : (
-                                        <span className="fr">待商家回复</span>
+                                        item.comment_cnt == 1 ? (
+                                            <span className="fr"><Link to={`/Comment/${item.id}/add`}>追评</Link></span>
+                                        ) : (
+                                            <span className="fr"><Link to={`/Comment/${item.id}/add`}>再次追评</Link></span>
+                                        )
                                     )
-                                )}
+                                ) : ''}
 
                                 <span className="fr" onClick={e=>this.ShowComment(e,item.id)}>查看评价</span>
                             </div>
@@ -215,7 +224,7 @@ class RateOrder extends Component{
         return (
             <div>
                 {_HTML}
-                <p id="loading-more">列表加载中···</p>
+                <p id="loading-more" style={{display:this.state.loadMore?"block":"none"}}>{this.state.noMore?"已加载全部":'列表加载中···'}</p>
             </div>
         )
     }

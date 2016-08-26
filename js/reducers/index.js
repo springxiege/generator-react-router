@@ -5,7 +5,7 @@ import GoodsDetail from './reducer.GoodsDetail'
 import MyCollect from './reducer.MyCollect'
 import ShopCart from './reducer.ShopCart'
 import Address from './reducer.Address'
-import AddressEdit from './reducer.AddressEdit'
+// import AddressEdit from './reducer.AddressEdit'
 // import ReturnAddress from './reducer.ReturnAddress'
 // import ReturnAddressEdit from './reducer.ReturnAddressEdit'
 import GoodsList from './reducer.GoodsList'
@@ -26,7 +26,7 @@ const trade = combineReducers({
     MyCollect:MyCollect,                        //收藏列表
     ShopCart:ShopCart,                          //购物车
     Address:Address,                            //地址库
-    AddressEdit:AddressEdit,                    //编辑地址
+    // AddressEdit:AddressEdit,                    //编辑地址
     // ReturnAddress:ReturnAddress,                //退换货地址库
     // ReturnAddressEdit:ReturnAddressEdit,        //退换货地址编辑
     GoodsList:GoodsList,                        //全部宝贝列表

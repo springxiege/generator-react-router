@@ -4,7 +4,7 @@ import {
 } from '../actions/ActionTypes'
 const initialState = {
     name:'获取中···',
-    headimgurl:"/images/msg.png",
+    headimgurl:"http://s.51lianying.com/images/xds/trade/msg.png",
     country:"中国",
     content:"浙江",
     city:"杭州"

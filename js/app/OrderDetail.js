@@ -1,17 +1,19 @@
 import React,{Component} from 'react'
 import {Link} from 'react-router'
-import {findDOMNode} from 'react-dom'
+// import {findDOMNode} from 'react-dom'
 import {connect} from 'react-redux'
 import { 
     getOrderDetail
 } from '../actions/ActionFuncs'
 import CommonImage from '../components/CommonImage'
-// import copyToClipboard from '../event/event.copyToClipboard'
+import CommonLogo from '../components/CommonLogo'
+import ButtonCenter from '../components/ButtonCenter'
 class OrderDetail extends Component{
     constructor(){
         super();
     }
     componentDidMount(){
+        document.title = '订单详情'
         let _type = this.props.params.ordertype
         let _params = {}
         if(_type == 'Return'){
@@ -41,80 +43,40 @@ class OrderDetail extends Component{
     componentWillUnmount() {
         
     }
-    doReturnOrder(e){
-        let _ids = [this.props.state.id]
-        $.confirm({
-            titleclsName:'lytitle',
-            title:'请选择退款理由',
-            content:'<select name="reason" id="reason">'
-                        +'<option value="七天无理由退货">七天无理由退货</option>'
-                        +'<option value="不想要了">不想要了</option>'
-                        +'<option value="卖家未按时间发货">卖家未按时间发货</option>'
-                        +'<option value="冲动了，买错了">冲动了，买错了</option>'
-                    +'</select>',
-            okBtn:function(){
-                var _reason = $('#reason').val();
-                $.ajax({
-                    url: config.url + '/orders/abandon',
-                    type: 'PUT',
-                    dataType: 'json',
-                    data: {
-                        type:1,
-                        abandon_reason:_reason,
-                        ids:_ids
-                    },
-                    beforeSend:(request)=>{
-                        config.setRequestHeader(request);
-                    },
-                    error:(error)=>{
-                        config.ProcessError(error);
-                    },
-                    success:(data)=>{
-                        if(parseInt(data.code) === 0){
-                            $.tips(data.data.msg,800,function(){
-                                window.location.hash = '#/ReturnOrder'
-                            })
-                        }
-                    }
-                })
-                
-            }
-        })
-    }
-    ConfirmOrder(e){
-        let _id = $(findDOMNode(e.target)).data('id')
-        let _ids = [_id]
-        $.confirm({
-            titleclsName:'lytitle',
-            contentclsName:'lynote',
-            title:'<p>我要联赢提示</p>',
-            content:'<p>1.确认收货后将无法通过系统发起退换货;</p><p>2.请您再三确认收到的宝贝是否满意再确认收货</p>',
-            time:5,
-            okBtn:function(){
-                $.ajax({
-                    url: config.url + '/orders/parcel',
-                    type: 'put',
-                    dataType: 'json',
-                    data: {
-                        ids:_ids
-                    },
-                    beforeSend:(request)=>{
-                        config.setRequestHeader(request);
-                    },
-                    error:(error)=>{
-                        config.ProcessError(error);
-                    },
-                    success:(data)=>{
-                        // console.log(data)
-                        if(parseInt(data.code) === 0){
-                            $.tips(data.data.msg)
-                            window.location.hash = '#//RateOrder'
-                        }
-                    }
-                })
-            }
-        })
-    }
+    // ConfirmOrder(e){
+    //     let _id = $(findDOMNode(e.target)).data('id')
+    //     let _ids = [_id]
+    //     $.confirm({
+    //         titleclsName:'lytitle',
+    //         contentclsName:'lynote',
+    //         title:'<p>我要联赢提示</p>',
+    //         content:'<p>1.确认收货后将无法通过系统发起退换货;</p><p>2.请您再三确认收到的宝贝是否满意再确认收货</p>',
+    //         time:5,
+    //         okBtn:function(){
+    //             $.ajax({
+    //                 url: config.url + '/orders/parcel',
+    //                 type: 'put',
+    //                 dataType: 'json',
+    //                 data: {
+    //                     ids:_ids
+    //                 },
+    //                 beforeSend:(request)=>{
+    //                     config.setRequestHeader(request);
+    //                 },
+    //                 error:(error)=>{
+    //                     config.ProcessError(error);
+    //                 },
+    //                 success:(data)=>{
+    //                     // console.log(data)
+    //                     if(parseInt(data.code) === 0){
+    //                         $.tips(data.data.msg)
+    //                         window.location.hash = '#//RateOrder'
+    //                     }
+    //                 }
+    //             })
+    //         }
+    //     })
+    // }
     UpdateOrder(e){
         $.tips('提醒发货成功')
     }
@@ -123,16 +85,41 @@ class OrderDetail extends Component{
         let item = _data[0];
         return (
             <div className="main pdb0">
-                {parseInt(item.status) === 0 ? (
-                    <div className="orderheader">买家待付款</div>
-                ) : (
-                    parseInt(item.parcel_status) === 0 ? (
-                        <div className="orderheader">卖家待发货</div>
+                {parseInt(item.is_abandon) === 0 ? (
+                    parseInt(item.status) === 1 ? (
+                        <div className="orderheader">待付款</div>
                     ) : (
-                        parseInt(item.parcel_status) === 1 ? (
-                            <div className="orderheader">卖家已发货</div>
+                        parseInt(item.status) === 2 ? (
+                            parseInt(item.parcel_status) === 0 ? (
+                                <div className="orderheader">未发货</div>
+                            ) : (
+                                parseInt(item.parcel_status) === 1 ? (
+                                    <div className="orderheader">已发货</div>
+                                ) : (
+                                    <div className="orderheader">已收货</div>
+                                )
+                            )
                         ) : (
-                            <div className="orderheader">买家已收货</div>
+                            <div className="orderheader">订单已取消</div>
+                        )
+                        
+                    )
+                ): (
+                    item.deleted_at ? (
+                        <div className="orderheader">订单交易完成</div>
+                    ) : (
+                        parseInt(item.abandon_type) === 1 ? (
+                            parseInt(item.is_confirm) === 0 ? (
+                                <div className="orderheader">申请退款(退货)中</div>
+                            ) : (
+                                <div className="orderheader">退款(退货)中</div>
+                            )
+                        ) : (
+                            parseInt(item.is_confirm) === 0 ? (
+                                <div className="orderheader">申请换货中</div>
+                            ) : (
+                                <div className="orderheader">换货中</div>
+                            )
                         )
                     )
                 )}
@@ -145,7 +132,7 @@ class OrderDetail extends Component{
                         <div className="main-module" key={index}>
                             <div className="part-item">
                                 <h3>
-                                    <img src={item.shop.shop_logo||'/images/shop_logo.gif'} alt="" />
+                                    <CommonLogo src={item.shop.shop_logo} />
                                     {item.shop.shop_name}
                                     {item.is_abandon == 0 ? (
                                         item.status == 1 ? (
@@ -217,6 +204,7 @@ class OrderDetail extends Component{
                         </div>
                     </div>
                 </div>*/}
+                <ButtonCenter />
             </div>
         )
     }

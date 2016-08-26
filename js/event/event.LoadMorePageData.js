@@ -37,7 +37,9 @@ export default function LoadMorePageData(){
                 },
                 beforeSend:(request)=>{
                     this.setState({
-                        flag:false
+                        flag:false,
+                        loadMore:true,
+                        noMore:false
                     })
                     config.setRequestHeader(request);
                 },
@@ -56,9 +58,10 @@ export default function LoadMorePageData(){
                         });
                         if(parseInt(nextpage) > parseInt(data.data.last_page)){
                             this.setState({
-                                noMore:true
+                                noMore:true,
+                                loadMore:true
                             });
-                            $('#loading-more').html('已全部加载');
+                            // $('#loading-more').html('已全部加载');
                         };
                     }else{
                         this.setState({

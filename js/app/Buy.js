@@ -112,7 +112,7 @@ class Buy extends Component{
                     store.remove('BuyTempOrder');
                     window.location.hash = '#/SelectPay/'+data.data.data.orderNumber
                 }else{
-                    $.tips('错误代码:'+data.code+','+data.data.msg.msg);
+                    $.tips(data.data.msg.msg);
                 }
             }
         });
@@ -135,8 +135,8 @@ class Buy extends Component{
                         return (
                             <div className="part-item" key={index}>
                                 <h3>
-                                    <CommonLogo src={item.user.logo} />
-                                    {item.user.realname||''}
+                                    <CommonLogo src={item.user.shop_logo} />
+                                    {item.user.shop_name||''}
                                 </h3>
                                 <div className="part-list">
                                     {item.list.map((subitem,subindex)=>{

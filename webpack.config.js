@@ -4,7 +4,7 @@ module.exports = {
   // entry: './test',
   entry:'./js/common/Router',
   output: {
-    path: './dist/js/app/',
+    path: './src/js/',
     filename: 'bundle.js'
   },
   resolve:{
@@ -39,6 +39,14 @@ module.exports = {
     // }),
     new webpack.optimize.DedupePlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
-  ]
+    new webpack.NoErrorsPlugin(),
+    new webpack.DefinePlugin({
+      "process.env": {
+        NODE_ENV: JSON.stringify("production") 
+      }
+    })
+  ],
+  externals:{
+    
+  }
 };

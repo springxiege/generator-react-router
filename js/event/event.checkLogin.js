@@ -4,8 +4,8 @@
  */
 export default function checkLogin(){
     if(!window.config.isWX){
-        if(store.enabled){
-            var tradeStore = store.get('trade');
+        if(window.sessionStorage){
+            var tradeStore = JSON.parse(window.sessionStorage.getItem('trade'));
             if(!tradeStore){
                 window.location.hash = '#/Register/'
                 return false;

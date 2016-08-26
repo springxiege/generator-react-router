@@ -39,6 +39,7 @@ class UnfilledOrder extends Component{
                     // 如果token失效
                 }
             },
+            loadMore:true
         };
         this.LoadMorePageData = LoadMorePageData.bind(this);
         this.scrollLoading = scrollLoading.bind(this);
@@ -69,13 +70,20 @@ class UnfilledOrder extends Component{
                     _this.scrollLoading();
                     // 加载更多列表
                     if(parseInt(data.data.last_page) <= 1){
-                        $('#loading-more').html('已全部加载')
+                        // $('#loading-more').html('已全部加载')
+                        this.setState({
+                            loadMore:true,
+                            noMore:true
+                        })
                     }else{
                         window.addEventListener('scroll',_this.LoadMorePageData);
                         window.addEventListener('scroll',_this.scrollLoading);
                     };
                     if(parseInt(data.data.last_page) === 0){
-                        $('#loading-more').hide();
+                        // $('#loading-more').hide();
+                        this.setState({
+                            loadMore:false
+                        })
                     }
                 }
             }
@@ -88,61 +96,62 @@ class UnfilledOrder extends Component{
         window.removeEventListener('scroll',this.scrollLoading);
     }
     UpdateOrder(e){
-        if(store.enabled){
-            if(!store.get('UpdataOrder')){
-                var time = new Date()
-            }
-        }else{
-            alert('This browser does not supports localStorage')
-        }
+        // if(store.enabled){
+        //     if(!store.get('UpdataOrder')){
+        //         var time = new Date()
+        //     }
+        // }else{
+        //     alert('This browser does not supports localStorage')
+        // }
         $.tips('提醒发货成功')
     }
-    doReturnOrder(e){
-        let $order = $(e.target).closest('.main-module')
-        let _ids = []
-        $order.find('.part-list').each(function(index,item){
-            _ids.push($(item).data('id'))
-        })
-        $.confirm({
-            titleclsName:'lytitle',
-            title:'请选择退款理由',
-            content:'<select name="reason" id="reason">'
-                        +'<option value="七天无理由退货">七天无理由退货</option>'
-                        +'<option value="不想要了">不想要了</option>'
-                        +'<option value="卖家未按时间发货">卖家未按时间发货</option>'
-                        +'<option value="冲动了，买错了">冲动了，买错了</option>'
-                    +'</select>',
-            okBtn:function(){
-                var _reason = $('#reason').val();
-                $.ajax({
-                    url: config.url + '/orders/abandon',
-                    type: 'POST',
-                    dataType: 'json',
-                    data: {
-                        _method:'PUT',
-                        type:1,
-                        abandon_reason:_reason,
-                        ids:_ids
-                    },
-                    beforeSend:(request)=>{
-                        config.setRequestHeader(request);
-                    },
-                    error:(error)=>{
-                        config.ProcessError(error);
-                    },
-                    success:(data)=>{
-                        // console.log(data)
-                        if(parseInt(data.code) === 0){
-                            $.tips(data.data.msg,800,function(){
-                                window.location.hash = '#/ReturnOrder'
-                            })
-                        }
-                    }
-                })
 
-            }
-        })
-    }
+    // doReturnOrder(e){
+    //     let $order = $(e.target).closest('.main-module')
+    //     let _ids = []
+    //     $order.find('.part-list').each(function(index,item){
+    //         _ids.push($(item).data('id'))
+    //     })
+    //     $.confirm({
+    //         titleclsName:'lytitle',
+    //         title:'请选择退款理由',
+    //         content:'<select name="reason" id="reason">'
+    //                     +'<option value="七天无理由退货">七天无理由退货</option>'
+    //                     +'<option value="不想要了">不想要了</option>'
+    //                     +'<option value="卖家未按时间发货">卖家未按时间发货</option>'
+    //                     +'<option value="冲动了，买错了">冲动了，买错了</option>'
+    //                 +'</select>',
+    //         okBtn:function(){
+    //             var _reason = $('#reason').val();
+    //             $.ajax({
+    //                 url: config.url + '/orders/abandon',
+    //                 type: 'POST',
+    //                 dataType: 'json',
+    //                 data: {
+    //                     _method:'PUT',
+    //                     type:1,
+    //                     abandon_reason:_reason,
+    //                     ids:_ids
+    //                 },
+    //                 beforeSend:(request)=>{
+    //                     config.setRequestHeader(request);
+    //                 },
+    //                 error:(error)=>{
+    //                     config.ProcessError(error);
+    //                 },
+    //                 success:(data)=>{
+    //                     // console.log(data)
+    //                     if(parseInt(data.code) === 0){
+    //                         $.tips(data.data.msg,800,function(){
+    //                             window.location.hash = '#/ReturnOrder'
+    //                         })
+    //                     }
+    //                 }
+    //             })
+
+    //         }
+    //     })
+    // }
     render(){
         let _HTML = (<p className="nolist">暂无待发货订单</p>)
         let _data = this.props.state.data
@@ -181,7 +190,7 @@ class UnfilledOrder extends Component{
                             </div>
                             <div className="part-funcs">
                                 <span className="fr" onClick={e=>this.UpdateOrder(e)}>提醒发货</span>
-                                <span className="fr"><Link to={`/ReturnsReason/${item.items[0].id}/UnfilledOrder`}></Link> 退款</span>
+                                <span className="fr"><Link to={`/ReturnsReason/${item.items[0].id}/UnfilledOrder`}>退款</Link></span>
                             </div>
                         </div>
                     </div>
@@ -191,7 +200,7 @@ class UnfilledOrder extends Component{
         return (
             <div>
                 {_HTML}
-                <p id="loading-more">列表加载中···</p>
+                <p id="loading-more" style={{display:this.state.loadMore?"block":"none"}}>{this.state.noMore?"已加载全部":'列表加载中···'}</p>
             </div>
         )
     }

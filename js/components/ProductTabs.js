@@ -8,6 +8,7 @@ import {
 } from '../actions/ActionFuncs'
 import ProductDetailsChild from './ProductDetailsChild.js';
 import ProductForSale from './ProductForSale.js';
+import CommonLogo from './CommonLogo'
 import scrollLoading from '../event/event.scrollLoading'
 import getCommentList from '../event/event.getCommentList'
 import LoadMorePageData from '../event/event.LoadMorePageData'
@@ -33,7 +34,9 @@ class ProductTabs extends React.Component {
                 }else{
                     // 如果token失效
                 }
-            }
+            },
+            nolist:false,
+            loadMore:true
         };
         this.setFixed = setFixed.bind(this);
         this.scrollLoading = scrollLoading.bind(this);
@@ -79,7 +82,6 @@ class ProductTabs extends React.Component {
                 }
             }
         });
-        this.scrollLoading();
         window.addEventListener('scroll',this.setFixed);
         window.addEventListener('scroll',this.scrollLoading);
         this.setState({
@@ -130,29 +132,62 @@ class ProductTabs extends React.Component {
                                 </div>
                                 <div className="coment-container">
                                     {!CommentDataArray||!CommentDataArray.length?(
-                                        <p className="nolist" style={{display:'none'}}>暂无评论</p>
+                                        this.state.nolist ? (
+                                            <p className="nolist">暂无评论</p>
+                                        ) : ''
+                                        
                                     ):CommentDataArray.map((item,index)=>{
                                         let _clsName = 'coment-stars stars'+item.satisfaction_star
                                         let buy = item.buy
-                                        return (
-                                            <div className="coment-list" key={index}>
-                                                <div className="coment-header clearfix">
-                                                    <img src={buy.headimgurl||'/images/shop_logo.gif'} alt={buy.id} className="fl" />
-                                                    <span className="coment-user fl">{buy.name}</span>
-                                                    <span className="coment-time fr">{item.created_at}</span>
+                                        if(item.type == 1){
+                                            if(item.satisfaction_star>0){
+                                                return (
+                                                    <div className="coment-list" key={index}>
+                                                        <div className="coment-header clearfix">
+                                                            <CommonLogo src={buy.headimgurl} className="fl" />
+                                                            <span className="coment-user fl">{buy.name}</span>
+                                                            <span className="coment-time fr">{item.created_at}</span>
+                                                        </div>
+                                                        <div className="coment-star">
+                                                            <span className={_clsName}></span>
+                                                        </div>
+                                                        <div className="coment-info">{item.content}</div>
+                                                        <div className="coment-replay-wrapper">
+                                                            <div className="coment-simple">购买时间:{item.created_at}</div>
+                                                            <div className="coment-simple">规格分类:{item.order ? item.order.feature_main : ''} {item.order ? item.order.feature_sub : ''}</div>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            }else{
+                                                return (
+                                                    <div className="coment-list" key={index}>
+                                                        <div className="coment-info-add">
+                                                            <div className="coment-info">
+                                                                [追加]{item.content}
+                                                            </div>
+                                                            <div className="coment-replay-wrapper">
+                                                                <div className="coment-simple">追评时间:{item.created_at}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            }
+                                        }else{
+                                            return (
+                                                <div className="coment-list" key={index}>
+                                                    <div className="coment-trade-replay">
+                                                        <div className="coment-trade-replay-info">
+                                                            [商家]{item.content}
+                                                        </div>
+                                                        <p>反馈时间:{item.created_at}</p>
+                                                    </div>
                                                 </div>
-                                                <div className="coment-star">
-                                                    <span className={_clsName}></span>
-                                                </div>
-                                                <div className="coment-info">{item.content}</div>
-                                                <div className="coment-replay-wrapper">
-                                                    <div className="coment-simple">购买时间:{item.created_at}</div>
-                                                    <div className="coment-simple">颜色分类:{item.type}</div>
-                                                </div>
-                                            </div>
-                                        )
+                                            )
+                                        }
+                                        
+                                        
                                     })}
-                                    <p id="loading-more">评论加载中···</p>
+                                    <p id="loading-more" style={{display:this.state.loadMore?'block':'none'}}>{this.state.noMore?"已全部加载":"评论加载中···"}</p>
                                 </div>
                             </div>
                         </div>

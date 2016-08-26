@@ -47,7 +47,7 @@ export default function doBuy(){
         goods.select       = _select;
         goods.subselect    = _subselect;
         goods.fare         = _data.data.fare;
-        goods.get_users    = _data.data.get_users;
+        goods.get_shop    = _data.data.get_shop;
         goods.goods_images = _data.data.goods_images;
         goods.max_price    = _data.data.max_price;
         goods.goods_addon  = _data.data.goods_addon;

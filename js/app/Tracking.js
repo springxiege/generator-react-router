@@ -121,7 +121,7 @@ class Tracking extends Component{
                     <div className="Application-notes">
                         <h3>提示：</h3>
                         <p>点击号码直接拨打卖家电话，</p>
-                        <p>在"退换货"页面点击"售后跟踪"可进入当面。</p>
+                        <p>在“退换货”页面点击“售后跟踪”可进入当页。</p>
                     </div>
                     {_data.address ? (
                         _data.parcel_num ? (

@@ -28,7 +28,8 @@
     left:50%;
     .bpx2rem(40);
     .mglpx2rem(-95);
-    background-image: url(../images/icon_copyright.png);
+    // background-image: url(../images/icon_copyright.png);
+    background-image: url('@{url}/icon_copyright.png');
     background-repeat: no-repeat;
     background-size: 100% auto;
     background-position: 0 0;
@@ -85,7 +86,8 @@ footer{
     display: none;
 }
 .main-footer-icon a::before{
-    background-image: url(../images/icon_product_footer.png);
+    // background-image: url(../images/icon_product_footer.png);
+    background-image: url('@{url}/icon_product_footer.png');
     background-repeat: no-repeat;
     background-size: 180% auto;
 }
@@ -131,7 +133,8 @@ footer{
     display: none;
     width: 2rem;
     height: 2rem;
-    background-image: url(../images/icon-totop.png);
+    // background-image: url(../images/icon-totop.png);
+    background-image: url('@{url}/icon-totop.png');
     background-repeat: no-repeat;
     background-position: 0 0;
     background-size: 100% auto;
@@ -143,7 +146,8 @@ footer{
 }
 .btn-center{
     display: block;
-    background-image: url(../images/btn-center.png);
+    // background-image: url(../images/btn-center.png);
+    background-image: url('@{url}/btn-center.png');
     a{
         display: block;
         width: 100%;
@@ -187,7 +191,8 @@ footer{
                 display: block;
                 .wpx2rem(30);
                 .hpx2rem(30);
-                background-image: url(../images/icon_close.png);
+                // background-image: url(../images/icon_close.png);
+                background-image: url('@{url}/icon_close.png');
                 background-repeat: no-repeat;
                 background-size: 100% auto;
                 background-position: 0 0;
@@ -223,7 +228,8 @@ footer{
                             .hpx2rem(35);
                             .vpx2rem(-4);
                             .mgrpx2rem(18);
-                            background-image: url(../images/icon_bell.png);
+                            // background-image: url(../images/icon_bell.png);
+                            background-image: url('@{url}/icon_bell.png');
                             background-repeat: no-repeat;
                             background-size: 100% auto;
                             background-position: 0 0;
@@ -278,6 +284,11 @@ footer{
                     }
                     &.disabled{
                         color:#939393;
+                    }
+                    &.pop-btn-block{
+                        display: block;
+                        width: 100%;
+                        border:0;
                     }
                 }
             }
@@ -356,7 +367,7 @@ footer{
     .ftpx2rem(36);
     text-align: center;
     color: #333;
-    background-color: #fff;
+    // background-color: #fff;
 }
 .protocal-content{
     .pdlpx2rem(20);
@@ -365,7 +376,7 @@ footer{
     .ftpx2rem(26);
     .lhpx2rem(48);
     color:#333;
-    background-color: #fff;
+    // background-color: #fff;
 }
 /**
  * 购物车底部
@@ -400,7 +411,8 @@ footer{
                     border:0;
                     position: relative;
                     z-index: 1;
-                    background-image: url(../images/icon_ok_cancle.png);
+                    // background-image: url(../images/icon_ok_cancle.png);
+                    background-image: url('@{url}/icon_ok_cancle.png');
                     background-repeat: no-repeat;
                     background-size: 100% auto;
                     .bgppx2rem(0,0);
@@ -435,6 +447,9 @@ footer{
         .wpx2rem(210);
         height:100%;
         background-color: #FA462E;
+        &.disabled{
+            background-color: #b7b7b7;
+        }
     }
 }
 .buy-footer{
@@ -465,6 +480,7 @@ footer{
     .hpx2rem(40);
     .lhpx2rem(40);
     .mgbpx2rem(20);
+    .mgtpx2rem(20);
     text-align: center;
     color:#777;
 }
@@ -477,7 +493,7 @@ footer{
     width:100%;
     height:100%;
     background-color:rgba(255,255,255,.98);
-    background-image: url('/images/3.gif');
+    background-image: url('@{url}/3.gif');
     background-size: 2.86rem 2.96rem;
     background-position: 50% 40%;
     background-repeat: no-repeat;
@@ -488,135 +504,6 @@ footer{
     top: 50%;
     left: 45%;
     z-index: 9999
-}
-
-.page-loader-circularSquare {
-    width: 0;
-    height: 0;
-    animation: circSquare 1.8s ease-in-out infinite;
-    -webkit-animation: circSquare 1.8s ease-in-out infinite;
-    -moz-animation: circSquare 1.8s ease-in-out infinite;
-    -ms-animation: circSquare 1.8s ease-in-out infinite;
-    -o-animation: circSquare 1.8s ease-in-out infinite;
-    animation: circSquare 1.8s ease-in-out infinite;
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    background-image: url('http://s.51lianying.com/logo-white.png');
-    background-color: #12abcc;
-}
-
-@-webkit-keyframes circSquare {
-    0% {
-        background-size: 0% 0%;
-    }
-    30% {
-        background-size: 0% 0%;
-        width: 1.25em;
-        height: 1.25em;
-    }
-    50% {
-        background-size: 0% 0%;
-        width: 1.5em;
-        height: 1.5em;
-        -moz-border-radius: 50%;
-        -webkit-border-radius: 50%;
-        border-radius: 50%;
-        -moz-transform: rotate(0.5turn);
-        -webkit-transform: rotate(0.5turn);
-        -o-transform: rotate(0.5turn);
-        transform: rotate(0.5turn);
-        -moz-box-shadow: -1.8em 0 0 #2ecc71, 1.8em 0 0 #3498db, -1.8em 0 0 #3498db, 1.8em 0 0 #f1c40f;
-        -webkit-box-shadow: -1.8em 0 0 #2ecc71, 1.8em 0 0 #3498db, -1.8em 0 0 #3498db, 1.8em 0 0 #f1c40f;
-        box-shadow: -1.8em 0 0 #2ecc71, 1.8em 0 0 #3498db, -1.8em 0 0 #3498db, 1.8em 0 0 #f1c40f
-    }
-    80%,
-    100% {
-        -moz-transform: rotate(1turn);
-        -webkit-transform: rotate(1turn);
-        -o-transform: rotate(1turn);
-        transform: rotate(1turn);
-        width: 30px;
-        height: 30px;
-        -moz-box-shadow: -0.625em -0.625em 0 .625em #12abcc, 0.625em -0.625em 0 .625em #12abcc, -0.625em .625em 0 .625em #12abcc, 0.625em .625em 0 .625em #12abcc;
-        -webkit-box-shadow: -0.625em -0.625em 0 .625em #12abcc, 0.625em -0.625em 0 .625em #12abcc, -0.625em .625em 0 .625em #12abcc, 0.625em .625em 0 .625em #12abcc;
-        box-shadow: -0.625em -0.625em 0 .625em #12abcc, 0.625em -0.625em 0 .625em #12abcc, -0.625em .625em 0 .625em #12abcc, 0.625em .625em 0 .625em #12abcc;
-    }
-}
-
-@-moz-keyframes circSquare {
-    0% {
-        background-size: 0% 0%;
-    }
-    30% {
-        background-size: 0% 0%;
-        width: 1.25em;
-        height: 1.25em;
-    }
-    50% {
-        background-size: 0% 0%;
-        width: 1.5em;
-        height: 1.5em;
-        -moz-border-radius: 50%;
-        -webkit-border-radius: 50%;
-        border-radius: 50%;
-        -moz-transform: rotate(0.5turn);
-        -webkit-transform: rotate(0.5turn);
-        -o-transform: rotate(0.5turn);
-        transform: rotate(0.5turn);
-        -moz-box-shadow: -1.8em 0 0 #2ecc71, 1.8em 0 0 #3498db, -1.8em 0 0 #3498db, 1.8em 0 0 #f1c40f;
-        -webkit-box-shadow: -1.8em 0 0 #2ecc71, 1.8em 0 0 #3498db, -1.8em 0 0 #3498db, 1.8em 0 0 #f1c40f;
-        box-shadow: -1.8em 0 0 #2ecc71, 1.8em 0 0 #3498db, -1.8em 0 0 #3498db, 1.8em 0 0 #f1c40f
-    }
-    80%,
-    100% {
-        -moz-transform: rotate(1turn);
-        -webkit-transform: rotate(1turn);
-        -o-transform: rotate(1turn);
-        transform: rotate(1turn);
-        width: 30px;
-        height: 30px;
-        -moz-box-shadow: -0.625em -0.625em 0 .625em #12abcc, 0.625em -0.625em 0 .625em #12abcc, -0.625em .625em 0 .625em #12abcc, 0.625em .625em 0 .625em #12abcc;
-        -webkit-box-shadow: -0.625em -0.625em 0 .625em #12abcc, 0.625em -0.625em 0 .625em #12abcc, -0.625em .625em 0 .625em #12abcc, 0.625em .625em 0 .625em #12abcc;
-        box-shadow: -0.625em -0.625em 0 .625em #12abcc, 0.625em -0.625em 0 .625em #12abcc, -0.625em .625em 0 .625em #12abcc, 0.625em .625em 0 .625em #12abcc;
-    }
-}
-
-@keyframes circSquare {
-    0% {
-        background-size: 0% 0%;
-    }
-    30% {
-        background-size: 0% 0%;
-        width: 1.25em;
-        height: 1.25em;
-    }
-    50% {
-        background-size: 0% 0%;
-        width: 1.5em;
-        height: 1.5em;
-        -moz-border-radius: 50%;
-        -webkit-border-radius: 50%;
-        border-radius: 50%;
-        -moz-transform: rotate(0.5turn);
-        -webkit-transform: rotate(0.5turn);
-        -o-transform: rotate(0.5turn);
-        transform: rotate(0.5turn);
-        -moz-box-shadow: -1.8em 0 0 #2ecc71, 1.8em 0 0 #3498db, -1.8em 0 0 #3498db, 1.8em 0 0 #f1c40f;
-        -webkit-box-shadow: -1.8em 0 0 #2ecc71, 1.8em 0 0 #3498db, -1.8em 0 0 #3498db, 1.8em 0 0 #f1c40f;
-        box-shadow: -1.8em 0 0 #2ecc71, 1.8em 0 0 #3498db, -1.8em 0 0 #3498db, 1.8em 0 0 #f1c40f
-    }
-    80%,
-    100% {
-        -moz-transform: rotate(1turn);
-        -webkit-transform: rotate(1turn);
-        -o-transform: rotate(1turn);
-        transform: rotate(1turn);
-        width: 30px;
-        height: 30px;
-        -moz-box-shadow: -0.625em -0.625em 0 .625em #12abcc, 0.625em -0.625em 0 .625em #12abcc, -0.625em .625em 0 .625em #12abcc, 0.625em .625em 0 .625em #12abcc;
-        -webkit-box-shadow: -0.625em -0.625em 0 .625em #12abcc, 0.625em -0.625em 0 .625em #12abcc, -0.625em .625em 0 .625em #12abcc, 0.625em .625em 0 .625em #12abcc;
-        box-shadow: -0.625em -0.625em 0 .625em #12abcc, 0.625em -0.625em 0 .625em #12abcc, -0.625em .625em 0 .625em #12abcc, 0.625em .625em 0 .625em #12abcc;
-    }
 }
 
 /**
@@ -645,7 +532,8 @@ footer{
     &.after.checked::after,
     &.before::before{
         border: 0;
-        background-image: url(../images/icon_ok_cancle.png);
+        // background-image: url(../images/icon_ok_cancle.png);
+        background-image: url('@{url}/icon_ok_cancle.png');
         background-repeat: no-repeat;
         background-size: 100% auto;
         background-position: 0 0;

@@ -1,7 +1,12 @@
 import React,{Component} from 'react'
 import {findDOMNode} from 'react-dom'
 export default class PaySuccess extends Component{
-
+    constructor(){
+        super();
+        this.state = {
+            seconds:10
+        }
+    }
     componentDidMount(){
         let _this = this
         if(this.props.params.payStatus == 1){
@@ -10,15 +15,16 @@ export default class PaySuccess extends Component{
             document.title = '支付失败'
         }
         $.loading.hide();
-        var c = 10;
         this.timer = setInterval(()=>{
-            if(c <= 0){
+            if(this.state.seconds <= 0){
                 clearInterval(_this.timer)
                 _this.timer = null;
                 window.location.hash = '#/UserCenter'
             }else{
-                c--;
-                $(findDOMNode(this.refs.countdown)).html(c);
+                let c = this.state.seconds - 1;
+                this.setState({
+                    seconds:c
+                })
             }
         },1000)
     }
@@ -40,11 +46,13 @@ export default class PaySuccess extends Component{
                     </div>
                 )}
                 <div className="main-pay-note">
-                    <p>搜索关注 “我要联赢” 微信公众号随时跟踪订单进度</p>
-                    <p><span ref="countdown">10</span>秒钟后跳转至<a href="#/UserCenter">个人中心</a></p>
+                    {/*<p>搜索关注 “我要联赢” 微信公众号随时跟踪订单进度</p>*/}
+                    <p><span>{this.state.seconds}</span>秒钟后跳转至<a href="#/UserCenter">个人中心</a></p>
+                    {/*
                     <p>
                         <img src="/images/code.jpg" alt="" />
                     </p>
+                    */}
                 </div>
                 <p className="main-pay-tel">联系客服：<a href="tel://4006728266">4006728266</a></p>
                 <div className="main-logo"></div>

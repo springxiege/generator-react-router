@@ -51,16 +51,16 @@ const initialState = {
         "id": 1,
         "description": "1",
         "goods_images": [
-            "/images/logobg.gif",
-            "/images/logobg.gif",
-            "/images/logobg.gif"
+            "http://s.51lianying.com/images/xds/trade/logobg.gif",
+            "http://s.51lianying.com/images/xds/trade/logobg.gif",
+            "http://s.51lianying.com/images/xds/trade/logobg.gif"
         ],
         "coumt_commet":{
             "bad_review":0,
             "count":0,
             "favorable_comment":0
         },
-        "content": "<p><img src=\"/images/2.jpg\"><p>",
+        "content": "<p><img src=\"http://s.51lianying.com/images/xds/trade/2.jpg\"><p>",
         "made_by": "1",
         "deliver_address": "1",
         "discount": "11.00",

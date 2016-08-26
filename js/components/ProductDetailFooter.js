@@ -16,7 +16,7 @@ class ProductDetailFooter extends React.Component {
     handleToLand(e,url){
         if(!window.config.isWX){
             if(store.enabled){
-                var tradeStore = store.get('trade');
+                var tradeStore = JSON.parse(window.sessionStorage.getItem('trade'));
                 if(!tradeStore){
                     window.location.hash = '#/Register/' + url
                 }else{

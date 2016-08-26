@@ -46,12 +46,12 @@ class UserCenter extends React.Component {
                         <div>
                             {_data.userDetail != undefined ? (
                                 _data.userDetail.headimgurl == '' ? (
-                                    <img src="/images/msg.png" alt="" />
+                                    <img src="http://s.51lianying.com/images/xds/trade/msg.png" alt="" />
                                 ) : (
                                     <img src={_data.userDetail.headimgurl} alt="" />
                                 )
                             ) : (
-                                <img src={"/images/msg.png"} alt="" />
+                                <img src={"http://s.51lianying.com/images/xds/trade/msg.png"} alt="" />
                             )}
                         </div>
                         <Link to="/Settings">设置</Link>

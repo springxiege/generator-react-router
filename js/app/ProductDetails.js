@@ -40,7 +40,7 @@ class ProductDetails extends React.Component {
                 $.loading.show();
             },
             error:(error)=>{
-                alert('网络错误，请重新打开页面！');
+                // alert('网络错误，请重新打开页面！');
                 // window.location.reload();
             },
             success: (data)=>{
@@ -51,12 +51,14 @@ class ProductDetails extends React.Component {
                     this.props.dispatch(GoodsDetail(data.data));
                     $.loading.hide();
                     // 详情页统计数据
-                    let tradeStore = store.get('trade');
+                    let tradeStore = JSON.parse(window.sessionStorage.getItem('trade'));
                     this.setState({
                         id:data.data.id
                     })
+                    // console.log('buyid=>',tradeStore)
                     if(tradeStore && tradeStore.userinfo){
-                        config.buyid = store.get('trade').userinfo.id
+                        config.buyid = tradeStore.userinfo.id
+
                         LYA({
                             action: ['user_visit', 'common'],
                             debug: false,
