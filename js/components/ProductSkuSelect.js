@@ -155,31 +155,33 @@ class ProductSkuSelect extends React.Component {
                     <div className="sku-module">
                         <div className="sku-main">
                             <span className="sku-close" onClick={e=>this._closeSKU(e)}><a href="javascript:;" title="关闭"></a></span>
-                            <div className="sku-item">
-                                <div className="sku-info clearfix">
-                                    <span className="sku-prop-name fl">规&nbsp;&nbsp;格</span>
-                                    <div className="sku-prop-item">
-                                        <ul className="clearfix">
-                                            {sku}
-                                        </ul>
-                                    </div>
-                                </div>
-                                {subskuwrap}
-                                <div className="sku-info-num clearfix">
-                                    <span className="sku-prop-name fl">数&nbsp;&nbsp;量</span>
-                                    <div className="sku-prop-item">
-                                        <div className={`sku-number clearfix ${this.state.stock == 0 ? "disabled":"" }`}>
-                                            <span className={_count == 1 ? "number-down btn-disabled fl" : "number-down fl"} onClick={e=>this._Decrement(e)} title="减"></span>
-                                            <input type="number" value={_count} min="1" max="10" ref="input" readOnly className="number-input fl" />
-                                            <span className={_count == this.state.stock ? "number-up btn-disabled fl" : "number-up fl"} onClick={e=>this._Increment(e)} title="加"></span>
+                            <div className="sku-wrapper">
+                                <div className="sku-item">
+                                    <div className="sku-info clearfix">
+                                        <span className="sku-prop-name fl">规&nbsp;&nbsp;格</span>
+                                        <div className="sku-prop-item">
+                                            <ul className="clearfix">
+                                                {sku}
+                                            </ul>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="main-price clearfix">
-                                    <div className="main-price-module fl">
-                                        合计：
-                                        <span className="main-money">{_GoodsSelectSku.amountprice}元</span>
-                                        <p><span>(含快递费{_fare}元)</span></p>
+                                    {subskuwrap}
+                                    <div className="sku-info-num clearfix">
+                                        <span className="sku-prop-name fl">数&nbsp;&nbsp;量</span>
+                                        <div className="sku-prop-item">
+                                            <div className={`sku-number clearfix ${this.state.stock == 0 ? "disabled":"" }`}>
+                                                <span className={_count == 1 ? "number-down btn-disabled fl" : "number-down fl"} onClick={e=>this._Decrement(e)} title="减"></span>
+                                                <input type="number" value={_count} min="1" max="10" ref="input" readOnly className="number-input fl" />
+                                                <span className={_count == this.state.stock ? "number-up btn-disabled fl" : "number-up fl"} onClick={e=>this._Increment(e)} title="加"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="main-price clearfix">
+                                        <div className="main-price-module fl">
+                                            合计：
+                                            <span className="main-money">{_GoodsSelectSku.amountprice}元</span>
+                                            <p><span>(含快递费{_fare}元)</span></p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -7,6 +7,7 @@ import {
 } from '../actions/ActionFuncs'
 import checkLogin from '../event/event.checkLogin'
 export default function doBuy(){
+    _hmt.push(['_trackEvent', 'BuyItNow', 'click', '立即购买']);
     if(!checkLogin()){return false;}
     let _data      = this.props.state.GoodsDetail
     let _selectObj = _data.GoodsSelectSku
@@ -16,6 +17,10 @@ export default function doBuy(){
     let _id        = _data.data.id
     let _title     = _data.data.title
     if(_select === null && _subselect === null){
+        if(_selectObj.isvisible){
+            $.tips('请选择规格');
+            return false;
+        }
         this.props.dispatch(ShowAndHideSelectSku());
         return false;
     }

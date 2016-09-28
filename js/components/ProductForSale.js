@@ -7,6 +7,20 @@ class ProductForSale extends React.Component {
     render() {
         return (
             <div className="main-product-sale swiper-slide">
+                {this.props.data.get_shop.wx_qrcode ? (
+                    <div className="shop bsb clearfix">
+                        <div className="shop_logo fl">
+                            <img src={this.props.data.get_shop.shop_logo||'http://s.51lianying.com/images/xds/trade/msg.png'} alt=""/>
+                            <p>{this.props.data.get_shop.shop_name||'小店'}</p>
+                        </div>
+                        <div className="shop_codeimg fr">
+                            <div className="codeimg-wrapper">
+                                <img src={this.props.data.get_shop.wx_qrcode} alt=""/>
+                            </div>
+                            <p>长按联系客服微信</p>
+                        </div>
+                    </div>
+                ) : ''}
                 <div className="main-table">
                     <h4>基本参数</h4>
                     <div className="main-table-body">
@@ -20,7 +34,17 @@ class ProductForSale extends React.Component {
                         </div>
                         <div className="main-table-tr clearfix">
                             <div className="main-table-td fl">保质时长</div>
-                            <div className="main-table-td"><p>{this.props.expire}</p></div>
+                            <div className="main-table-td">
+                                <p>
+                                    {this.props.expire == 1 ? "1年以内" : (
+                                        this.props.expire == 2 ? "1~2年" : (
+                                            this.props.expire == 3 ? "2~3年" : (
+                                                this.props.expire == 4 ? "3~5年" : "无限"
+                                            )
+                                        )
+                                    )}
+                                </p>
+                            </div>
                         </div>
                         <div className="main-table-tr clearfix">
                             <div className="main-table-td fl">售后方式</div>

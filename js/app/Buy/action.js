@@ -1,0 +1,2 @@
+ // 生成临时订单
+ export const GENERATE_TEMP_ORDERS = 'GENERATE_TEMP_ORDERS'

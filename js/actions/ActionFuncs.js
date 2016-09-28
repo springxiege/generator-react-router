@@ -301,7 +301,7 @@ export function getGoodsList(data){
     return {type:types.GOODSLIST,data}
 }
 export function getMoreGoodsList(data){
-    return {type:types.GET_MORE_GOODSLIST}
+    return {type:types.GET_MORE_GOODSLIST,data}
 }
 /**
  * 订单

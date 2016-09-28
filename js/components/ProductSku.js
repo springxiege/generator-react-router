@@ -7,6 +7,7 @@ import {connect} from 'react-redux'
 import {GoodsSelectedSku,ShowAndHideSelectSku} from '../actions/ActionFuncs'
 class SKU extends Component{
     selectsku(){
+        _hmt.push(['_trackEvent', 'sku', 'click', '选择规格属性']);
         this.props.dispatch(ShowAndHideSelectSku())
     }
     render(){

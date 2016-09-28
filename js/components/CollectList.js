@@ -6,6 +6,7 @@ import {
     getCollectList,
     CancelCollect
 } from '../actions/ActionFuncs'
+import Recommend from '../components/Recommend'
 import CommonImage from './CommonImage'
 import CommonLogo from './CommonLogo'
 class CollectList extends Component {
@@ -53,7 +54,6 @@ class CollectList extends Component {
             }
         })
         
-        
     }
     render(){
         let _data = this.props.data,collectHtml=0;
@@ -79,7 +79,7 @@ class CollectList extends Component {
                                 <CommonImage src={item.goods.goods_images} className="fl" />
                                 <div className="main-mycollect-info">
                                     <h5>{item.goods.title}</h5>
-                                    <p>&yen;{item.price} <span>&yen;{item.price}</span></p>
+                                    <p>&yen;{item.price} {/*<span>&yen;{item.price}</span>*/}</p>
                                 </div>
                             </a>
                         </div>
@@ -99,6 +99,7 @@ class CollectList extends Component {
                 <div className="main-mycollect">
                     {collectHtml}
                 </div>
+                <Recommend />
             </div>
 
 

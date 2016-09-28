@@ -65,7 +65,7 @@ class ProductTabs extends React.Component {
                         _name = "产品售后";
                         break;
                     case 2:
-                        _name = "评价" + "<span>(" + _comment_count + ")</span>"
+                        _name = "评价" + (_comment_count > 0 ? "<span>(" + _comment_count + ")</span>" : "");
                         break;
                     default:
                         break;
@@ -120,7 +120,7 @@ class ProductTabs extends React.Component {
                             {/* 商品详情 */}
                             <ProductDetailsChild content={this.props.data.content} />
                             {/* 产品售后 */}
-                            <ProductForSale snum={this.props.data.snum} madeby={this.props.data.made_by} expire={this.props.data.expire} maintain={this.props.data.maintain} deliver_address={this.props.data.deliver_address} />
+                            <ProductForSale data={this.props.data} snum={this.props.data.snum} madeby={this.props.data.made_by} expire={this.props.data.expire} maintain={this.props.data.maintain} deliver_address={this.props.data.deliver_address} />
                             {/* 商品详情评论列表 */}
                             <div className="main-product-comment swiper-slide">
                                 <div className="coment-tab">

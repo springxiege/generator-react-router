@@ -5,15 +5,19 @@
 import {
     AddCollect,
     CancelCollect
-} from '../actions/ActionFuncs'
+} from '../app/MyCollect/constants'
 import checkLogin from '../event/event.checkLogin'
 export default function doCollect(){
     let _id = this.state.id ||'1'
     if(!checkLogin()){return false;}
     let _param  = {}
     if(this.state.collect){
-        _param._method = 'delete'
+        _param._method = 'delete';
+        _hmt.push(['_trackEvent', 'uncollect', 'click', '取消收藏']);
+    }else{
+        _hmt.push(['_trackEvent', 'collect', 'click', '收藏']);
     }
+    // console.log('_hmt',_hmt)
     $.ajax({
         url: config.url + '/goods/collect/'+_id,
         type: 'POST',

@@ -6,6 +6,7 @@ import {
 } from '../actions/ActionFuncs'
 import checkLogin from '../event/event.checkLogin'
 export default function addToShopCart(type){
+    _hmt.push(['_trackEvent', 'addToShopCart', 'click', '添加购物车']);
     let _this = this;
     let flag = true;
     if(!checkLogin()){return false;}

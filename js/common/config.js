@@ -7,7 +7,7 @@ config.pagesize = 10;
 // [market_price,goods_price]
 // goods_price -> 原价
 // market_price -> 折扣价
-config.price = 'goods_price';
+config.price = 'market_price';
 // 刷新token标识，防止重复请求
 config.flag = true;
 // 扩展store.min.js实现本地储存对象字符串

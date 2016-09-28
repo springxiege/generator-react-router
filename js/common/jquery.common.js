@@ -58,32 +58,41 @@
                 // 构建参数对象
                 var params = getJsonFromUrl(window.location.href);
                 params.currentUrl = window.location.origin + window.location.pathname;
-                $.ajax({
-                    url: config.hosts + '/token',
-                    type: 'GET',
-                    dataType: 'json',
-                    data: params,
-                    error: function (error) {
-                        console.log(error)
-                    },
-                    success: function (response) {
-                        if (response.code) {
-                            window.location.href = response.data.redirectUrl;
-                        } else {
-                            var token = response.data.token,
-                                tokenExpireTime = response.data.expire;
+                params.action = window.location.hash;
+                if(params.currentUrl.indexOf('shop') < 0){
+                    $.ajax({
+                        url: config.hosts + '/token',
+                        type: 'GET',
+                        dataType: 'json',
+                        data: params,
+                        error: function (error) {
+                            console.log(error)
+                        },
+                        success: function (response) {
+                            if (response.code) {
+                                if(parseInt(response.data.code) != 10002){
+                                    window.location.href = response.data.redirectUrl;
+                                }
+                            } else {
+                                var token = response.data.token,
+                                    tokenExpireTime = response.data.expire;
 
-                            window.config.head = token;
-                            // store token expire
-                            window.config.tokenExpire = (tokenExpireTime - 1 ) > 0 ? tokenExpireTime - 1 : 0;
-                            var _data = {token:token,userinfo:response.data.data,time:new Date().getTime}
-                            window.sessionStorage.setItem('trade',JSON.stringify(_data))
-                            // config.setStorage('trade', 'token', token);
-                            // config.setStorage('trade', 'time', new Date().getTime());
-                            // config.setStorage('trade', 'userinfo', response.data.data);
+                                window.config.head = token;
+                                // store token expire
+                                window.config.tokenExpire = (tokenExpireTime - 1 ) > 0 ? tokenExpireTime - 1 : 0;
+                                var _data = {token:token,userinfo:response.data.data,time:new Date().getTime}
+                                window.sessionStorage.setItem('trade',JSON.stringify(_data))
+                                if(!!response.data.redirectUrl){
+                                    window.location.href = response.data.redirectUrl;
+                                }
+                                // config.setStorage('trade', 'token', token);
+                                // config.setStorage('trade', 'time', new Date().getTime());
+                                // config.setStorage('trade', 'userinfo', response.data.data);
+                            }
                         }
-                    }
-                });
+                    });
+                }
+                
             } else {
                 var _url = window.location.hash.replace('#', '').replace(/\?.{0,}/gi, '').toLowerCase(),
                     Verify = ['', '/', 'register', 'productdetails', 'allgoods'], // PC端过滤不需要验证是否登录的页面
@@ -140,7 +149,7 @@
                             callback && callback(data.data)
                         };
                         if(parseInt(data.code) === 1){
-                            alert('刷新token失败，请重新登录');
+                            // alert('刷新token失败，请重新登录');
                             if(!config.isWX){
                                 var _hash = window.location.hash;
                                 _hash = _hash.replace('#','').replace(/\?.{1,}/gi,'');
@@ -250,7 +259,7 @@
             }
             // 插入dom
             if($('#pop-confirm').length === 0){
-                $('body').append(_HTML)
+                $('body').append(_HTML);
             }
             var $pop = $('#pop-confirm'),
                 _height = $pop.find('.pop-main').height();
@@ -279,6 +288,7 @@
             });
             // 计时
             if(defaults.time){
+                $pop.find('.pop-btn-ok').addClass('disabled');
                 var _time = defaults.time;
                 var timer = setInterval(function(){
                     if(_time==0){
