@@ -287,7 +287,7 @@ class ProductDetails extends React.Component {
                                             <div className="main-table-body">
                                                 <div className="main-table-tr clearfix">
                                                     <div className="main-table-td fl">生产地址</div>
-                                                    <div className="main-table-td"><p>{_data.madeby}</p></div>
+                                                    <div className="main-table-td"><p>{_data.made_by}</p></div>
                                                 </div>
                                                 <div className="main-table-tr clearfix">
                                                     <div className="main-table-td fl">保质时长</div>
@@ -387,7 +387,7 @@ class ProductDetails extends React.Component {
                     </div>
                     <Recommend />
                     <div className="vipcode" style={this.state.vipcode?{'display':'block'}:{'display':'none'}}>
-                        <img src="http://s.51lianying.com/images/xds/trade/codevip2.jpg" alt="" />
+                        <img src="http://s.51lianying.com/images/xds/trade/x1.png" alt="" />
                     </div>
                 </div>
                 <ProductDetailFooter pathname={pathname} userId={this.props.state.userId} detailId={this.state.id}/>

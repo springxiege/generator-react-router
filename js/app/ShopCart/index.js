@@ -236,7 +236,7 @@ class ShoppingCart extends React.Component {
             html =  (
                 <div className="main-cart-list no-cart-list">
                     <p>购物车空空如也</p>
-                    <p>不如试试51推荐</p>
+                    <p>不如试试小觅淘推荐</p>
                 </div>
             )
         }

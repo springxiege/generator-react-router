@@ -133,7 +133,7 @@ class MyCollect extends React.Component {
                             if(!len){
                                 $parent.append('<div class="main0module main-mycollect-list no-list">'
                                                     +'<p>收藏夹空空如也</p>'
-                                                    +'<p>快去51推荐收藏吧</p>'
+                                                    +'<p>快去小觅淘推荐收藏吧</p>'
                                                 +'</div>');
                                 $parent.siblings('.main-mycollect-header').find('span').html(len)
                             }else{
@@ -152,7 +152,7 @@ class MyCollect extends React.Component {
             collectHtml = (
                 <div className="main0module main-mycollect-list no-list">
                     <p>收藏夹空空如也</p>
-                    <p>快去51推荐收藏吧</p>
+                    <p>快去小觅淘推荐收藏吧</p>
                 </div>
             )
         }else{

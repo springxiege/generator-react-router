@@ -64,7 +64,7 @@ config.errorImage = function(){
         $('img').error(function() {
             /* Act on the event */
             $(this).prop({
-                src:'http://s.51lianying.com/images/xds/trade/logobg.gif'
+                src:'http://s.51lianying.com/images/xds/trade/logo.jpg'
             })
         });
     })

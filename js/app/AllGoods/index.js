@@ -108,7 +108,7 @@ class AllGoods extends Component {
                     <li key={index}>
                         <a className="gllgoods-item" href={item.goodsLink}>
                             <div>
-                                <CommonImage src='http://s.51lianying.com/images/xds/trade/logobg_mini.gif' url={item.goods_images} className="loadimg" />
+                                <CommonImage src='http://s.51lianying.com/images/xds/trade/d.jpg' url={item.goods_images} className="loadimg" />
                             </div>
                             <p>{item.title}</p>
                             <p>&yen;{item.min_price}</p>
@@ -125,7 +125,7 @@ class AllGoods extends Component {
         return (
             <div className="main">
                 <div className="allgoods-header clearfix">
-                    <img src={user.shop_logo||'http://s.51lianying.com/images/xds/trade/shop_logo.gif'} alt="" className="fl" />
+                    <img src={user.shop_logo||'http://s.51lianying.com/images/xds/trade/d.jpg'} alt="" className="fl" />
                     <p className="fl">{user.shop_name}</p>
                     <div className="goods-count fr">本家有<span>{_data.total}</span>个宝贝</div>
                 </div>

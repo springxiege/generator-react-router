@@ -9,7 +9,7 @@ import checkLogin from '../event/event.checkLogin'
 export default function doBuy(){
     _hmt.push(['_trackEvent', 'BuyItNow', 'click', '立即购买']);
     if(!checkLogin()){return false;}
-    let _data      = this.props.state.GoodsDetail
+    let _data      = this.props.state
     let _selectObj = _data.GoodsSelectSku
     let _select    = _selectObj.selected
     let _subselect = _selectObj.subselected

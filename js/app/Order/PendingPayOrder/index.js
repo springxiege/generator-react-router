@@ -143,7 +143,7 @@ class PendingPayOrder extends Component{
                 return (
                    <div className="main-module" key={index}>
                         <div className="part-item">
-                            <h3><img src="http://s.51lianying.com/images/xds/trade/shop_logo.gif" alt="" />{/*item.shop_name*/} <span className="order-status fr">买家待付款</span></h3>
+                            <h3><img src="http://s.51lianying.com/images/xds/trade/logo.jpg" alt="" />{/*item.shop_name*/} <span className="order-status fr">买家待付款</span></h3>
                             {item.items.map((subitem,subindex)=>{
                                 let _link = '/OrderDetail/'+subitem.id;
                                 _totalPrice += (subitem.preferential - 0);

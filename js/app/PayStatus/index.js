@@ -36,6 +36,9 @@ export default class PaySuccess extends Component{
         let status = this.props.params.payStatus || 0
         return (
             <div className="main">
+                <div className="main-pay-logo">
+                    <img src="http://s.51lianying.com/images/xds/trade/x1.png" alt="" />
+                </div>
                 {status == 1 ? (
                     <div className="main-notes">
                         <h1>支付成功</h1>
@@ -46,16 +49,9 @@ export default class PaySuccess extends Component{
                     </div>
                 )}
                 <div className="main-pay-note">
-                    <p>搜索关注 “我要联赢VIP” 微信公众号随时跟踪订单进度</p>
-                    <p>
-                        <span>{this.state.seconds}</span>秒钟后跳转至<a href="#/UserCenter">个人中心</a>
-                    </p>
-                    <p>
-                        <img src="http://s.51lianying.com/images/xds/trade/vip.jpg" alt="" />
-                    </p>
+                    <span>{this.state.seconds}</span>秒钟后跳转至<a href="#/UserCenter">个人中心</a>
                 </div>
-                <p className="main-pay-tel">联系客服：<a href="tel://4006728266">4006728266</a></p>
-                <div className="main-logo"></div>
+                
             </div>
         )
     }

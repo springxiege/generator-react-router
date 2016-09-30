@@ -86,7 +86,7 @@ export default class Recommend extends React.Component {
                     <div className="main-module">
                         <div className="main-recommend">
                             <h4>
-                                <p>我要联赢推荐</p>
+                                <p>小觅淘推荐</p>
                                 <span className={this.state.reflesh?"cur":""} title="刷新或者换一换" onClick={this.freshList}></span>
                             </h4>
                             <ul className="clearfix">
@@ -97,7 +97,7 @@ export default class Recommend extends React.Component {
                                                 {!this.state.start?(
                                                     <img src={item.goods_images} alt=""/>
                                                 ):(
-                                                    <img className="loadimg" src="http://s.51lianying.com/images/xds/trade/logobg_mini.gif" data-url={item.goods_images} alt="" />
+                                                    <img className="loadimg" src="http://s.51lianying.com/images/xds/trade/d.jpg" data-url={item.goods_images} alt="" />
                                                 )}
                                                 
                                                 <p className="re-summary">{item.title}</p>

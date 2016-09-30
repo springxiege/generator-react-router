@@ -8,14 +8,6 @@ import React,{Component} from 'react'
 export default function CommonLogo(props){
     let {src,...other} = props
     return (
-        <img src={src||'http://s.51lianying.com/images/xds/trade/shop_logo.gif'} {...other} alt="" />
+        <img src={src||'http://s.51lianying.com/images/xds/trade/logo.jpg'} {...other} alt="" />
     )
 }
-// export default class CommonLogo extends Component{
-//     render(){
-//         let {src,...other} = this.props
-//         return (
-//             <img src={src||'/images/shop_logo.gif'} {...other} alt="" />
-//         )
-//     }
-// }

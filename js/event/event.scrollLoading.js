@@ -30,7 +30,7 @@ export default function scrollLoading(opt){
             params.callback.call(call.get(0));
         }
         $(call).removeClass('loadimg').error(function(){
-            $(this).prop('src', 'http://s.51lianying.com/images/xds/biz/logobg.gif');
+            $(this).prop('src', 'http://s.51lianying.com/images/xds/biz/d.jpg');
         });
     };
     let loading = function() {

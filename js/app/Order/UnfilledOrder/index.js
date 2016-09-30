@@ -96,62 +96,8 @@ class UnfilledOrder extends Component{
         window.removeEventListener('scroll',this.scrollLoading);
     }
     UpdateOrder(e){
-        // if(store.enabled){
-        //     if(!store.get('UpdataOrder')){
-        //         var time = new Date()
-        //     }
-        // }else{
-        //     alert('This browser does not supports localStorage')
-        // }
         $.tips('提醒发货成功')
     }
-
-    // doReturnOrder(e){
-    //     let $order = $(e.target).closest('.main-module')
-    //     let _ids = []
-    //     $order.find('.part-list').each(function(index,item){
-    //         _ids.push($(item).data('id'))
-    //     })
-    //     $.confirm({
-    //         titleclsName:'lytitle',
-    //         title:'请选择退款理由',
-    //         content:'<select name="reason" id="reason">'
-    //                     +'<option value="七天无理由退货">七天无理由退货</option>'
-    //                     +'<option value="不想要了">不想要了</option>'
-    //                     +'<option value="卖家未按时间发货">卖家未按时间发货</option>'
-    //                     +'<option value="冲动了，买错了">冲动了，买错了</option>'
-    //                 +'</select>',
-    //         okBtn:function(){
-    //             var _reason = $('#reason').val();
-    //             $.ajax({
-    //                 url: config.url + '/orders/abandon',
-    //                 type: 'POST',
-    //                 dataType: 'json',
-    //                 data: {
-    //                     _method:'PUT',
-    //                     type:1,
-    //                     abandon_reason:_reason,
-    //                     ids:_ids
-    //                 },
-    //                 beforeSend:(request)=>{
-    //                     config.setRequestHeader(request);
-    //                 },
-    //                 error:(error)=>{
-    //                     config.ProcessError(error);
-    //                 },
-    //                 success:(data)=>{
-    //                     // console.log(data)
-    //                     if(parseInt(data.code) === 0){
-    //                         $.tips(data.data.msg,800,function(){
-    //                             window.location.hash = '#/ReturnOrder'
-    //                         })
-    //                     }
-    //                 }
-    //             })
-
-    //         }
-    //     })
-    // }
     render(){
         let _HTML = (<p className="nolist">暂无待发货订单</p>)
         let _data = this.props.state.data
@@ -186,11 +132,11 @@ class UnfilledOrder extends Component{
                             })}
 
                             <div className="part-subtotal">
+                                <Link className="order-parcel fl" to={`/ReturnsReason/${item.items[0].id}/UnfilledOrder`}>退款</Link>
                                 小计：<span>{_totalPrice}</span>元
                             </div>
                             <div className="part-funcs">
                                 <span className="fr" onClick={e=>this.UpdateOrder(e)}>提醒发货</span>
-                                <span className="fr"><Link to={`/ReturnsReason/${item.items[0].id}/UnfilledOrder`}>退款</Link></span>
                             </div>
                         </div>
                     </div>

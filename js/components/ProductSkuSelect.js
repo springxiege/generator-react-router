@@ -30,7 +30,7 @@ class ProductSkuSelect extends React.Component {
         let index = e.target.getAttribute('data-index')
         let clsName = e.target.className
         if(clsName=='cur'){return false;}
-        let _data = this.props.state.GoodsDetail.data.goods_addon
+        let _data = this.props.state.data.goods_addon
         // 判断库存
         if(_data[index].addon.length==1&&_data[index].addon[0].feature_sub==''){
             if(parseInt(_data[index].addon[0].stock) === 0){
@@ -58,11 +58,11 @@ class ProductSkuSelect extends React.Component {
         let index = e.target.getAttribute('data-index')
         let clsName = e.target.className
         if(clsName=='cur'){return false;}
-        if(this.props.state.GoodsDetail.GoodsSelectSku.selected === null){
+        if(this.props.state.GoodsSelectSku.selected === null){
             $.tips('请先选择规格一')
             return false;
         };
-        let _data = this.props.state.GoodsDetail;
+        let _data = this.props.state;
         let mainindex = _data.GoodsSelectSku.selected;
         let _stock = _data.data.goods_addon[mainindex].addon[index].stock;
         if(parseInt(_stock) === 0){
@@ -80,8 +80,8 @@ class ProductSkuSelect extends React.Component {
     }
     // 增加购买数量
     _Increment(e){
-        let current = this.props.state.GoodsDetail.GoodsSelectSku.count
-        let state = this.props.state.GoodsDetail
+        let state = this.props.state
+        let current = state.GoodsSelectSku.count
         let stock = state.data.goods_addon[(state.GoodsSelectSku.selected||0)].addon[0].stock
         if(state.GoodsSelectSku.selected !== null && state.GoodsSelectSku.subselected !== null){
             stock = state.data.goods_addon[state.GoodsSelectSku.selected].addon[state.GoodsSelectSku.subselected].stock
@@ -95,7 +95,7 @@ class ProductSkuSelect extends React.Component {
     }
     // 减少购买数量
     _Decrement(e){
-        let current = this.props.state.GoodsDetail.GoodsSelectSku.count
+        let current = this.props.state.GoodsSelectSku.count
         if($(e.target).closest('div').hasClass('disabled') || $(e.target).hasClass('disabled')){
             return false;
         }
@@ -105,7 +105,7 @@ class ProductSkuSelect extends React.Component {
         
     }
     render() {
-        let _state          = this.props.state.GoodsDetail
+        let _state          = this.props.state
         let _data           = _state.data
         let _GoodsSelectSku = _state.GoodsSelectSku
         let _count          = _GoodsSelectSku.count
@@ -198,7 +198,7 @@ class ProductSkuSelect extends React.Component {
 };
 function select (state) { // 手动注入state，dispatch分发器被connect自动注入
     return { // 注入的内容自行选择
-      state: state
+      state: state.GoodsDetail
     }
 }
 export default connect(select)(ProductSkuSelect);

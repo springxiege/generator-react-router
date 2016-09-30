@@ -10,14 +10,14 @@ import {
     COUNT_DECREMENT,
     GET_COMMENT,
     GO_TO_BUY,
-    GODDS_BUY_SKU,
-    GODDS_BUY_SKU_SUB,
 } from './action'
 import {
     ADD_BUY,
     MINUS_BUY,
     BUY_COUNT_INCREMENT,
     BUY_COUNT_DECREMENT,
+    GODDS_BUY_SKU,
+    GODDS_BUY_SKU_SUB,
 
 } from '../BuyBySku/action'
 // 处理数据分发到每个模块

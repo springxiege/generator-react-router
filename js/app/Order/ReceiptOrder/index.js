@@ -167,14 +167,13 @@ class ReceiptOrder extends Component{
                                 </div>
                             </div>
                             <div className="part-subtotal clearfix">
-                                <Link to={`/ParcelDetail/${item.express_coding}/${item.parcel_num}`} className="order-parcel fl">物流详情</Link>
+                                <Link className="order-parcel fl" to={`/ReturnsReason/${item.id}/ReceiptOrder`}>退货</Link>
+                                <Link className="order-parcel fl" to={`/ReturnsReason/${item.id}/ReturnOrder`}>换货</Link>
                                 小计：<span>{_totalPrice}</span>元
                             </div>
                             <div className="part-funcs">
-                                {/*<span className="fr"><Link to="">查看物流</Link></span>*/}
                                 <span className="fr" onClick={e=>this.ConfirmOrder(e)}>确认收货</span>
-                                <span className="change fr"><Link to={`/ReturnsReason/${item.id}/ReturnOrder`}>换货</Link></span>
-                                <span className="return fr"><Link to={`/ReturnsReason/${item.id}/ReceiptOrder`}>退货</Link></span>
+                                <span className="fr"><Link to={`/ParcelDetail/${item.express_coding}/${item.parcel_num}`} className="order-parcel fl">物流详情</Link></span>
                             </div>
                         </div>
                     </div>

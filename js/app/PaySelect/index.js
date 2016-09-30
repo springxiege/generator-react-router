@@ -39,15 +39,13 @@ class SelectPay extends Component{
     render(){
         return (
             <div className="main" ref="paymethod" >
+                <div className="main-pay-note">
+                    <img src="http://s.51lianying.com/images/xds/trade/x1.png" alt="" />
+                </div>
                 <div className="main-pay">
                     <label className={this.state.payment == 1 ? "checked" : ""}><input type="radio" name="payment" value="1" id="" onChange={e=>this.radioChange(e,1)} /></label>
                     <label className={this.state.payment == 2 ? "checked" : ""}><input type="radio" name="payment" value="2" id="" onChange={e=>this.radioChange(e,2)} /></label>
                 </div>
-                <div className="main-pay-note">
-                    <p>搜索关注 “我要联赢VIP” 微信公众号随时跟踪订单进度</p>
-                    <p><img src="http://s.51lianying.com/images/xds/trade/vip.jpg" alt="" /></p>
-                </div>
-                <p className="main-pay-tel">联系客服：<a href="tel://4006728266">4006728266</a></p>
                 <span className="btn-add-address" onClick={e=>this.handleClick(e)} >确认支付</span>
             </div>
         )

@@ -3,14 +3,14 @@
  */
 import {
     ShowAndHideSelectSku
-} from '../actions/ActionFuncs'
+} from '../app/Product/constants'
 import checkLogin from '../event/event.checkLogin'
 export default function addToShopCart(type){
     _hmt.push(['_trackEvent', 'addToShopCart', 'click', '添加购物车']);
     let _this = this;
     let flag = true;
     if(!checkLogin()){return false;}
-    let state          = this.props.state.GoodsDetail
+    let state          = this.props.state
     let GoodsSelectSku = state.GoodsSelectSku
     let selected       = GoodsSelectSku.selected
     let subselected    = GoodsSelectSku.subselected
